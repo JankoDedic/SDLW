@@ -58,6 +58,6 @@ target_link_libraries(SDLW
 # Example
 # =============================================================================
 if(SDLW_BUILD_EXAMPLE)
-  add_executable(SDLW_example example/example.cpp)
+  add_executable(SDLW_example example/example.cpp example/second.cpp)
   target_link_libraries(SDLW_example PRIVATE SDLW)
 endif()

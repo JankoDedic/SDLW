@@ -1,4 +1,6 @@
 #include <sdlw/sdlw.hpp>
+#include <sdlw/image.hpp>
+#include <sdlw/ttf.hpp>
 
 using namespace std;
 using namespace std::chrono;

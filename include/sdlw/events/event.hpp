@@ -63,12 +63,14 @@ public:
     }
 };
 
+inline
 const audio_device_event::added_t&
 audio_device_event::added() const noexcept
 {
     return static_cast<const added_t&>(*this);
 }
 
+inline
 const audio_device_event::removed_t&
 audio_device_event::removed() const noexcept
 {
@@ -181,18 +183,21 @@ public:
     }
 };
 
+inline
 const controller_device_event::added_t&
 controller_device_event::added() const noexcept
 {
     return static_cast<const controller_device_event::added_t&>(*this);
 }
 
+inline
 const controller_device_event::removed_t&
 controller_device_event::removed() const noexcept
 {
     return static_cast<const controller_device_event::removed_t&>(*this);
 }
 
+inline
 const controller_device_event::remapped_t&
 controller_device_event::remapped() const noexcept
 {
@@ -261,12 +266,14 @@ public:
 
 class dollar_event::record_t : public dollar_event {};
 
+inline
 const dollar_event::gesture_t&
 dollar_event::gesture() const noexcept
 {
     return static_cast<const dollar_event::gesture_t&>(*this);
 }
 
+inline
 const dollar_event::record_t&
 dollar_event::record() const noexcept
 {
@@ -330,24 +337,28 @@ class drop_event::begin_t : public drop_event {};
 
 class drop_event::complete_t : public drop_event {};
 
+inline
 const drop_event::file_t&
 drop_event::file() const noexcept
 {
     return static_cast<const drop_event::file_t&>(*this);
 }
 
+inline
 const drop_event::text_t&
 drop_event::text() const noexcept
 {
     return static_cast<const drop_event::text_t&>(*this);
 }
 
+inline
 const drop_event::begin_t&
 drop_event::begin() const noexcept
 {
     return static_cast<const drop_event::begin_t&>(*this);
 }
 
+inline
 const drop_event::complete_t&
 drop_event::complete() const noexcept
 {
@@ -435,18 +446,21 @@ public:
 
 class touch_finger_event::up_t : public touch_finger_event {};
 
+inline
 const touch_finger_event::motion_t&
 touch_finger_event::motion() const noexcept
 {
     return static_cast<const touch_finger_event::motion_t&>(*this);
 }
 
+inline
 const touch_finger_event::down_t&
 touch_finger_event::down() const noexcept
 {
     return static_cast<const touch_finger_event::down_t&>(*this);
 }
 
+inline
 const touch_finger_event::up_t&
 touch_finger_event::up() const noexcept
 {
@@ -497,12 +511,14 @@ public:
 
 class key_event::up_t : public key_event {};
 
+inline
 const key_event::up_t&
 key_event::up() const noexcept
 {
     return static_cast<const key_event::up_t&>(*this);
 }
 
+inline
 const key_event::down_t&
 key_event::down() const noexcept
 {
@@ -668,12 +684,14 @@ public:
     }
 };
 
+inline
 const joy_device_event::added_t&
 joy_device_event::added() const noexcept
 {
     return static_cast<const joy_device_event::added_t&>(*this);
 }
 
+inline
 const joy_device_event::removed_t&
 joy_device_event::removed() const noexcept
 {
@@ -796,12 +814,14 @@ public:
 
 class mouse_button_event::up_t : public mouse_button_event {};
 
+inline
 const mouse_button_event::down_t&
 mouse_button_event::down() const noexcept
 {
     return static_cast<const mouse_button_event::down_t&>(*this);
 }
 
+inline
 const mouse_button_event::up_t&
 mouse_button_event::up() const noexcept
 {
@@ -1071,12 +1091,14 @@ public:
     }
 };
 
+inline
 const window_event::moved_t&
 window_event::moved() const noexcept
 {
     return static_cast<const window_event::moved_t&>(*this);
 }
 
+inline
 const window_event::resized_t&
 window_event::resized() const noexcept
 {

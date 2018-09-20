@@ -10,6 +10,7 @@
 
 namespace sdlw::filesystem {
 
+inline
 std::unique_ptr<const char, detail::sdl_string_deleter>
 base_path()
 {
@@ -20,6 +21,7 @@ base_path()
     }
 }
 
+inline
 std::unique_ptr<const char, detail::sdl_string_deleter>
 get_pref_path(const char* org, const char* app)
 {

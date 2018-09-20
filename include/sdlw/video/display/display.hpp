@@ -178,6 +178,7 @@ set_brightness(const window& win, float brightness)
     }
 }
 
+inline
 void
 get_gamma_ramp(
     const window& win,
@@ -193,6 +194,7 @@ get_gamma_ramp(
     }
 }
 
+inline
 void
 set_gamma_ramp(
     const window& win,
