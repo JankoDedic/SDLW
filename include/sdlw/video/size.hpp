@@ -1,5 +1,7 @@
 #pragma once
 
+#include <type_traits>
+
 namespace sdlw::video {
 
 struct size {
@@ -126,77 +128,87 @@ operator/=(size& lhs, const size& rhs) noexcept
 
 // Arithmetic (binary, asymmetrical)
 
+template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr
 size
-operator+(const size& lhs, int rhs) noexcept
+operator+(const size& lhs, T rhs) noexcept
 {
     return size{lhs.w + rhs, lhs.h + rhs};
 }
 
+template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr
 size
-operator+(int lhs, const size& rhs) noexcept
+operator+(T lhs, const size& rhs) noexcept
 {
     return rhs + lhs;
 }
 
+template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr
 size
-operator-(const size& lhs, int rhs) noexcept
+operator-(const size& lhs, T rhs) noexcept
 {
     return size{lhs.w - rhs, lhs.h - rhs};
 }
 
+template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr
 size
-operator*(const size& lhs, int rhs) noexcept
+operator*(const size& lhs, T rhs) noexcept
 {
     return size{lhs.w * rhs, lhs.h * rhs};
 }
 
+template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr
 size
-operator*(int lhs, const size& rhs) noexcept
+operator*(T lhs, const size& rhs) noexcept
 {
     return rhs * lhs;
 }
 
+template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr
 size
-operator/(const size& lhs, int rhs) noexcept
+operator/(const size& lhs, T rhs) noexcept
 {
     return size{lhs.w / rhs, lhs.h / rhs};
 }
 
 // Arithmetic (assignment, asymmetrical)
 
+template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr
 size&
-operator+=(size& lhs, int rhs) noexcept
+operator+=(size& lhs, T rhs) noexcept
 {
     lhs = lhs + rhs;
     return lhs;
 }
 
+template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr
 size&
-operator-=(size& lhs, int rhs) noexcept
+operator-=(size& lhs, T rhs) noexcept
 {
     lhs = lhs - rhs;
     return lhs;
 }
 
+template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr
 size&
-operator*=(size& lhs, int rhs) noexcept
+operator*=(size& lhs, T rhs) noexcept
 {
     lhs = lhs * rhs;
     return lhs;
 }
 
+template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr
 size&
-operator/=(size& lhs, int rhs) noexcept
+operator/=(size& lhs, T rhs) noexcept
 {
     lhs = lhs / rhs;
     return lhs;
