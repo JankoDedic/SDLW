@@ -1,5 +1,7 @@
 #pragma once
 
+#include <type_traits>
+
 #include <SDL2/SDL.h>
 
 namespace sdlw::video {
@@ -125,77 +127,87 @@ operator/=(point& lhs, const point& rhs) noexcept
 
 // Arithmetic (binary, asymmetrical)
 
+template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr
 point
-operator+(const point& lhs, int rhs) noexcept
+operator+(const point& lhs, T rhs) noexcept
 {
     return point{lhs.x + rhs, lhs.y + rhs};
 }
 
+template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr
 point
-operator+(int lhs, const point& rhs) noexcept
+operator+(T lhs, const point& rhs) noexcept
 {
     return rhs + lhs;
 }
 
+template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr
 point
-operator-(const point& lhs, int rhs) noexcept
+operator-(const point& lhs, T rhs) noexcept
 {
     return point{lhs.x - rhs, lhs.y - rhs};
 }
 
+template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr
 point
-operator*(const point& lhs, int rhs) noexcept
+operator*(const point& lhs, T rhs) noexcept
 {
     return point{lhs.x * rhs, lhs.y * rhs};
 }
 
+template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr
 point
-operator*(int lhs, const point& rhs) noexcept
+operator*(T lhs, const point& rhs) noexcept
 {
     return rhs * lhs;
 }
 
+template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr
 point
-operator/(const point& lhs, int rhs) noexcept
+operator/(const point& lhs, T rhs) noexcept
 {
     return point{lhs.x / rhs, lhs.y / rhs};
 }
 
 // Arithmetic (assignment, asymmetrical)
 
+template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr
 point&
-operator+=(point& lhs, int rhs) noexcept
+operator+=(point& lhs, T rhs) noexcept
 {
     lhs = lhs + rhs;
     return lhs;
 }
 
+template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr
 point&
-operator-=(point& lhs, int rhs) noexcept
+operator-=(point& lhs, T rhs) noexcept
 {
     lhs = lhs - rhs;
     return lhs;
 }
 
+template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr
 point&
-operator*=(point& lhs, int rhs) noexcept
+operator*=(point& lhs, T rhs) noexcept
 {
     lhs = lhs * rhs;
     return lhs;
 }
 
+template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr
 point&
-operator/=(point& lhs, int rhs) noexcept
+operator/=(point& lhs, T rhs) noexcept
 {
     lhs = lhs / rhs;
     return lhs;
