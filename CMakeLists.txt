@@ -38,7 +38,7 @@ file(GLOB_RECURSE SDLW_HEADER_FILES include/*.hpp)
 
 add_library(SDLW INTERFACE)
 target_compile_features(SDLW INTERFACE cxx_std_17)
-target_compile_options(SDLW INTERFACE /Za)
+# target_compile_options(SDLW INTERFACE /Za)
 target_include_directories(SDLW
   INTERFACE
     include
