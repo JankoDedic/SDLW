@@ -5,11 +5,11 @@
 namespace sdlw::power {
 
 enum class battery_state {
-    unknown = SDL_POWERSTATE_UNKNOWN,
+    unknown    = SDL_POWERSTATE_UNKNOWN,
     on_battery = SDL_POWERSTATE_ON_BATTERY,
     no_battery = SDL_POWERSTATE_NO_BATTERY,
-    charging = SDL_POWERSTATE_CHARGING,
-    charged = SDL_POWERSTATE_CHARGED
+    charging   = SDL_POWERSTATE_CHARGING,
+    charged    = SDL_POWERSTATE_CHARGED
 };
 
 class battery_info {
@@ -18,10 +18,7 @@ class battery_info {
     int _percentage_left;
 
 public:
-    battery_info(
-        battery_state battery_state_,
-        int seconds_left,
-        int percentage_left) noexcept
+    battery_info(battery_state battery_state_, int seconds_left, int percentage_left) noexcept
         : _battery_state(battery_state_)
         , _seconds_left(seconds_left)
         , _percentage_left(percentage_left)

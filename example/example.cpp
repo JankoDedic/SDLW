@@ -25,16 +25,37 @@ void handle_event(const event& e)
     }
 }
 
-void run()
-{
+using my_filter = void(int, void *);
+
+void run() {
+    // Initialize the subsystems
     const auto sdlw_guard = sdlw::subsystem(sdlw::subsystem_flags::video);
+    // Create the window
     const auto win_size = size_of(display::usable_bounds(0)) / 2;
     const auto win_bounds = rectangle{50, 50, win_size.w, win_size.h};
     auto win = window("title", win_bounds, window_flags::shown);
     get_window(win.id()).set_title("new title");
+    // Create the renderer
     auto rend = renderer(win, renderer_flags::accelerated);
     auto e = event();
+    // Filter events
+    constexpr auto custom_filter = [] (const event &e, void *) -> bool {
+        if (e.type() == event_type::mouse_button_down && e.mouse_button().down().x() > 480) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+    filter::custom::set<custom_filter>();
+    // Watch events
+    constexpr auto custom_watch = [] (const event &e, void *) {
+        if (e.type() == event_type::mouse_button_down) {
+            SDL_Log("mouse button down!\n");
+        }
+    };
+    watch::add<custom_watch>();
     for (;;) {
+        // Handle the events
         while (event_queue::poll(e)) {
             if (e.type() == event_type::quit) {
                 return;
@@ -42,6 +63,7 @@ void run()
                 handle_event(e);
             }
         }
+        // Do the rendering
         rend.set_draw_color(color{0, 0, 0});
         rend.clear();
         rend.set_draw_color(color{255, 0, 0});
@@ -50,12 +72,10 @@ void run()
     }
 }
 
-int
-main(int argc, char* argv[])
-{
+auto main(int argc, char *argv[]) -> int {
     try {
         run();
-    } catch (const sdlw::error& e) {
+    } catch (const sdlw::error &e) {
         SDL_Log("sdlw error: %s\n", e.what());
     } catch (...) {
         SDL_Log("unknown exception\n");

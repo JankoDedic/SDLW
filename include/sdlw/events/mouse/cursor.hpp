@@ -44,7 +44,9 @@ public:
         const video::size& sz,
         const video::point& topleft_corner)
     {
-        const auto [x, y] = topleft_corner;
+        /* const auto &[x, y] = topleft_corner; */
+        const auto x = topleft_corner.x;
+        const auto y = topleft_corner.y;
         if (const auto ptr = SDL_CreateCursor(data, mask, sz.w, sz.h, x, y)) {
             *this = cursor(ptr);
         } else {
@@ -54,7 +56,9 @@ public:
 
     cursor(const video::surface& surf, const video::point& topleft_corner)
     {
-        const auto [x, y] = topleft_corner;
+        /* const auto [x, y] = topleft_corner; */
+        const auto x = topleft_corner.x;
+        const auto y = topleft_corner.y;
         if (const auto ptr = SDL_CreateColorCursor(surf.get_pointer(), x, y)) {
             *this = cursor(ptr);
         } else {

@@ -16,38 +16,23 @@ public:
     using keymod_type = keymod;
     using scancode_type = scancode;
 
-    constexpr explicit
-    operator SDL_Keysym() const noexcept
-    {
+    constexpr explicit operator SDL_Keysym() const noexcept {
         return _keysym;
     }
 
     key() noexcept = default;
 
-    constexpr explicit
-    key(SDL_Keysym keysym) noexcept
-        : _keysym(keysym)
-    {
-    }
+    constexpr explicit key(SDL_Keysym keysym) noexcept : _keysym(keysym) { }
 
-    constexpr
-    scancode_type
-    scancode() const noexcept
-    {
+    constexpr auto scancode() const noexcept -> scancode_type {
         return static_cast<scancode_type>(_keysym.scancode);
     }
 
-    constexpr
-    keycode_type
-    keycode() const noexcept
-    {
+    constexpr auto keycode() const noexcept -> keycode_type {
         return static_cast<keycode_type>(_keysym.sym);
     }
 
-    constexpr
-    keymod_type
-    keymod() const noexcept
-    {
+    constexpr auto keymod() const noexcept -> keymod_type {
         return static_cast<keymod_type>(_keysym.mod);
     }
 };

@@ -7,17 +7,11 @@
 namespace sdlw::events::keyboard {
 
 struct screen_keyboard {
-    static
-    bool
-    is_supported() noexcept
-    {
+    static auto is_supported() noexcept -> bool {
         return SDL_HasScreenKeyboardSupport();
     }
 
-    static
-    bool
-    is_shown(const video::window& win) noexcept
-    {
+    static auto is_shown(const video::window &win) noexcept -> bool {
         return SDL_IsScreenKeyboardShown(win.get_pointer());
     }
 };
