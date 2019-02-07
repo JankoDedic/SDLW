@@ -11,8 +11,7 @@ using namespace sdlw::video;
 
 static auto points = std::vector<point>();
 
-void handle_event(const event& e)
-{
+void handle_event(const event &e) {
     using namespace sdlw::events::mouse;
     if (e.type() == event_type::mouse_motion) {
         const auto state = e.mouse_motion().state();

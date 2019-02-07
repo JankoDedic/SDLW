@@ -29,7 +29,7 @@ find_library(SDL2_TTF_LIBRARY SDL2_ttf)
 
 # span
 set(SPAN_LITE_OPT_BUILD_TESTS OFF)
-add_subdirectory(third_party/span-lite CONFIGURE_DEPENDS)
+add_subdirectory(third_party/span-lite EXCLUDE_FROM_ALL)
 
 # =============================================================================
 # Library

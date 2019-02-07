@@ -30,14 +30,21 @@ global_state() noexcept
 }
 
 inline
-video::window*
+/* video::window* */
+std::optional<video::window_ref>
 focus_owner() noexcept
 {
-    static auto s = detail::storage<video::window>();
-    if (const auto pwindow = SDL_GetMouseFocus()) {
-        return new (&s) video::window(pwindow);
+    /* static auto s = detail::storage<video::window>(); */
+    /* if (const auto pwindow = SDL_GetMouseFocus()) { */
+    /*     return new (&s) video::window(pwindow); */
+    /* } else { */
+    /*     return nullptr; */
+    /* } */
+
+    if (const auto ptr = SDL_GetMouseFocus()) {
+        return video::window_ref(ptr);
     } else {
-        return nullptr;
+        return std::nullopt;
     }
 }
 

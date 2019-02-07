@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include <sdlw/video/window.hpp>
 #include <sdlw/events/keyboard/keycode.hpp>
 #include <sdlw/events/keyboard/keymod.hpp>
@@ -44,12 +46,18 @@ inline auto name_of(scancode sc) noexcept -> const char * {
     return SDL_GetScancodeName(static_cast<SDL_Scancode>(sc));
 }
 
-inline auto focus_owner() noexcept -> video::window * {
-    static auto s = detail::storage<video::window>();
-    if (const auto pwindow = SDL_GetKeyboardFocus()) {
-        return new (&s) video::window(pwindow);
+inline auto focus_owner() noexcept -> std::optional<video::window_ref> {
+    /* static auto s = detail::storage<video::window>(); */
+    /* if (const auto pwindow = SDL_GetKeyboardFocus()) { */
+    /*     return new (&s) video::window(pwindow); */
+    /* } else { */
+    /*     return nullptr; */
+    /* } */
+
+    if (const auto ptr = SDL_GetKeyboardFocus()) {
+        return video::window_ref(ptr);
     } else {
-        return nullptr;
+        return std::nullopt;
     }
 }
 
