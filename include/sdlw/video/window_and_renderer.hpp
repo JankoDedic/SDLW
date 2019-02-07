@@ -7,7 +7,7 @@ namespace sdlw::video {
 
 inline
 const renderer&
-window::renderer() const
+window_ref::renderer() const
 {
     static auto s = ::sdlw::detail::storage<renderer_type>();
     if (const auto ptr = SDL_GetRenderer(get_pointer())) {
@@ -19,7 +19,7 @@ window::renderer() const
 
 inline
 renderer&
-window::renderer()
+window_ref::renderer()
 {
     static auto s = ::sdlw::detail::storage<renderer_type>();
     if (const auto ptr = SDL_GetRenderer(get_pointer())) {

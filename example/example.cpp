@@ -11,8 +11,7 @@ using namespace sdlw::video;
 
 static auto points = std::vector<point>();
 
-void handle_event(const event& e)
-{
+void handle_event(const event &e) {
     using namespace sdlw::events::mouse;
     if (e.type() == event_type::mouse_motion) {
         const auto state = e.mouse_motion().state();
@@ -25,8 +24,6 @@ void handle_event(const event& e)
     }
 }
 
-using my_filter = void(int, void *);
-
 void run() {
     // Initialize the subsystems
     const auto sdlw_guard = sdlw::subsystem(sdlw::subsystem_flags::video);
@@ -38,15 +35,6 @@ void run() {
     // Create the renderer
     auto rend = renderer(win, renderer_flags::accelerated);
     auto e = event();
-    // Filter events
-    constexpr auto custom_filter = [] (const event &e, void *) -> bool {
-        if (e.type() == event_type::mouse_button_down && e.mouse_button().down().x() > 480) {
-            return true;
-        } else {
-            return false;
-        }
-    };
-    filter::custom::set<custom_filter>();
     // Watch events
     constexpr auto custom_watch = [] (const event &e, void *) {
         if (e.type() == event_type::mouse_button_down) {
@@ -57,11 +45,8 @@ void run() {
     for (;;) {
         // Handle the events
         while (event_queue::poll(e)) {
-            if (e.type() == event_type::quit) {
-                return;
-            } else {
-                handle_event(e);
-            }
+            if (e.type() == event_type::quit) return;
+            else handle_event(e);
         }
         // Do the rendering
         rend.set_draw_color(color{0, 0, 0});

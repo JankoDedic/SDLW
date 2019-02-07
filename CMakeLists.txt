@@ -20,16 +20,16 @@ option(SDLW_BUILD_EXAMPLE "Build the example" ON)
 find_package(SDL2 REQUIRED)
 
 # SDL2_image
-find_path(SDL2_IMAGE_INCLUDE_DIR SDL2/SDL_image.h)
-find_library(SDL2_IMAGE_LIBRARY SDL2_image)
+find_path    ( SDL2_IMAGE_INCLUDE_DIR SDL2/SDL_image.h )
+find_library ( SDL2_IMAGE_LIBRARY     SDL2_image       )
 
 # SDL2_ttf
-find_path(SDL2_TTF_INCLUDE_DIR SDL2/SDL_ttf.h)
-find_library(SDL2_TTF_LIBRARY SDL2_ttf)
+find_path    ( SDL2_TTF_INCLUDE_DIR   SDL2/SDL_ttf.h   )
+find_library ( SDL2_TTF_LIBRARY       SDL2_ttf         )
 
 # span
 set(SPAN_LITE_OPT_BUILD_TESTS OFF)
-add_subdirectory(third_party/span-lite CONFIGURE_DEPENDS)
+add_subdirectory(third_party/span-lite EXCLUDE_FROM_ALL)
 
 # =============================================================================
 # Library

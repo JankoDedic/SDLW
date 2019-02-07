@@ -9,7 +9,7 @@
 
 namespace sdlw::video {
 
-class window;   // for renderer::renderer
+struct window;   // for renderer::renderer
 class texture;  // for renderer::copy
 
 enum class renderer_flags {
