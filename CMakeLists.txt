@@ -38,7 +38,6 @@ file(GLOB_RECURSE SDLW_HEADER_FILES include/*.hpp)
 
 add_library(SDLW INTERFACE)
 target_compile_features(SDLW INTERFACE cxx_std_17)
-# target_compile_options(SDLW INTERFACE /Za)
 target_include_directories(SDLW
   INTERFACE
     include
@@ -53,11 +52,14 @@ target_link_libraries(SDLW
     ${SDL2_TTF_LIBRARY}
     span-lite
 )
+if(MSVC)
+  target_compile_options(SDLW INTERFACE /Za)
+endif()
 
 # =============================================================================
 # Example
 # =============================================================================
 if(SDLW_BUILD_EXAMPLE)
-  add_executable(main example/example.cpp)
-  target_link_libraries(main PRIVATE SDLW)
+  add_executable(sdlw-main example/example.cpp)
+  target_link_libraries(sdlw-main PRIVATE SDLW)
 endif()
