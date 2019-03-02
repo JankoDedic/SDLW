@@ -24,6 +24,12 @@ void handle_event(const event &e) {
     }
 }
 
+static constexpr auto custom_watch = [] (const event &e, void *) {
+    if (e.type() == event_type::mouse_button_down) {
+        SDL_Log("mouse button down!\n");
+    }
+};
+
 void run() {
     // Initialize the subsystems
     const auto sdlw_guard = sdlw::subsystem(sdlw::subsystem_flags::video);
@@ -36,11 +42,6 @@ void run() {
     auto rend = renderer(win, renderer_flags::accelerated);
     auto e = event();
     // Watch events
-    constexpr auto custom_watch = [] (const event &e, void *) {
-        if (e.type() == event_type::mouse_button_down) {
-            SDL_Log("mouse button down!\n");
-        }
-    };
     watch::add<custom_watch>();
     for (;;) {
         // Handle the events
