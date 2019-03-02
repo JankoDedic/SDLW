@@ -1,0 +1,18 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+environment:
+  VCPKG_DEFAULT_TRIPLET: x64-windows
+cache: c:\tools\vcpkg\installed\
+build_script:
+- cmd: >-
+    vcpkg install sdl2 sdl2-image sdl2-ttf
+
+    git submodule update --init
+
+    mkdir out
+
+    cd out
+
+    cmake .. -G"Visual Studio 15 2017 Win64" -DCMAKE_TOOLCHAIN_FILE=C:\Tools\vcpkg\scripts\buildsystems\vcpkg.cmake
+
+    cmake --build . -- /nologo /verbosity:quiet
