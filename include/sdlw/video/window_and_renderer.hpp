@@ -9,9 +9,9 @@ inline
 const renderer&
 window_ref::renderer() const
 {
-    static auto s = ::sdlw::detail::storage<renderer_type>();
+    static auto s = ::sdlw::detail::storage<sdlw::video::renderer>();
     if (const auto ptr = SDL_GetRenderer(get_pointer())) {
-        return *new (&s) renderer_type(ptr);
+        return *new (&s) sdlw::video::renderer(ptr);
     } else {
         throw error();
     }
@@ -21,9 +21,9 @@ inline
 renderer&
 window_ref::renderer()
 {
-    static auto s = ::sdlw::detail::storage<renderer_type>();
+    static auto s = ::sdlw::detail::storage<sdlw::video::renderer>();
     if (const auto ptr = SDL_GetRenderer(get_pointer())) {
-        return *new (&s) renderer_type(ptr);
+        return *new (&s) sdlw::video::renderer(ptr);
     } else {
         throw error();
     }

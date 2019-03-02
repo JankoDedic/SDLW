@@ -77,7 +77,7 @@ texture::texture(
     const renderer& rend,
     pixels::pixel_format_type format,
     texture_access access,
-    const size_type& sz)
+    const sdlw::video::size& sz)
 {
     const auto prend = rend.get_pointer();
     const auto format_ = static_cast<u32>(format);
