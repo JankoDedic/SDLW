@@ -1,0 +1,22 @@
+dist: trusty
+sudo: false
+language: cpp
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-8
+      - libsdl2-dev
+      - libsdl2-image-dev
+      - libsdl2-ttf-dev
+
+script:
+  - mkdir out && cd out
+  - CXX=/usr/bin/g++-8 CC=/usr/bin/gcc-8 cmake ..
+  - cmake --build .
+
+notifications:
+  email:
+    false
