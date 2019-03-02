@@ -12,8 +12,6 @@ class mode {
     SDL_DisplayMode _display_mode;
 
 public:
-    using size_type = size;
-
     constexpr
     explicit
     operator SDL_DisplayMode() const noexcept
@@ -45,15 +43,15 @@ public:
     }
 
     constexpr
-    size_type
+    sdlw::video::size
     size() const noexcept
     {
-        return size_type{_display_mode.w, _display_mode.h};
+        return sdlw::video::size{_display_mode.w, _display_mode.h};
     }
 
     constexpr
     void
-    set_size(const size_type& size) noexcept
+    set_size(const sdlw::video::size& size) noexcept
     {
         _display_mode.w = size.w;
         _display_mode.h = size.h;

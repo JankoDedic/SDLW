@@ -19,9 +19,6 @@ class texture {
     std::unique_ptr<SDL_Texture, deleter> _texture;
 
 public:
-    using blend_mode_type = blend_mode;
-    using size_type = size;
-
     texture() noexcept = default;
 
     texture(SDL_Texture* pointer) noexcept
@@ -67,12 +64,12 @@ public:
         }
     }
 
-    blend_mode_type
+    sdlw::video::blend_mode
     blend_mode() const
     {
         auto mode = SDL_BlendMode();
         if (SDL_GetTextureBlendMode(get_pointer(), &mode) == 0) {
-            return static_cast<blend_mode_type>(mode);
+            return static_cast<sdlw::video::blend_mode>(mode);
         } else {
             throw error();
         }
@@ -104,7 +101,7 @@ public:
         }
     }
 
-    size_type
+    sdlw::video::size
     size() const
     {
         const auto ptexture = get_pointer();
@@ -112,7 +109,7 @@ public:
         auto height = int();
         constexpr auto null = nullptr;
         if (SDL_QueryTexture(ptexture, null, null, &width, &height) == 0) {
-            return size_type{width, height};
+            return sdlw::video::size{width, height};
         } else {
             throw error();
         }
@@ -127,7 +124,7 @@ public:
     }
 
     void
-    set_blend_mode(blend_mode_type mode)
+    set_blend_mode(sdlw::video::blend_mode mode)
     {
         const auto sdl_blend_mode = static_cast<SDL_BlendMode>(mode);
         if (SDL_SetTextureBlendMode(get_pointer(), sdl_blend_mode) < 0) {

@@ -78,7 +78,7 @@ namespace event_queue {
     template<event_filter EventFilter>
     inline void filter(void *userdata = nullptr) noexcept {
         constexpr auto callback = [] (void *data, SDL_Event *e) -> int {
-            return static_cast<int>(EventFilter(reinterpret_cast<event *>(e), data));
+            return static_cast<int>(EventFilter(*reinterpret_cast<event *>(e), data));
         };
         SDL_FilterEvents(callback, userdata);
     }

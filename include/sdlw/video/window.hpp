@@ -68,7 +68,7 @@ enum class hit_test_result {
     resize_left         = SDL_HITTEST_RESIZE_LEFT
 };
 
-using hit_test = hit_test_result(window &, const point &, void *);
+using hit_test = hit_test_result(window_ref, const point &, void *);
 
 struct window_border_sizes {
     int top;
@@ -82,10 +82,6 @@ protected:
     SDL_Window *_pwindow;
 
 public:
-    using size_type = size;
-    using renderer_type = renderer;
-    using surface_type = surface;
-
     window_ref() noexcept : _pwindow(nullptr) {};
 
     window_ref(SDL_Window *pointer) noexcept : _pwindow(pointer) {}
@@ -121,14 +117,14 @@ public:
         SDL_SetWindowPosition(get_pointer(), position.x, position.y);
     }
 
-    auto size() const noexcept -> size_type {
+    auto size() const noexcept -> sdlw::video::size {
         auto width = int();
         auto height = int();
         SDL_GetWindowSize(get_pointer(), &width, &height);
-        return size_type{width, height};
+        return sdlw::video::size{width, height};
     }
 
-    void set_size(const size_type &size) noexcept {
+    void set_size(const sdlw::video::size &size) noexcept {
         SDL_SetWindowSize(get_pointer(), size.w, size.h);
     }
 
@@ -190,23 +186,23 @@ public:
         SDL_SetWindowBordered(get_pointer(), static_cast<SDL_bool>(bordered));
     }
 
-    auto max_size() const noexcept -> size_type {
-        auto sz = size_type();
+    auto max_size() const noexcept -> sdlw::video::size {
+        auto sz = sdlw::video::size();
         SDL_GetWindowMaximumSize(get_pointer(), &sz.w, &sz.h);
         return sz;
     }
 
-    void set_max_size(const size_type &size) noexcept {
+    void set_max_size(const sdlw::video::size &size) noexcept {
         SDL_SetWindowMaximumSize(get_pointer(), size.w, size.h);
     }
 
-    auto min_size() const noexcept -> size_type {
-        auto sz = size_type();
+    auto min_size() const noexcept -> sdlw::video::size {
+        auto sz = sdlw::video::size();
         SDL_GetWindowMinimumSize(get_pointer(), &sz.w, &sz.h);
         return sz;
     }
 
-    void set_min_size(const size_type &size) noexcept {
+    void set_min_size(const sdlw::video::size &size) noexcept {
         SDL_SetWindowMinimumSize(get_pointer(), size.w, size.h);
     }
 
@@ -226,19 +222,19 @@ public:
         return SDL_SetWindowData(get_pointer(), name, user_data);
     }
 
-    auto surface() const -> const surface_type & {
-        static auto s = ::sdlw::detail::storage<surface_type>();
+    auto surface() const -> const sdlw::video::surface & {
+        static auto s = ::sdlw::detail::storage<sdlw::video::surface>();
         if (const auto ptr = SDL_GetWindowSurface(get_pointer())) {
-            return *new (&s) surface_type(ptr);
+            return *new (&s) sdlw::video::surface(ptr);
         } else {
             throw error();
         }
     }
 
-    auto surface() -> surface_type & {
-        static auto s = ::sdlw::detail::storage<surface_type>();
+    auto surface() -> sdlw::video::surface & {
+        static auto s = ::sdlw::detail::storage<sdlw::video::surface>();
         if (const auto psurface = SDL_GetWindowSurface(get_pointer())) {
-            return *new (&s) surface_type(psurface);
+            return *new (&s) sdlw::video::surface(psurface);
         } else {
             throw error();
         }
@@ -348,8 +344,8 @@ public:
         SDL_SetWindowIcon(get_pointer(), icon.get_pointer());
     }
 
-    auto renderer() const -> const renderer_type &;
-    auto renderer() -> renderer_type &;
+    auto renderer() const -> const sdlw::video::renderer &;
+    auto renderer() -> sdlw::video::renderer &;
 
     void set_modal(window_ref modal) {
         if (SDL_SetWindowModalFor(modal.get_pointer(), get_pointer()) < 0) {
@@ -361,9 +357,9 @@ public:
     void set_hit_test(void *data = nullptr) {
         /* static_assert(std::is_invocable_r_v<hit_test_result, decltype(HitTest), window &, const point &, void *>); */
         constexpr auto callback = [] (SDL_Window *pwin, const SDL_Point *area, void *data) -> SDL_HitTestResult {
-            auto win_storage = ::sdlw::detail::storage<window>();
-            auto &win = *new (&win_storage) window(pwin);
-            const auto result = HitTest(win, *area, data);
+            /* auto win_storage = ::sdlw::detail::storage<window>(); */
+            /* auto &win = *new (&win_storage) window(pwin); */
+            const auto result = HitTest(window_ref(pwin), *area, data);
             return static_cast<SDL_HitTestResult>(result);
         };
         if (SDL_SetWindowHitTest(get_pointer(), callback, data) < 0) {

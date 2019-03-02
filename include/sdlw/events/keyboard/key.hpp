@@ -12,10 +12,6 @@ class key {
     SDL_Keysym _keysym;
 
 public:
-    using keycode_type = keycode;
-    using keymod_type = keymod;
-    using scancode_type = scancode;
-
     constexpr explicit operator SDL_Keysym() const noexcept {
         return _keysym;
     }
@@ -24,16 +20,16 @@ public:
 
     constexpr explicit key(SDL_Keysym keysym) noexcept : _keysym(keysym) { }
 
-    constexpr auto scancode() const noexcept -> scancode_type {
-        return static_cast<scancode_type>(_keysym.scancode);
+    constexpr auto scancode() const noexcept -> sdlw::events::keyboard::scancode {
+        return static_cast<sdlw::events::keyboard::scancode>(_keysym.scancode);
     }
 
-    constexpr auto keycode() const noexcept -> keycode_type {
-        return static_cast<keycode_type>(_keysym.sym);
+    constexpr auto keycode() const noexcept -> sdlw::events::keyboard::keycode {
+        return static_cast<sdlw::events::keyboard::keycode>(_keysym.sym);
     }
 
-    constexpr auto keymod() const noexcept -> keymod_type {
-        return static_cast<keymod_type>(_keysym.mod);
+    constexpr auto keymod() const noexcept -> sdlw::events::keyboard::keymod {
+        return static_cast<sdlw::events::keyboard::keymod>(_keysym.mod);
     }
 };
 

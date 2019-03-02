@@ -41,10 +41,6 @@ class font {
     std::unique_ptr<TTF_Font, deleter> _font;
 
 public:
-    using style_type = style;
-    using hinting_type = hinting;
-    using glyph_metrics_type = glyph_metrics;
-
     font(TTF_Font* pointer) noexcept
         : _font(pointer)
     {
@@ -61,14 +57,14 @@ public:
 
     // Style
 
-    style_type
+    sdlw::ttf::style
     style() const noexcept
     {
-        return static_cast<style_type>(TTF_GetFontStyle(get_pointer()));
+        return static_cast<sdlw::ttf::style>(TTF_GetFontStyle(get_pointer()));
     }
 
     void
-    set_style(style_type style) noexcept
+    set_style(sdlw::ttf::style style) noexcept
     {
         TTF_SetFontStyle(get_pointer(), static_cast<int>(style));
     }
@@ -92,14 +88,14 @@ public:
 
     // Hinting
 
-    hinting_type
+    sdlw::ttf::hinting
     hinting() const noexcept
     {
-        return static_cast<hinting_type>(TTF_GetFontHinting(get_pointer()));
+        return static_cast<sdlw::ttf::hinting>(TTF_GetFontHinting(get_pointer()));
     }
 
     void
-    set_hinting(hinting_type hinting) noexcept
+    set_hinting(sdlw::ttf::hinting hinting) noexcept
     {
         TTF_SetFontHinting(get_pointer(), static_cast<int>(hinting));
     }
@@ -181,11 +177,11 @@ public:
         return static_cast<bool>(TTF_GlyphIsProvided(get_pointer(), ch));
     }
 
-    glyph_metrics_type
+    sdlw::ttf::glyph_metrics
     glyph_metrics(u16 ch) const
     {
         const auto pfont = get_pointer();
-        auto metrics = glyph_metrics_type();
+        auto metrics = sdlw::ttf::glyph_metrics();
         const auto minx = &metrics.minx;
         const auto maxx = &metrics.maxx;
         const auto miny = &metrics.miny;

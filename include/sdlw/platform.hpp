@@ -7,7 +7,7 @@ namespace sdlw {
 struct platform {
     static
     const char*
-    platform::name() noexcept
+    name() noexcept
     {
         return SDL_GetPlatform();
     }
