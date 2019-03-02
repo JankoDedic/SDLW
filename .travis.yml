@@ -13,9 +13,9 @@ addons:
       - libsdl2-ttf-dev
 
 before_install:
-  - git clone https://github.com/Microsoft/vcpkg
+  - git clone https://github.com/Microsoft/vcpkg || true
   - cd vcpkg
-  - CXX=/usr/bin/g++-8 CC=/usr/bin/gcc-8 ./bootstrap-vcpkg.sh
+  - test -e vcpkg || CXX=/usr/bin/g++-8 CC=/usr/bin/gcc-8 ./bootstrap-vcpkg.sh
   - ./vcpkg install sdl2 sdl2-image sdl2-ttf
 
 script:
