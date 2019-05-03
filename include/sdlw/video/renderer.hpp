@@ -13,18 +13,18 @@ struct window;   // for renderer::renderer
 class texture;  // for renderer::copy
 
 enum class renderer_flags {
-    software = SDL_RENDERER_SOFTWARE,
-    accelerated = SDL_RENDERER_ACCELERATED,
-    present_vsync = SDL_RENDERER_PRESENTVSYNC,
+    software       = SDL_RENDERER_SOFTWARE,
+    accelerated    = SDL_RENDERER_ACCELERATED,
+    present_vsync  = SDL_RENDERER_PRESENTVSYNC,
     target_texture = SDL_RENDERER_TARGETTEXTURE
 };
 
 SDLW_DETAIL_DEFINE_FLAG_OPERATIONS(renderer_flags);
 
 enum class renderer_flip : u32 {
-    none = SDL_FLIP_NONE,
+    none       = SDL_FLIP_NONE,
     horizontal = SDL_FLIP_HORIZONTAL,
-    vertical = SDL_FLIP_VERTICAL
+    vertical   = SDL_FLIP_VERTICAL
 };
 
 SDLW_DETAIL_DEFINE_FLAG_OPERATIONS(renderer_flip);

@@ -7,8 +7,8 @@
 namespace sdlw::video {
 
 enum class message_box_flag : u32 {
-    error = SDL_MESSAGEBOX_ERROR,
-    warning = SDL_MESSAGEBOX_WARNING,
+    error       = SDL_MESSAGEBOX_ERROR,
+    warning     = SDL_MESSAGEBOX_WARNING,
     information = SDL_MESSAGEBOX_INFORMATION
 };
 

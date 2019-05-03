@@ -10,18 +10,18 @@
 namespace sdlw::events::mouse {
 
 enum class system_cursor {
-    arrow = SDL_SYSTEM_CURSOR_ARROW,
-    ibeam = SDL_SYSTEM_CURSOR_IBEAM,
-    wait = SDL_SYSTEM_CURSOR_WAIT,
-    crosshair = SDL_SYSTEM_CURSOR_CROSSHAIR,
-    wait_arrow = SDL_SYSTEM_CURSOR_WAITARROW,
-    size_nwse = SDL_SYSTEM_CURSOR_SIZENWSE,
-    size_nesw = SDL_SYSTEM_CURSOR_SIZENESW,
-    size_we = SDL_SYSTEM_CURSOR_SIZEWE,
-    size_ns = SDL_SYSTEM_CURSOR_SIZENS,
-    size_all = SDL_SYSTEM_CURSOR_SIZEALL,
-    no = SDL_SYSTEM_CURSOR_NO,
-    hand = SDL_SYSTEM_CURSOR_HAND,
+    arrow              = SDL_SYSTEM_CURSOR_ARROW,
+    ibeam              = SDL_SYSTEM_CURSOR_IBEAM,
+    wait               = SDL_SYSTEM_CURSOR_WAIT,
+    crosshair          = SDL_SYSTEM_CURSOR_CROSSHAIR,
+    wait_arrow         = SDL_SYSTEM_CURSOR_WAITARROW,
+    size_nwse          = SDL_SYSTEM_CURSOR_SIZENWSE,
+    size_nesw          = SDL_SYSTEM_CURSOR_SIZENESW,
+    size_we            = SDL_SYSTEM_CURSOR_SIZEWE,
+    size_ns            = SDL_SYSTEM_CURSOR_SIZENS,
+    size_all           = SDL_SYSTEM_CURSOR_SIZEALL,
+    no                 = SDL_SYSTEM_CURSOR_NO,
+    hand               = SDL_SYSTEM_CURSOR_HAND,
     num_system_cursors = SDL_NUM_SYSTEM_CURSORS
 };
 

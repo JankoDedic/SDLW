@@ -8,9 +8,9 @@
 namespace sdlw::video {
 
 enum class texture_access : int {
-    static_ = SDL_TEXTUREACCESS_STATIC,
+    static_   = SDL_TEXTUREACCESS_STATIC,
     streaming = SDL_TEXTUREACCESS_STREAMING,
-    target = SDL_TEXTUREACCESS_TARGET
+    target    = SDL_TEXTUREACCESS_TARGET
 };
 
 class texture {

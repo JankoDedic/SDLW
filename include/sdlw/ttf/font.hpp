@@ -11,10 +11,10 @@
 namespace sdlw::ttf {
 
 enum class style : int {
-    normal = TTF_STYLE_NORMAL,
-    bold = TTF_STYLE_BOLD,
-    italic = TTF_STYLE_ITALIC,
-    underline = TTF_STYLE_UNDERLINE,
+    normal        = TTF_STYLE_NORMAL,
+    bold          = TTF_STYLE_BOLD,
+    italic        = TTF_STYLE_ITALIC,
+    underline     = TTF_STYLE_UNDERLINE,
     strikethrough = TTF_STYLE_STRIKETHROUGH
 };
 
@@ -22,9 +22,9 @@ SDLW_DETAIL_DEFINE_FLAG_OPERATIONS(style);
 
 enum class hinting : int {
     normal = TTF_HINTING_NORMAL,
-    light = TTF_HINTING_LIGHT,
-    mono = TTF_HINTING_MONO,
-    none = TTF_HINTING_NONE
+    light  = TTF_HINTING_LIGHT,
+    mono   = TTF_HINTING_MONO,
+    none   = TTF_HINTING_NONE
 };
 
 struct glyph_metrics {
