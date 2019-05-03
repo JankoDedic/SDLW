@@ -47,7 +47,7 @@ enum class window_flags : u32 {
 
 SDLW_DETAIL_DEFINE_FLAG_OPERATIONS(window_flags)
 
-enum class window_id : u32 {};
+using window_id = u32;
 
 enum class window_fullscreen_mode : u32 {
     normal          = SDL_WINDOW_FULLSCREEN,

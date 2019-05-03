@@ -6,7 +6,7 @@
 
 namespace sdlw::events::touch {
 
-enum class finger_id : i64 {};
+using finger_id = i64;
 
 class finger {
     SDL_Finger _finger;
