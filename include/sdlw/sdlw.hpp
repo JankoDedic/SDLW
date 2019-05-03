@@ -2,7 +2,7 @@
 
 #include <sdlw/assert.hpp>
 #include <sdlw/clipboard.hpp>
-#include <sdlw/cpu_information.hpp>
+#include <sdlw/cpu_info.hpp>
 #include <sdlw/filesystem.hpp>
 #include <sdlw/platform.hpp>
 #include <sdlw/subsystem.hpp>
