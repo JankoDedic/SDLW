@@ -8,6 +8,10 @@ cmake_minimum_required(VERSION 3.9.2)
 # =============================================================================
 project(SDLW LANGUAGES CXX)
 
+set(CMAKE_CXX_STANDARD          17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS        OFF)
+
 # =============================================================================
 # Options
 # =============================================================================
@@ -34,27 +38,23 @@ add_subdirectory(third_party/span-lite EXCLUDE_FROM_ALL)
 # =============================================================================
 # Library
 # =============================================================================
-file(GLOB_RECURSE SDLW_HEADER_FILES include/*.hpp)
-
 add_library(SDLW INTERFACE)
-target_compile_features(SDLW INTERFACE cxx_std_17)
-target_include_directories(SDLW
-  INTERFACE
-    include
-    ${SDL2_IMAGE_INCLUDE_DIR}
-    ${SDL2_TTF_INCLUDE_DIR}
+target_include_directories(
+  SDLW
+    INTERFACE
+      include
+      ${SDL2_IMAGE_INCLUDE_DIR}
+      ${SDL2_TTF_INCLUDE_DIR}
 )
-target_link_libraries(SDLW
-  INTERFACE
-    SDL2::SDL2
-    SDL2::SDL2main
-    ${SDL2_IMAGE_LIBRARY}
-    ${SDL2_TTF_LIBRARY}
-    span-lite
+target_link_libraries(
+  SDLW
+    INTERFACE
+      SDL2::SDL2
+      SDL2::SDL2main
+      ${SDL2_IMAGE_LIBRARY}
+      ${SDL2_TTF_LIBRARY}
+      span-lite
 )
-if(MSVC)
-  target_compile_options(SDLW INTERFACE /Za)
-endif()
 
 # =============================================================================
 # Example
