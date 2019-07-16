@@ -23,44 +23,71 @@ namespace filter::by_type {
 
 } // namespace filter::by_type
 
-using event_filter = bool(const event &, void *);
-
 namespace filter::custom {
 
-    template<event_filter EventFilter>
-    inline void set(void *userdata = nullptr) noexcept {
-        constexpr auto callback = [] (void *userdata, SDL_Event *e) -> int {
-            return static_cast<int>(EventFilter(*reinterpret_cast<event *>(e), userdata));
+    template<typename EventFilter>
+    void set(EventFilter& f) {
+        static_assert(std::is_invocable_r_v<bool, EventFilter, const event&>);
+        constexpr auto sdl_callback = [] (void* userdata, SDL_Event* e) -> int {
+            auto& filter = *static_cast<EventFilter*>(userdata);
+            const auto& ev = *reinterpret_cast<event*>(e);
+            return static_cast<int>(filter(ev));
         };
-        SDL_SetEventFilter(callback, userdata);
+        SDL_SetEventFilter(sdl_callback, &f);
+    }
+
+    void set(bool(*filter)(const event&)) {
+        constexpr auto fp_sdl_callback = [] (void* userdata, SDL_Event* e) -> int {
+            auto f = reinterpret_cast<bool(*)(const event&)>(userdata);
+            const auto& ev = *reinterpret_cast<event*>(e);
+            return static_cast<int>(f(ev));
+        };
+        SDL_SetEventFilter(fp_sdl_callback, reinterpret_cast<void*>(filter));
     }
 
 } // namespace filter::custom
-
-using event_watch = void(const event &, void *);
 
 namespace watch {
 
     namespace detail {
 
-        template<event_watch EventWatch>
+        template<typename EventWatch>
         struct watch_generator {
-            static auto callback(void *userdata, SDL_Event *e) -> int {
-                EventWatch(*reinterpret_cast<event *>(e), userdata);
-                return 0; // return value is ignored by SDL
+            static auto sdl_callback(void* userdata, SDL_Event* e) -> int {
+                auto& watch = *static_cast<EventWatch*>(userdata);
+                const auto& ev = *reinterpret_cast<event*>(e);
+                watch(ev);
+                return 0; // return value is ignored by SDL2
             }
         };
 
+        inline auto fp_sdl_callback(void* userdata, SDL_Event* e) -> int {
+            auto watch = reinterpret_cast<void(*)(const event&)>(userdata);
+            const auto& ev = *reinterpret_cast<event*>(e);
+            watch(ev);
+            return 0; // return value is ignored by SDL2
+        }
+
     } // namespace detail
 
-    template<event_watch EventWatch>
-    inline void add(void *userdata = nullptr) noexcept {
-        SDL_AddEventWatch(detail::watch_generator<EventWatch>::callback, userdata);
+    template<typename EventWatch>
+    void add(EventWatch& w) {
+        static_assert(std::is_invocable_r_v<void, EventWatch, const event&>);
+        SDL_AddEventWatch(detail::watch_generator<EventWatch>::sdl_callback, &w);
     }
 
-    template<event_watch EventWatch>
-    inline void remove(void *userdata = nullptr) noexcept {
-        SDL_DelEventWatch(detail::watch_generator<EventWatch>::callback, userdata);
+    void add(void(*watch)(const event&)) {
+        SDL_AddEventWatch(detail::fp_sdl_callback, reinterpret_cast<void*>(watch));
+    }
+
+    template<typename EventWatch>
+    void remove(EventWatch& w) {
+        static_assert(std::is_invocable_r_v<void, EventWatch, const event&>);
+        SDL_DelEventWatch(detail::watch_generator<EventWatch>::sdl_callback, &w);
+    }
+
+    void remove(void(*watch)(const event&)) {
+        SDL_DelEventWatch(detail::fp_sdl_callback, reinterpret_cast<void*>(watch));
     }
 
 } // namespace watch
@@ -75,12 +102,24 @@ namespace event_queue {
         SDL_FlushEvents(static_cast<u32>(min), static_cast<u32>(max));
     }
 
-    template<event_filter EventFilter>
-    inline void filter(void *userdata = nullptr) noexcept {
-        constexpr auto callback = [] (void *data, SDL_Event *e) -> int {
-            return static_cast<int>(EventFilter(*reinterpret_cast<event *>(e), data));
+    template<typename EventFilter>
+    void filter(EventFilter& f) {
+        static_assert(std::is_invocable_r_v<bool, EventFilter, const event&>);
+        constexpr auto sdl_callback = [] (void* userdata, SDL_Event* e) -> int {
+            auto& filter = *static_cast<EventFilter*>(userdata);
+            const auto& ev = *reinterpret_cast<event*>(e);
+            return static_cast<bool>(filter(ev));
         };
-        SDL_FilterEvents(callback, userdata);
+        SDL_FilterEvents(sdl_callback, &f);
+    }
+
+    void filter(bool(*filter)(const event&)) {
+        constexpr auto fp_sdl_callback = [] (void* userdata, SDL_Event* e) -> int {
+            auto f = reinterpret_cast<bool(*)(const event&)>(userdata);
+            const auto& ev = *reinterpret_cast<event*>(e);
+            return static_cast<bool>(f(ev));
+        };
+        SDL_FilterEvents(fp_sdl_callback, reinterpret_cast<void*>(filter));
     }
 
     inline auto has(event_type etype) noexcept -> bool {
@@ -105,7 +144,7 @@ namespace event_queue {
     }
 
     inline auto poll(event &e) noexcept -> bool {
-        return SDL_PollEvent(reinterpret_cast<SDL_Event *>(&e));
+        return SDL_PollEvent(reinterpret_cast<SDL_Event*>(&e));
     }
 
     inline auto add(span<const event> events, event_type min, event_type max) -> int {

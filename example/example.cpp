@@ -30,6 +30,15 @@ static constexpr auto custom_watch = [] (const event &e, void *) {
     }
 };
 
+auto my_filter(const event& e) {
+    return e.type() != event_type::mouse_button_down;
+}
+
+void my_watch(const event& e) {
+    if (e.type() == event_type::mouse_button_down) SDL_Log("MOUSE BUTTON DOWN!\n");
+    if (e.type() == event_type::mouse_button_up  ) SDL_Log("MOUSE BUTTON UP!\n");
+}
+
 void run() {
     // Initialize the subsystems
     const auto sdlw_guard = sdlw::subsystem(sdlw::subsystem_flags::video);
@@ -42,7 +51,25 @@ void run() {
     auto rend = renderer(win, renderer_flags::accelerated);
     auto e = event();
     // Watch events
-    watch::add<custom_watch>();
+    /* filter::custom::set([] (const event& e) { */
+    /*     return e.type() != event_type::mouse_motion; */
+    /* }); */
+    /* filter::custom::set(my_filter); */
+    auto closure = [&] (const event& e) {
+        return e.type() != event_type::mouse_motion;
+    };
+    /* filter::custom::set(closure); */
+    /* static constexpr auto w = [] (const event& e) { */
+    /*     if (e.type() == event_type::mouse_button_down) SDL_Log("MOUSE BUTTON DOWN!\n"); */
+    /*     if (e.type() == event_type::mouse_button_up  ) SDL_Log("MOUSE BUTTON UP!\n"); */
+    /* }; */
+    auto w = [&] (const event& e) {
+        if (win_bounds.x != 50) return;
+        if (e.type() == event_type::mouse_button_down) SDL_Log("MOUSE BUTTON DOWN!\n");
+        if (e.type() == event_type::mouse_button_up  ) SDL_Log("MOUSE BUTTON UP!\n");
+    };
+    watch::add(w);
+    watch::remove(w);
     for (;;) {
         // Handle the events
         while (event_queue::poll(e)) {
