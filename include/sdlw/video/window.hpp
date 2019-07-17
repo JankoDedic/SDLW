@@ -17,8 +17,6 @@
 
 namespace sdlw::video {
 
-class window_ref;
-struct window;   // for hit_test
 class renderer; // for window::renderer
 
 enum class window_flags : u32 {
@@ -67,8 +65,6 @@ enum class hit_test_result {
     resize_bottom_left  = SDL_HITTEST_RESIZE_BOTTOMLEFT,
     resize_left         = SDL_HITTEST_RESIZE_LEFT
 };
-
-using hit_test = hit_test_result(window_ref, const point &, void *);
 
 struct window_border_sizes {
     int top;
@@ -353,17 +349,27 @@ public:
         }
     }
 
-    template<hit_test HitTest>
-    void set_hit_test(void *data = nullptr) {
-        /* static_assert(std::is_invocable_r_v<hit_test_result, decltype(HitTest), window &, const point &, void *>); */
-        constexpr auto callback = [] (SDL_Window *pwin, const SDL_Point *area, void *data) -> SDL_HitTestResult {
-            /* auto win_storage = ::sdlw::detail::storage<window>(); */
-            /* auto &win = *new (&win_storage) window(pwin); */
-            const auto result = HitTest(window_ref(pwin), *area, data);
+    template<typename HitTest>
+    void set_hit_test(HitTest& ht) {
+        static_assert(std::is_invocable_r_v<hit_test_result, HitTest, window_ref, const point&>);
+        constexpr auto sdl_callback = [] (SDL_Window* win, const SDL_Point* area, void* data) -> SDL_HitTestResult {
+            auto& test = *static_cast<HitTest*>(data);
+            const auto result = test(window_ref{win}, *area);
             return static_cast<SDL_HitTestResult>(result);
         };
-        if (SDL_SetWindowHitTest(get_pointer(), callback, data) < 0) {
-            throw error();
+        if (SDL_SetWindowHitTest(get_pointer(), sdl_callback, &ht) < 0) {
+            throw error{};
+        }
+    }
+
+    void set_hit_test(hit_test_result(*ht)(window_ref, const point&)) {
+        constexpr auto fp_sdl_callback = [] (SDL_Window* win, const SDL_Point* area, void* data) -> SDL_HitTestResult {
+            auto test = reinterpret_cast<hit_test_result(*)(window_ref, const point&)>(data);
+            const auto result = test(window_ref{win}, *area);
+            return static_cast<SDL_HitTestResult>(result);
+        };
+        if (SDL_SetWindowHitTest(get_pointer(), fp_sdl_callback, ht) < 0) {
+            throw error{};
         }
     }
 };
