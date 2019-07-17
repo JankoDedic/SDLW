@@ -6,10 +6,10 @@
 #include <sdlw/video/color.hpp>
 #include <sdlw/blend_mode.hpp>
 #include <sdlw/video/surface.hpp>
+#include <sdlw/video/window.hpp>
 
 namespace sdlw::video {
 
-struct window;   // for renderer::renderer
 class texture;  // for renderer::copy
 
 enum class renderer_flags {
@@ -381,6 +381,14 @@ inline auto operator==(const renderer& lhs, const renderer& rhs) noexcept -> boo
 
 inline auto operator!=(const renderer& lhs, const renderer& rhs) noexcept -> bool {
     return !(lhs == rhs);
+}
+
+auto window_ref::renderer() const -> renderer_ref {
+    if (const auto ptr = SDL_GetRenderer(_pwindow)) {
+        return {ptr};
+    } else {
+        throw error{};
+    }
 }
 
 } // namespace sdlw::video

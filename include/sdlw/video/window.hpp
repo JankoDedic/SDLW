@@ -17,7 +17,8 @@
 
 namespace sdlw::video {
 
-class renderer; // for window::renderer
+/* class renderer; // for window::renderer */
+class renderer_ref; // for window::renderer
 
 enum class window_flags : u32 {
     fullscreen         = SDL_WINDOW_FULLSCREEN,
@@ -340,8 +341,7 @@ public:
         SDL_SetWindowIcon(get_pointer(), icon.get_pointer());
     }
 
-    auto renderer() const -> const sdlw::video::renderer &;
-    auto renderer() -> sdlw::video::renderer &;
+    auto renderer() const -> renderer_ref;
 
     void set_modal(window_ref modal) {
         if (SDL_SetWindowModalFor(modal.get_pointer(), get_pointer()) < 0) {
@@ -468,13 +468,6 @@ inline auto operator!=(const window &lhs, const window &rhs) noexcept -> bool {
 }
 
 inline auto get_window(window_id id) -> window_ref {
-    /* static auto s = ::sdlw::detail::storage<window>(); */
-    /* if (const auto ptr = SDL_GetWindowFromID(static_cast<u32>(id))) { */
-    /*     return *new (&s) window(ptr); */
-    /* } else { */
-    /*     throw error(); */
-    /* } */
-
     if (const auto ptr = SDL_GetWindowFromID(static_cast<u32>(id))) {
         return window_ref(ptr);
     } else {
@@ -483,13 +476,6 @@ inline auto get_window(window_id id) -> window_ref {
 }
 
 inline auto get_grabbed_window() -> window_ref {
-    /* static auto s = ::sdlw::detail::storage<window>(); */
-    /* if (const auto ptr = SDL_GetGrabbedWindow()) { */
-    /*     return *new (&s) window(ptr); */
-    /* } else { */
-    /*     throw error(); */
-    /* } */
-
     if (const auto ptr = SDL_GetGrabbedWindow()) {
         return window_ref(ptr);
     } else {
