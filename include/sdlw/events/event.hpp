@@ -2,8 +2,8 @@
 
 #include <SDL2/SDL.h>
 
-#include <sdlw/audio/device_id.hpp>
-#include <sdlw/time/time.hpp>
+#include <sdlw/audio.hpp>
+#include <sdlw/time.hpp>
 #include <sdlw/video/window.hpp>
 #include <sdlw/events/game_controller/axis.hpp>
 #include <sdlw/events/game_controller/button.hpp>
@@ -75,7 +75,7 @@ class common_event {
 
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
 };
 
 class audio_device_event {
@@ -83,7 +83,7 @@ class audio_device_event {
 
 public:
     auto type()       const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp()  const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp()  const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto is_capture() const noexcept -> bool                    { return static_cast<bool>(_event.iscapture);                              }
     auto which()      const noexcept -> u32                     { return _event.which;                                                     }
 };
@@ -93,7 +93,7 @@ class controller_axis_event {
 
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto which()     const noexcept -> joystick::instance_id   { return {_event.which};                                                   }
     auto axis()      const noexcept -> game_controller::axis   { return static_cast<game_controller::axis>(_event.axis);                  }
     auto value()     const noexcept -> i16                     { return _event.value;                                                     }
@@ -104,7 +104,7 @@ class controller_button_event {
 
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto which()     const noexcept -> joystick::instance_id   { return {_event.which};                                                   }
     auto button()    const noexcept -> game_controller::button { return static_cast<game_controller::button>(_event.button);              }
 };
@@ -114,7 +114,7 @@ class controller_device_event {
 
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto which()     const noexcept -> i32                     { return _event.which;                                                     }
 };
 
@@ -123,7 +123,7 @@ class dollar_gesture_event {
 
 public:
     auto type()        const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp()   const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp()   const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto touch_id()    const noexcept -> touch::device_id        { return {_event.touchId};                                                 }
     auto gesture_id()  const noexcept -> gesture::id             { return {_event.gestureId};                                               }
     auto num_fingers() const noexcept -> u32                     { return _event.numFingers;                                                }
@@ -137,7 +137,7 @@ class drop_event {
 
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto window_id() const noexcept -> video::window_id        { return {_event.windowID};                                                }
     auto file()      const noexcept -> const char*             { return _event.file;                                                      }
 };
@@ -147,7 +147,7 @@ class touch_finger_event {
 
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto touch_id()  const noexcept -> touch::device_id        { return {_event.touchId};                                                 }
     auto finger_id() const noexcept -> touch::finger_id        { return {_event.fingerId};                                                }
     auto x()         const noexcept -> float                   { return _event.x;                                                         }
@@ -162,7 +162,7 @@ class keyboard_event {
 
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto window_id() const noexcept -> video::window_id        { return {_event.windowID};                                                }
     auto key()       const noexcept -> keyboard::key           { return keyboard::key{_event.keysym};                                     }
     auto repeat()    const noexcept -> int                     { return _event.repeat;                                                    }
@@ -173,7 +173,7 @@ class joy_axis_event {
 
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto which()     const noexcept -> joystick::instance_id   { return {_event.which};                                                   }
     auto axis()      const noexcept -> u8                      { return _event.axis;                                                      }
     auto value()     const noexcept -> i16                     { return _event.value;                                                     }
@@ -184,7 +184,7 @@ class joy_ball_event {
 
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto which()     const noexcept -> joystick::instance_id   { return {_event.which};                                                   }
     auto ball()      const noexcept -> u8                      { return _event.ball;                                                      }
     auto xrel()      const noexcept -> i16                     { return _event.xrel;                                                      }
@@ -196,7 +196,7 @@ class joy_hat_event {
 
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto which()     const noexcept -> joystick::instance_id   { return {_event.which};                                                   }
     auto hat()       const noexcept -> u8                      { return _event.hat;                                                       }
     auto value()     const noexcept -> joystick::hat_position  { return static_cast<joystick::hat_position>(_event.value);                }
@@ -207,7 +207,7 @@ class joy_button_event {
 
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto which()     const noexcept -> joystick::instance_id   { return {_event.which};                                                   }
     auto button()    const noexcept -> u8                      { return _event.button;                                                    }
 };
@@ -217,7 +217,7 @@ class joy_device_event {
 
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto which()     const noexcept -> i32                     { return _event.which;                                                     }
 };
 
@@ -226,7 +226,7 @@ class mouse_motion_event {
 
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto window_id() const noexcept -> video::window_id        { return {_event.windowID};                                                }
     auto which()     const noexcept -> u32                     { return _event.which;                                                     }
     auto state()     const noexcept -> mouse::button_state     { return static_cast<mouse::button_state>(_event.state);                   }
@@ -241,7 +241,7 @@ class mouse_button_event {
 
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto window_id() const noexcept -> video::window_id        { return {_event.windowID};                                                }
     auto which()     const noexcept -> u32                     { return _event.which;                                                     }
     auto button()    const noexcept -> mouse::button           { return mouse::button{_event.button};                                     }
@@ -255,7 +255,7 @@ class mouse_wheel_event {
 
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto window_id() const noexcept -> video::window_id        { return {_event.windowID};                                                }
     auto which()     const noexcept -> u32                     { return _event.which;                                                     }
     auto x()         const noexcept -> i32                     { return _event.x;                                                         }
@@ -268,7 +268,7 @@ class multi_gesture_event {
 
 public:
     auto type()            const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp()       const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp()       const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto touch_device_id() const noexcept -> touch::device_id        { return {_event.touchId};                                                 }
     auto rotation()        const noexcept -> float                   { return _event.dTheta;                                                    }
     auto pinch()           const noexcept -> float                   { return _event.dDist;                                                     }
@@ -282,7 +282,7 @@ class quit_event {
 
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
 };
 
 class syswm_event {
@@ -290,7 +290,7 @@ class syswm_event {
 
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto message()   const noexcept -> SDL_SysWMmsg*           { return _event.msg;                                                       }
 };
 
@@ -299,7 +299,7 @@ class text_editing_event {
 
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto window_id() const noexcept -> video::window_id        { return {_event.windowID};                                                }
     auto text()      const noexcept -> const char*             { return _event.text;                                                      }
     auto start()     const noexcept -> i32                     { return _event.start;                                                     }
@@ -311,7 +311,7 @@ class text_input_event {
 
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto window_id() const noexcept -> video::window_id        { return {_event.windowID};                                                }
     auto text()      const noexcept -> const char*             { return _event.text;                                                      }
 };
@@ -341,7 +341,7 @@ class window_event {
 
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> time::clock::time_point { return time::clock::time_point{time::clock::duration{_event.timestamp}}; }
+    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto event()     const noexcept -> window_event_type       { return static_cast<window_event_type>(_event.event);                     }
     auto window_id() const noexcept -> video::window_id        { return {_event.windowID};                                                }
     auto data1()     const noexcept -> i32                     { return _event.data1;                                                     }

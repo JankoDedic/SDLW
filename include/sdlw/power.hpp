@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL.h>
 
-namespace sdlw::power {
+namespace sdlw {
 
 enum class battery_state {
     unknown    = SDL_POWERSTATE_UNKNOWN,
@@ -55,4 +55,4 @@ get_battery_info() noexcept
     return battery_info(battery_state_, seconds_left, percentage_left);
 }
 
-} // namespace sdlw::power
+} // namespace sdlw

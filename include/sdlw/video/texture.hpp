@@ -1,7 +1,7 @@
 #pragma once
 
 #include <sdlw/utility.hpp>
-#include <sdlw/video/blend_mode.hpp>
+#include <sdlw/blend_mode.hpp>
 #include <sdlw/video/pixels/pixel_format_type.hpp>
 #include <sdlw/video/size.hpp>
 

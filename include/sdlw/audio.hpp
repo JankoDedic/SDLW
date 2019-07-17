@@ -2,8 +2,8 @@
 
 #include <sdlw/types.hpp>
 
-namespace sdlw::audio {
+namespace sdlw {
 
 using device_id = u32;
 
-} // namespace sdlw::audio
+} // namespace sdlw

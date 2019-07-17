@@ -4,7 +4,7 @@
 
 #include <sdlw/utility.hpp>
 #include <sdlw/video/color.hpp>
-#include <sdlw/video/blend_mode.hpp>
+#include <sdlw/blend_mode.hpp>
 #include <sdlw/video/surface.hpp>
 
 namespace sdlw::video {

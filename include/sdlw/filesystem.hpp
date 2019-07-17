@@ -8,7 +8,7 @@
 #include <sdlw/error.hpp>
 #include <sdlw/utility.hpp>
 
-namespace sdlw::filesystem {
+namespace sdlw {
 
 inline
 std::unique_ptr<const char, detail::sdl_string_deleter>
@@ -32,4 +32,4 @@ get_pref_path(const char* org, const char* app)
     }
 }
 
-} // namespace sdlw::filesystem
+} // namespace sdlw

@@ -7,7 +7,7 @@
 #include <sdlw/platform.hpp>
 #include <sdlw/subsystem.hpp>
 
-    #include <sdlw/audio/device_id.hpp>
+    #include <sdlw/audio.hpp>
 
     #include <sdlw/events/event.hpp>
     #include <sdlw/events/pipeline.hpp>
@@ -40,11 +40,11 @@
         #include <sdlw/events/touch/finger.hpp>
         #include <sdlw/events/touch/touch.hpp>
 
-    #include <sdlw/power/power.hpp>
+    #include <sdlw/power.hpp>
 
-    #include <sdlw/time/time.hpp>
+    #include <sdlw/time.hpp>
 
-    #include <sdlw/video/blend_mode.hpp>
+    #include <sdlw/blend_mode.hpp>
     #include <sdlw/video/color.hpp>
     #include <sdlw/video/driver.hpp>
     #include <sdlw/video/message_box.hpp>
