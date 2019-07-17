@@ -5,72 +5,72 @@
 
 namespace sdlw::video {
 
-inline
-const texture&
-renderer::target() const
-{
-    static auto s = ::sdlw::detail::storage<texture>();
-    if (const auto ptr = SDL_GetRenderTarget(get_pointer())) {
-        return *new (&s) texture(ptr);
-    } else {
-        throw error();
-    }
-}
+/* inline */
+/* const texture& */
+/* renderer::target() const */
+/* { */
+/*     static auto s = ::sdlw::detail::storage<texture>(); */
+/*     if (const auto ptr = SDL_GetRenderTarget(get_pointer())) { */
+/*         return *new (&s) texture(ptr); */
+/*     } else { */
+/*         throw error(); */
+/*     } */
+/* } */
 
-inline
-texture&
-renderer::target()
-{
-    static auto s = ::sdlw::detail::storage<texture>();
-    if (const auto ptr = SDL_GetRenderTarget(get_pointer())) {
-        return *new (&s) texture(ptr);
-    } else {
-        throw error();
-    }
-}
+/* inline */
+/* texture& */
+/* renderer::target() */
+/* { */
+/*     static auto s = ::sdlw::detail::storage<texture>(); */
+/*     if (const auto ptr = SDL_GetRenderTarget(get_pointer())) { */
+/*         return *new (&s) texture(ptr); */
+/*     } else { */
+/*         throw error(); */
+/*     } */
+/* } */
 
-inline
-void
-renderer::set_target(texture* target)
-{
-    const auto ptarget = target ? target->get_pointer() : nullptr;
-    if (SDL_SetRenderTarget(get_pointer(), ptarget) < 0) {
-        throw error();
-    }
-}
+/* inline */
+/* void */
+/* renderer::set_target(texture* target) */
+/* { */
+/*     const auto ptarget = target ? target->get_pointer() : nullptr; */
+/*     if (SDL_SetRenderTarget(get_pointer(), ptarget) < 0) { */
+/*         throw error(); */
+/*     } */
+/* } */
 
-inline
-void
-renderer::copy(
-    const texture& tex,
-    const rectangle* source,
-    const rectangle* destination)
-{
-    const auto ptexture = tex.get_pointer();
-    if (SDL_RenderCopy(get_pointer(), ptexture, source, destination) < 0) {
-        throw error();
-    }
-}
+/* inline */
+/* void */
+/* renderer::copy( */
+/*     const texture& tex, */
+/*     const rectangle* source, */
+/*     const rectangle* destination) */
+/* { */
+/*     const auto ptexture = tex.get_pointer(); */
+/*     if (SDL_RenderCopy(get_pointer(), ptexture, source, destination) < 0) { */
+/*         throw error(); */
+/*     } */
+/* } */
 
-inline
-void
-renderer::copy(
-    const texture& tex,
-    const rectangle* source,
-    const rectangle* destination,
-    double angle,
-    const point* center,
-    renderer_flip flip)
-{
-    const auto ptr = get_pointer();
-    const auto ptex = tex.get_pointer();
-    const auto src = source;
-    const auto dst = destination;
-    const auto flip_ = static_cast<SDL_RendererFlip>(flip);
-    if (SDL_RenderCopyEx(ptr, ptex, src, dst, angle, center, flip_) < 0) {
-        throw error();
-    }
-}
+/* inline */
+/* void */
+/* renderer::copy( */
+/*     const texture& tex, */
+/*     const rectangle* source, */
+/*     const rectangle* destination, */
+/*     double angle, */
+/*     const point* center, */
+/*     renderer_flip flip) */
+/* { */
+/*     const auto ptr = get_pointer(); */
+/*     const auto ptex = tex.get_pointer(); */
+/*     const auto src = source; */
+/*     const auto dst = destination; */
+/*     const auto flip_ = static_cast<SDL_RendererFlip>(flip); */
+/*     if (SDL_RenderCopyEx(ptr, ptex, src, dst, angle, center, flip_) < 0) { */
+/*         throw error(); */
+/*     } */
+/* } */
 
 inline
 texture::texture(

@@ -81,225 +81,144 @@ public:
     }
 };
 
-class renderer {
-    using deleter = ::sdlw::detail::make_functor<SDL_DestroyRenderer>;
-
-    std::unique_ptr<SDL_Renderer, deleter> _renderer;
+class renderer_ref {
+protected:
+    SDL_Renderer* _prenderer;
 
 public:
-    renderer() noexcept = default;
+    renderer_ref() noexcept : _prenderer{nullptr} {}
+    renderer_ref(SDL_Renderer* pointer) noexcept : _prenderer{pointer} {}
+    auto get_pointer() const noexcept -> SDL_Renderer* { return _prenderer; }
 
-    renderer(SDL_Renderer* pointer) noexcept
-        : _renderer(pointer)
-    {
-    }
-
-    renderer(
-        const window& win,
-        renderer_flags flags,
-        int rendering_driver_index = -1)
-    {
-        const auto pwin = win.get_pointer();
-        const auto index = rendering_driver_index;
-        const auto flags_ = static_cast<u32>(flags);
-        if (const auto ptr = SDL_CreateRenderer(pwin, index, flags_)) {
-            *this = renderer(ptr);
-        } else {
-            throw error();
-        }
-    }
-
-    renderer(const surface& surf)
-    {
-        if (const auto ptr = SDL_CreateSoftwareRenderer(surf.get_pointer())) {
-            *this = renderer(ptr);
-        } else {
-            throw error();
-        }
-    }
-
-    SDL_Renderer*
-    get_pointer() const noexcept
-    {
-        return _renderer.get();
-    }
-
-    blend_mode
-    draw_blend_mode() const
-    {
-        auto mode = SDL_BlendMode();
+    auto draw_blend_mode() const -> blend_mode {
+        auto mode = SDL_BlendMode{};
         if (SDL_GetRenderDrawBlendMode(get_pointer(), &mode) == 0) {
             return static_cast<blend_mode>(mode);
         } else {
-            throw error();
+            throw error{};
         }
     }
 
-    void
-    set_draw_blend_mode(blend_mode mode)
-    {
+    void set_draw_blend_mode(blend_mode mode) {
         const auto sdl_blend_mode = static_cast<SDL_BlendMode>(mode);
         if (SDL_SetRenderDrawBlendMode(get_pointer(), sdl_blend_mode) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
-    color
-    draw_color() const
-    {
-        auto r = u8();
-        auto g = u8();
-        auto b = u8();
-        auto a = u8();
-        if (SDL_GetRenderDrawColor(get_pointer(), &r, &g, &b, &a) == 0) {
-            return color{r, g, b, a};
+    color draw_color() const {
+        auto c = color{};
+        if (SDL_GetRenderDrawColor(get_pointer(), &c.r, &c.g, &c.b, &c.a) == 0) {
+            return c;
         } else {
-            throw error();
+            throw error{};
         }
     }
 
-    void
-    set_draw_color(color c)
-    {
+    void set_draw_color(color c) {
         if (SDL_SetRenderDrawColor(get_pointer(), c.r, c.g, c.b, c.a) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
-    bool
-    are_targets_supported() const noexcept
-    {
+    auto are_targets_supported() const noexcept -> bool {
         return SDL_RenderTargetSupported(get_pointer());
     }
 
-    const texture&
-    target() const;
+    const texture& target() const;
 
-    texture&
-    target();
+    texture& target();
 
-    void
-    set_target(texture*);
+    void set_target(texture*);
 
-    size
-    output_size() const
-    {
-        auto sz = size();
+    auto output_size() const -> size {
+        auto sz = size{};
         if (SDL_GetRendererOutputSize(get_pointer(), &sz.w, &sz.h) == 0) {
             return sz;
         } else {
-            throw error();
+            throw error{};
         }
     }
 
-    bool
-    is_clip_enabled() const noexcept
-    {
+    auto is_clip_enabled() const noexcept -> bool {
         return SDL_RenderIsClipEnabled(get_pointer());
     }
 
-    rectangle
-    clip() const noexcept
-    {
-        auto rect = rectangle();
+    auto clip() const noexcept -> rectangle {
+        auto rect = rectangle{};
         SDL_RenderGetClipRect(get_pointer(), &rect);
         return rect;
     }
 
-    void
-    set_clip(const rectangle& rect)
-    {
+    void set_clip(const rectangle& rect) {
         if (SDL_RenderSetClipRect(get_pointer(), &rect) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
-    rectangle
-    viewport() const noexcept
-    {
-        auto rect = rectangle();
+    auto viewport() const noexcept -> rectangle {
+        auto rect = rectangle{};
         SDL_RenderGetViewport(get_pointer(), &rect);
         return rect;
     }
 
-    void
-    set_viewport(const rectangle& viewport)
-    {
+    void set_viewport(const rectangle& viewport) {
         if (SDL_RenderSetViewport(get_pointer(), &viewport) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
-    std::pair<float, float>
-    scale() const noexcept
+    auto scale() const noexcept -> std::pair<float, float>
     {
-        auto xscale = float();
-        auto yscale = float();
+        auto xscale = float{};
+        auto yscale = float{};
         SDL_RenderGetScale(get_pointer(), &xscale, &yscale);
         return std::make_pair(xscale, xscale);
     }
 
-    void
-    set_scale(float xscale, float yscale)
-    {
+    void set_scale(float xscale, float yscale) {
         if (SDL_RenderSetScale(get_pointer(), xscale, yscale) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
-    bool
-    integer_scale() const noexcept
-    {
+    auto integer_scale() const noexcept -> bool {
         return SDL_RenderGetIntegerScale(get_pointer());
     }
 
-    void
-    set_integer_scale(bool should_enable)
-    {
+    void set_integer_scale(bool should_enable) {
         const auto b = static_cast<SDL_bool>(should_enable);
         if (SDL_RenderSetIntegerScale(get_pointer(), b) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
-    size
-    logical_size() const noexcept
-    {
-        auto sz = size();
+    auto logical_size() const noexcept -> size {
+        auto sz = size{};
         SDL_RenderGetLogicalSize(get_pointer(), &sz.w, &sz.h);
         return sz;
     }
 
-    void
-    set_logical_size(const size& sz)
-    {
+    void set_logical_size(const size& sz) {
         if (SDL_RenderSetLogicalSize(get_pointer(), sz.w, sz.h) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
-    renderer_info
-    info() const
-    {
-        auto info = SDL_RendererInfo();
+    auto info() const -> renderer_info {
+        auto info = SDL_RendererInfo{};
         if (SDL_GetRendererInfo(get_pointer(), &info) < 0) {
-            return renderer_info(info);
+            return renderer_info{info};
         } else {
-            throw error();
+            throw error{};
         }
     }
 
-    void
-    read_pixels(
-        void* pixels,
-        const rectangle& rect,
-        pixels::pixel_format_type format,
-        int pitch) const
-    {
+    void read_pixels(void* pixels, const rectangle& rect, pixels::pixel_format_type format, int pitch) const {
         const auto prend = get_pointer();
         const auto fmt = static_cast<u32>(format);
         if (SDL_RenderReadPixels(prend, &rect, fmt, pixels, pitch) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
@@ -307,7 +226,7 @@ public:
     clear()
     {
         if (SDL_RenderClear(get_pointer()) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
@@ -315,7 +234,7 @@ public:
     draw_line(const point& p1, const point& p2)
     {
         if (SDL_RenderDrawLine(get_pointer(), p1.x, p1.y, p2.x, p2.y) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
@@ -327,7 +246,7 @@ public:
         }
         const auto sz = static_cast<int>(points.size());
         if (SDL_RenderDrawLines(get_pointer(), points.data(), sz) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
@@ -335,7 +254,7 @@ public:
     draw_point(const point& p)
     {
         if (SDL_RenderDrawPoint(get_pointer(), p.x, p.y) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
@@ -347,7 +266,7 @@ public:
         }
         const auto sz = static_cast<int>(points.size());
         if (SDL_RenderDrawPoints(get_pointer(), points.data(), sz) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
@@ -355,7 +274,7 @@ public:
     draw_rectangle(const rectangle& rect)
     {
         if (SDL_RenderDrawRect(get_pointer(), &rect) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
@@ -367,7 +286,7 @@ public:
         }
         const auto sz = static_cast<int>(rectangles.size());
         if (SDL_RenderDrawRects(get_pointer(), rectangles.data(), sz) == 0) {
-            throw error();
+            throw error{};
         }
     }
 
@@ -375,7 +294,7 @@ public:
     fill_rectangle(const rectangle& rect)
     {
         if (SDL_RenderFillRect(get_pointer(), &rect) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
@@ -387,7 +306,7 @@ public:
         }
         const auto sz = static_cast<int>(rectangles.size());
         if (SDL_RenderFillRects(get_pointer(), rectangles.data(), sz) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
@@ -413,17 +332,54 @@ public:
     }
 };
 
-inline
-bool
-operator==(const renderer& lhs, const renderer& rhs) noexcept
-{
+class renderer : public renderer_ref {
+public:
+    using renderer_ref::renderer_ref;
+
+    renderer(const renderer&) = delete;
+    auto operator=(const renderer&) = delete;
+
+    renderer(renderer&& other) noexcept
+        : renderer_ref{std::exchange(other._prenderer, nullptr)}
+    {
+    }
+
+    auto operator=(renderer&& other) noexcept -> renderer& {
+        SDL_DestroyRenderer(_prenderer);
+        _prenderer = std::exchange(other._prenderer, nullptr);
+        return *this;
+    }
+
+    ~renderer() noexcept {
+        SDL_DestroyRenderer(_prenderer);
+        _prenderer = nullptr;
+    }
+
+    renderer(const window& win, renderer_flags flags, int rendering_driver_index = -1) {
+        const auto pwin = win.get_pointer();
+        const auto index = rendering_driver_index;
+        const auto flags_ = static_cast<u32>(flags);
+        if (const auto ptr = SDL_CreateRenderer(pwin, index, flags_)) {
+            _prenderer = ptr;
+        } else {
+            throw error{};
+        }
+    }
+
+    renderer(const surface& surf) {
+        if (const auto ptr = SDL_CreateSoftwareRenderer(surf.get_pointer())) {
+            _prenderer = ptr;
+        } else {
+            throw error{};
+        }
+    }
+};
+
+inline auto operator==(const renderer& lhs, const renderer& rhs) noexcept -> bool {
     return lhs.get_pointer() == rhs.get_pointer();
 }
 
-inline
-bool
-operator!=(const renderer& lhs, const renderer& rhs) noexcept
-{
+inline auto operator!=(const renderer& lhs, const renderer& rhs) noexcept -> bool {
     return !(lhs == rhs);
 }
 
