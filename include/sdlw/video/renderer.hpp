@@ -10,7 +10,8 @@
 
 namespace sdlw::video {
 
-class texture;  // for renderer::copy
+class texture;
+class texture_ref;
 
 enum class renderer_flags {
     software       = SDL_RENDERER_SOFTWARE,
@@ -125,9 +126,7 @@ public:
         return SDL_RenderTargetSupported(get_pointer());
     }
 
-    const texture& target() const;
-
-    texture& target();
+    auto target() -> texture_ref;
 
     void set_target(texture*);
 

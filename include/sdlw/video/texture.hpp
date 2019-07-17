@@ -4,6 +4,7 @@
 #include <sdlw/blend_mode.hpp>
 #include <sdlw/video/pixels/pixel_format_type.hpp>
 #include <sdlw/video/size.hpp>
+#include <sdlw/video/renderer.hpp>
 
 namespace sdlw::video {
 
@@ -13,32 +14,14 @@ enum class texture_access : int {
     target    = SDL_TEXTUREACCESS_TARGET
 };
 
-class texture {
-    using deleter = ::sdlw::detail::make_functor<SDL_DestroyTexture>;
-
-    std::unique_ptr<SDL_Texture, deleter> _texture;
+class texture_ref {
+protected:
+    SDL_Texture* _ptexture = nullptr;
 
 public:
-    texture() noexcept = default;
-
-    texture(SDL_Texture* pointer) noexcept
-        : _texture(pointer)
-    {
-    }
-
-    texture(
-        const renderer& rend,
-        pixels::pixel_format_type format,
-        texture_access access,
-        const size& sz);
-
-    texture(const renderer& rend, const surface& surf);
-
-    SDL_Texture*
-    get_pointer() const noexcept
-    {
-        return _texture.get();
-    }
+    texture_ref() noexcept : _ptexture{nullptr} {}
+    texture_ref(SDL_Texture* pointer) noexcept : _ptexture{pointer} {}
+    auto get_pointer() const noexcept -> SDL_Texture* { return _ptexture; }
 
     texture_access
     access() const
@@ -184,6 +167,55 @@ public:
     }
 };
 
+class texture : public texture_ref {
+public:
+    using texture_ref::texture_ref;
+
+    texture(const texture&) = delete;
+    auto operator=(const texture&) -> texture& = delete;
+
+    texture(texture&& other) noexcept
+        : texture_ref{std::exchange(other._ptexture, nullptr)}
+    {
+    }
+
+    auto operator=(texture&& other) noexcept -> texture& {
+        SDL_DestroyTexture(_ptexture);
+        _ptexture = std::exchange(other._ptexture, nullptr);
+        return *this;
+    }
+
+    ~texture() noexcept {
+        SDL_DestroyTexture(_ptexture);
+        _ptexture = nullptr;
+    }
+
+    texture(const renderer& rend, pixels::pixel_format_type format, texture_access access, const sdlw::video::size& sz)
+    {
+        const auto prend = rend.get_pointer();
+        const auto format_ = static_cast<u32>(format);
+        const auto access_ = static_cast<int>(access);
+        const auto ptr = SDL_CreateTexture(prend, format_, access_, sz.w, sz.h);
+        if (ptr) {
+            _ptexture = ptr;
+        } else {
+            throw error();
+        }
+    }
+
+    texture(const renderer& rend, const surface& surf)
+    {
+        const auto prend = rend.get_pointer();
+        const auto psurf = surf.get_pointer();
+        const auto ptr = SDL_CreateTextureFromSurface(prend, psurf);
+        if (ptr) {
+            _ptexture = ptr;
+        } else {
+            throw error();
+        }
+    }
+};
+
 inline
 bool
 operator==(const texture& lhs, const texture& rhs) noexcept
@@ -196,6 +228,53 @@ bool
 operator!=(const texture& lhs, const texture& rhs) noexcept
 {
     return !(lhs == rhs);
+}
+
+auto renderer_ref::target() -> texture_ref {
+    if (const auto ptr = SDL_GetRenderTarget(_prenderer)) {
+        return {ptr};
+    } else {
+        throw error{};
+    }
+}
+
+void renderer_ref::set_target(texture* t) {
+    if (SDL_SetRenderTarget(_prenderer, t ? t->get_pointer() : nullptr) < 0) {
+        throw error{};
+    }
+}
+
+inline
+void
+renderer_ref::copy(
+    const texture& tex,
+    const rectangle* source,
+    const rectangle* destination)
+{
+    const auto ptexture = tex.get_pointer();
+    if (SDL_RenderCopy(get_pointer(), ptexture, source, destination) < 0) {
+        throw error();
+    }
+}
+
+inline
+void
+renderer_ref::copy(
+    const texture& tex,
+    const rectangle* source,
+    const rectangle* destination,
+    double angle,
+    const point* center,
+    renderer_flip flip)
+{
+    const auto ptr = get_pointer();
+    const auto ptex = tex.get_pointer();
+    const auto src = source;
+    const auto dst = destination;
+    const auto flip_ = static_cast<SDL_RendererFlip>(flip);
+    if (SDL_RenderCopyEx(ptr, ptex, src, dst, angle, center, flip_) < 0) {
+        throw error();
+    }
 }
 
 } // namespace sdlw::video
