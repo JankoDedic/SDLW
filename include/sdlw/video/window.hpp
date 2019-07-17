@@ -341,7 +341,7 @@ public:
         SDL_SetWindowIcon(get_pointer(), icon.get_pointer());
     }
 
-    auto renderer() const -> renderer_ref;
+    auto renderer() -> renderer_ref;
 
     void set_modal(window_ref modal) {
         if (SDL_SetWindowModalFor(modal.get_pointer(), get_pointer()) < 0) {
