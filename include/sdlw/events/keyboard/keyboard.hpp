@@ -47,13 +47,6 @@ inline auto name_of(scancode sc) noexcept -> const char * {
 }
 
 inline auto focus_owner() noexcept -> std::optional<video::window_ref> {
-    /* static auto s = detail::storage<video::window>(); */
-    /* if (const auto pwindow = SDL_GetKeyboardFocus()) { */
-    /*     return new (&s) video::window(pwindow); */
-    /* } else { */
-    /*     return nullptr; */
-    /* } */
-
     if (const auto ptr = SDL_GetKeyboardFocus()) {
         return video::window_ref(ptr);
     } else {
