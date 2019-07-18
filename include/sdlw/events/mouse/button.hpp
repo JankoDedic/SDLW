@@ -4,9 +4,9 @@
 
 #include <sdlw/types.hpp>
 
-namespace sdlw::events::mouse {
+namespace sdlw {
 
-enum class button : u8 {
+enum class mouse_button : u8 {
     left   = SDL_BUTTON_LEFT,
     middle = SDL_BUTTON_MIDDLE,
     right  = SDL_BUTTON_RIGHT,
@@ -14,4 +14,4 @@ enum class button : u8 {
     x2     = SDL_BUTTON_X2
 };
 
-} // namespace sdlw::events::mouse
+} // namespace sdlw

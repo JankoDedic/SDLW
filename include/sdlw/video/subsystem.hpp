@@ -2,20 +2,20 @@
 
 #include <SDL2/SDL.h>
 
-namespace sdlw::video {
+namespace sdlw {
 
-struct subsystem {
-    subsystem(const char* driver_name)
+struct video_subsystem {
+    video_subsystem(const char* driver_name)
     {
         if (SDL_VideoInit(driver_name) < 0) {
             throw error();
         }
     }
 
-    ~subsystem() noexcept
+    ~video_subsystem() noexcept
     {
         SDL_VideoQuit();
     }
 };
 
-} // namespace sdlw::video
+} // namespace sdlw

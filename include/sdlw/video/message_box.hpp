@@ -4,7 +4,7 @@
 
 #include <sdlw/video/window.hpp>
 
-namespace sdlw::video {
+namespace sdlw {
 
 enum class message_box_flag : u32 {
     error       = SDL_MESSAGEBOX_ERROR,
@@ -43,4 +43,4 @@ show_simple_message_box(
     }
 }
 
-} // namespace sdlw::video
+} // namespace sdlw

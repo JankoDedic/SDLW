@@ -2,29 +2,27 @@
 
 #include <SDL2/SDL.h>
 
-namespace sdlw::video {
+namespace sdlw {
 
-struct driver {
-    static
-    int
-    count() noexcept
-    {
-        return SDL_GetNumVideoDrivers();
-    }
+static
+int
+num_video_drivers() noexcept
+{
+    return SDL_GetNumVideoDrivers();
+}
 
-    static
-    const char*
-    name(int driver_index) noexcept
-    {
-        return SDL_GetVideoDriver(driver_index);
-    }
+static
+const char*
+video_driver_name(int driver_index) noexcept
+{
+    return SDL_GetVideoDriver(driver_index);
+}
 
-    static
-    const char*
-    current() noexcept
-    {
-        return SDL_GetCurrentVideoDriver();
-    }
-};
+static
+const char*
+current_video_driver() noexcept
+{
+    return SDL_GetCurrentVideoDriver();
+}
 
-} // namespace sdlw::video
+} // namespace sdlw

@@ -2,8 +2,8 @@
 
 #include <sdlw/types.hpp>
 
-namespace sdlw::events::gesture {
+namespace sdlw {
 
-using id = i64;
+using gesture_id = i64;
 
-} // namespace sdlw::events::gesture
+} // namespace sdlw

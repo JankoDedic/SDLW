@@ -7,7 +7,7 @@
 #include <sdlw/video/size.hpp>
 #include <sdlw/video/surface.hpp>
 
-namespace sdlw::events::mouse {
+namespace sdlw {
 
 enum class system_cursor {
     arrow              = SDL_SYSTEM_CURSOR_ARROW,
@@ -41,8 +41,8 @@ public:
     cursor(
         const u8* data,
         const u8* mask,
-        const video::size& sz,
-        const video::point& topleft_corner)
+        const size& sz,
+        const point& topleft_corner)
     {
         /* const auto &[x, y] = topleft_corner; */
         const auto x = topleft_corner.x;
@@ -54,7 +54,7 @@ public:
         }
     }
 
-    cursor(const video::surface& surf, const video::point& topleft_corner)
+    cursor(const surface& surf, const point& topleft_corner)
     {
         /* const auto [x, y] = topleft_corner; */
         const auto x = topleft_corner.x;
@@ -83,4 +83,4 @@ public:
     }
 };
 
-} // namespace sdlw::events::mouse
+} // namespace sdlw

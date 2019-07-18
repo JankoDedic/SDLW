@@ -6,7 +6,7 @@
 #include <sdlw/video/size.hpp>
 #include <sdlw/video/renderer.hpp>
 
-namespace sdlw::video {
+namespace sdlw {
 
 enum class texture_access : int {
     static_   = SDL_TEXTUREACCESS_STATIC,
@@ -47,12 +47,12 @@ public:
         }
     }
 
-    sdlw::video::blend_mode
+    sdlw::blend_mode
     blend_mode() const
     {
         auto mode = SDL_BlendMode();
         if (SDL_GetTextureBlendMode(get_pointer(), &mode) == 0) {
-            return static_cast<sdlw::video::blend_mode>(mode);
+            return static_cast<sdlw::blend_mode>(mode);
         } else {
             throw error();
         }
@@ -71,20 +71,20 @@ public:
         }
     }
 
-    pixels::pixel_format_type
+    pixel_format_type
     format() const
     {
         const auto ptexture = get_pointer();
         auto format = u32();
         constexpr auto null = nullptr;
         if (SDL_QueryTexture(ptexture, &format, null, null, null) == 0) {
-            return static_cast<pixels::pixel_format_type>(format);
+            return static_cast<pixel_format_type>(format);
         } else {
             throw error();
         }
     }
 
-    sdlw::video::size
+    sdlw::size
     size() const
     {
         const auto ptexture = get_pointer();
@@ -92,7 +92,7 @@ public:
         auto height = int();
         constexpr auto null = nullptr;
         if (SDL_QueryTexture(ptexture, null, null, &width, &height) == 0) {
-            return sdlw::video::size{width, height};
+            return sdlw::size{width, height};
         } else {
             throw error();
         }
@@ -107,7 +107,7 @@ public:
     }
 
     void
-    set_blend_mode(sdlw::video::blend_mode mode)
+    set_blend_mode(sdlw::blend_mode mode)
     {
         const auto sdl_blend_mode = static_cast<SDL_BlendMode>(mode);
         if (SDL_SetTextureBlendMode(get_pointer(), sdl_blend_mode) < 0) {
@@ -190,7 +190,7 @@ public:
         _ptexture = nullptr;
     }
 
-    texture(const renderer& rend, pixels::pixel_format_type format, texture_access access, const sdlw::video::size& sz)
+    texture(const renderer& rend, pixel_format_type format, texture_access access, const sdlw::size& sz)
     {
         const auto prend = rend.get_pointer();
         const auto format_ = static_cast<u32>(format);
@@ -277,4 +277,4 @@ renderer_ref::copy(
     }
 }
 
-} // namespace sdlw::video
+} // namespace sdlw

@@ -6,7 +6,7 @@
 
 #include <sdlw/events/mouse/cursor.hpp>
 
-namespace sdlw::events::mouse {
+namespace sdlw {
 
 struct active_cursor {
     static
@@ -65,4 +65,4 @@ struct active_cursor {
     }
 };
 
-} // namespace sdlw::events::mouse
+} // namespace sdlw

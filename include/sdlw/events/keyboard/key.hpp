@@ -6,7 +6,7 @@
 #include <sdlw/events/keyboard/keymod.hpp>
 #include <sdlw/events/keyboard/scancode.hpp>
 
-namespace sdlw::events::keyboard {
+namespace sdlw {
 
 class key {
     SDL_Keysym _keysym;
@@ -20,17 +20,17 @@ public:
 
     constexpr explicit key(SDL_Keysym keysym) noexcept : _keysym(keysym) { }
 
-    constexpr auto scancode() const noexcept -> sdlw::events::keyboard::scancode {
-        return static_cast<sdlw::events::keyboard::scancode>(_keysym.scancode);
+    constexpr auto scancode() const noexcept -> sdlw::scancode {
+        return static_cast<sdlw::scancode>(_keysym.scancode);
     }
 
-    constexpr auto keycode() const noexcept -> sdlw::events::keyboard::keycode {
-        return static_cast<sdlw::events::keyboard::keycode>(_keysym.sym);
+    constexpr auto keycode() const noexcept -> sdlw::keycode {
+        return static_cast<sdlw::keycode>(_keysym.sym);
     }
 
-    constexpr auto keymod() const noexcept -> sdlw::events::keyboard::keymod {
-        return static_cast<sdlw::events::keyboard::keymod>(_keysym.mod);
+    constexpr auto keymod() const noexcept -> sdlw::keymod {
+        return static_cast<sdlw::keymod>(_keysym.mod);
     }
 };
 
-} // namespace sdlw::events::keyboard
+} // namespace sdlw

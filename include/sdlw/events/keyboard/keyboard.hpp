@@ -7,7 +7,7 @@
 #include <sdlw/events/keyboard/keymod.hpp>
 #include <sdlw/events/keyboard/scancode.hpp>
 
-namespace sdlw::events::keyboard {
+namespace sdlw {
 
 inline auto get_keycode(const char *name) -> keycode {
     if (const auto result = SDL_GetKeyFromName(name); result == SDLK_UNKNOWN) {
@@ -46,9 +46,9 @@ inline auto name_of(scancode sc) noexcept -> const char * {
     return SDL_GetScancodeName(static_cast<SDL_Scancode>(sc));
 }
 
-inline auto focus_owner() noexcept -> std::optional<video::window_ref> {
+inline auto keyboard_focus() noexcept -> std::optional<window_ref> {
     if (const auto ptr = SDL_GetKeyboardFocus()) {
-        return video::window_ref(ptr);
+        return window_ref(ptr);
     } else {
         return std::nullopt;
     }
@@ -66,4 +66,4 @@ inline void set_mod_state(keymod mod) noexcept {
     SDL_SetModState(static_cast<SDL_Keymod>(mod));
 }
 
-} // namespace sdlw::events::keyboard
+} // namespace sdlw

@@ -8,7 +8,7 @@
 #include <sdlw/video/surface.hpp>
 #include <sdlw/video/window.hpp>
 
-namespace sdlw::video {
+namespace sdlw {
 
 class texture;
 class texture_ref;
@@ -66,11 +66,11 @@ public:
         return _renderer_info.num_texture_formats;
     }
 
-    pixels::pixel_format_type
+    pixel_format_type
     texture_format(int index) const noexcept
     {
         const auto tex_format = _renderer_info.texture_formats[index];
-        return static_cast<pixels::pixel_format_type>(tex_format);
+        return static_cast<pixel_format_type>(tex_format);
     }
 
     size
@@ -213,7 +213,7 @@ public:
         }
     }
 
-    void read_pixels(void* pixels, const rectangle& rect, pixels::pixel_format_type format, int pitch) const {
+    void read_pixels(void* pixels, const rectangle& rect, pixel_format_type format, int pitch) const {
         const auto prend = get_pointer();
         const auto fmt = static_cast<u32>(format);
         if (SDL_RenderReadPixels(prend, &rect, fmt, pixels, pitch) < 0) {
@@ -390,4 +390,4 @@ auto window_ref::renderer() -> renderer_ref {
     }
 }
 
-} // namespace sdlw::video
+} // namespace sdlw

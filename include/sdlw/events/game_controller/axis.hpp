@@ -2,9 +2,9 @@
 
 #include <SDL2/SDL.h>
 
-namespace sdlw::events::game_controller {
+namespace sdlw {
 
-enum class axis {
+enum class game_controller_axis {
     invalid       = SDL_CONTROLLER_AXIS_INVALID,
     left_x        = SDL_CONTROLLER_AXIS_LEFTX,
     left_y        = SDL_CONTROLLER_AXIS_LEFTY,
@@ -15,4 +15,4 @@ enum class axis {
     max           = SDL_CONTROLLER_AXIS_MAX
 };
 
-} // namespace sdlw::events::game_controller
+} // namespace sdlw

@@ -5,7 +5,7 @@
 #include <sdlw/types.hpp>
 #include <sdlw/utility.hpp>
 
-namespace sdlw::events::keyboard {
+namespace sdlw {
 
 enum class keymod : u16 {
     none     = KMOD_NONE,
@@ -25,4 +25,4 @@ enum class keymod : u16 {
 
 SDLW_DETAIL_DEFINE_FLAG_OPERATIONS(keymod);
 
-} // namespace sdlw::events::keyboard
+} // namespace sdlw

@@ -6,7 +6,7 @@
 #include <sdlw/video/point.hpp>
 #include <sdlw/events/mouse/button_state.hpp>
 
-namespace sdlw::events::mouse {
+namespace sdlw {
 
 struct relative_mode {
     static
@@ -35,14 +35,14 @@ struct relative_mode {
     }
 
     static
-    std::pair<button_state, video::point>
+    std::pair<mouse_button_state, point>
     get_state() noexcept
     {
-        auto p = video::point();
+        auto p = point();
         const auto sdl_button_state = SDL_GetRelativeMouseState(&p.x, &p.y);
-        const auto bstate = static_cast<button_state>(sdl_button_state);
+        const auto bstate = static_cast<mouse_button_state>(sdl_button_state);
         return std::make_pair(bstate, p);
     }
 };
 
-} // namespace sdlw::events::mouse
+} // namespace sdlw

@@ -8,40 +8,40 @@
 #include <sdlw/video/window.hpp>
 #include <sdlw/video/display/mode.hpp>
 
-namespace sdlw::video::display {
+namespace sdlw {
 
 inline
-mode
-closest_mode(int display_index, const mode& m)
+display_mode
+closest_display_mode(int display_index, const display_mode& m)
 {
     const auto pmode = reinterpret_cast<const SDL_DisplayMode*>(&m);
     auto closest = SDL_DisplayMode();
     if (SDL_GetClosestDisplayMode(display_index, pmode, &closest)) {
-        return mode(closest);
+        return display_mode(closest);
     } else {
         throw error();
     }
 }
 
 inline
-mode
-current_mode(int display_index)
+display_mode
+current_display_mode(int display_index)
 {
     auto current = SDL_DisplayMode();
     if (SDL_GetCurrentDisplayMode(display_index, &current) == 0) {
-        return mode(current);
+        return display_mode(current);
     } else {
         throw error();
     }
 }
 
 inline
-mode
-desktop_mode(int display_index)
+display_mode
+desktop_display_mode(int display_index)
 {
     auto desktop = SDL_DisplayMode();
     if (SDL_GetDesktopDisplayMode(display_index, &desktop) == 0) {
-        return mode(desktop);
+        return display_mode(desktop);
     } else {
         throw error();
     }
@@ -49,7 +49,7 @@ desktop_mode(int display_index)
 
 inline
 rectangle
-bounds(int display_index)
+display_bounds(int display_index)
 {
     auto bounds = rectangle();
     if (SDL_GetDisplayBounds(display_index, &bounds) == 0) {
@@ -61,7 +61,7 @@ bounds(int display_index)
 
 inline
 std::array<float, 3>
-dpi(int display_index)
+display_dpi(int display_index)
 {
     auto ddpi = float();
     auto hdpi = float();
@@ -75,7 +75,7 @@ dpi(int display_index)
 
 inline
 float
-diagonal_dpi(int display_index)
+display_diagonal_dpi(int display_index)
 {
     auto ddpi = float();
     if (SDL_GetDisplayDPI(display_index, &ddpi, nullptr, nullptr) == 0) {
@@ -87,7 +87,7 @@ diagonal_dpi(int display_index)
 
 inline
 float
-horizontal_dpi(int display_index)
+display_horizontal_dpi(int display_index)
 {
     auto hdpi = float();
     if (SDL_GetDisplayDPI(display_index, nullptr, &hdpi, nullptr) == 0) {
@@ -99,7 +99,7 @@ horizontal_dpi(int display_index)
 
 inline
 float
-vertical_dpi(int display_index)
+display_vertical_dpi(int display_index)
 {
     auto vdpi = float();
     if (SDL_GetDisplayDPI(display_index, nullptr, nullptr, &vdpi) == 0) {
@@ -110,12 +110,12 @@ vertical_dpi(int display_index)
 }
 
 inline
-mode
-get_mode(int display_index, int mode_index)
+display_mode
+get_display_mode(int display_index, int mode_index)
 {
     auto m = SDL_DisplayMode();
     if (SDL_GetDisplayMode(display_index, mode_index, &m) == 0) {
-        return mode(m);
+        return display_mode(m);
     } else {
         throw error();
     }
@@ -123,14 +123,14 @@ get_mode(int display_index, int mode_index)
 
 inline
 const char*
-get_name(int display_index) noexcept
+get_display_name(int display_index) noexcept
 {
     return SDL_GetDisplayName(display_index);
 }
 
 inline
 rectangle
-usable_bounds(int display_index)
+display_usable_bounds(int display_index)
 {
     auto rect = rectangle();
     if (SDL_GetDisplayUsableBounds(display_index, &rect) == 0) {
@@ -142,7 +142,7 @@ usable_bounds(int display_index)
 
 inline
 int
-mode_count(int display_index)
+num_display_modes(int display_index)
 {
     if (const auto count = SDL_GetNumDisplayModes(display_index); count < 0) {
         throw error();
@@ -153,7 +153,7 @@ mode_count(int display_index)
 
 inline
 int
-count()
+num_video_displays()
 {
     if (const auto cnt = SDL_GetNumVideoDisplays(); cnt < 0) {
         throw error();
@@ -164,14 +164,14 @@ count()
 
 inline
 float
-brightness(const window& win) noexcept
+display_brightness(const window& win) noexcept
 {
     return SDL_GetWindowBrightness(win.get_pointer());
 }
 
 inline
 void
-set_brightness(const window& win, float brightness)
+set_display_brightness(const window& win, float brightness)
 {
     if (SDL_SetWindowBrightness(win.get_pointer(), brightness) < 0) {
         throw error();
@@ -180,7 +180,7 @@ set_brightness(const window& win, float brightness)
 
 inline
 void
-get_gamma_ramp(
+get_display_gamma_ramp(
     const window& win,
     span<u16, 256> red,
     span<u16, 256> green,
@@ -196,7 +196,7 @@ get_gamma_ramp(
 
 inline
 void
-set_gamma_ramp(
+set_display_gamma_ramp(
     const window& win,
     span<const u16, 256> red,
     span<const u16, 256> green,
@@ -210,4 +210,4 @@ set_gamma_ramp(
     }
 }
 
-} // namespace sdlw::video::display
+} // namespace sdlw

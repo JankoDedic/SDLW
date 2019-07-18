@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-namespace sdlw::video {
+namespace sdlw {
 
 struct size {
     int w;
@@ -214,4 +214,4 @@ operator/=(size& lhs, T rhs) noexcept
     return lhs;
 }
 
-} // namespace sdlw::video
+} // namespace sdlw

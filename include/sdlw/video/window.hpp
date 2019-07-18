@@ -15,7 +15,7 @@
 #include <sdlw/video/rectangle.hpp>
 #include <sdlw/video/surface.hpp>
 
-namespace sdlw::video {
+namespace sdlw {
 
 /* class renderer; // for window::renderer */
 class renderer_ref; // for window::renderer
@@ -114,14 +114,14 @@ public:
         SDL_SetWindowPosition(get_pointer(), position.x, position.y);
     }
 
-    auto size() const noexcept -> sdlw::video::size {
+    auto size() const noexcept -> sdlw::size {
         auto width = int();
         auto height = int();
         SDL_GetWindowSize(get_pointer(), &width, &height);
-        return sdlw::video::size{width, height};
+        return sdlw::size{width, height};
     }
 
-    void set_size(const sdlw::video::size &size) noexcept {
+    void set_size(const sdlw::size &size) noexcept {
         SDL_SetWindowSize(get_pointer(), size.w, size.h);
     }
 
@@ -183,23 +183,23 @@ public:
         SDL_SetWindowBordered(get_pointer(), static_cast<SDL_bool>(bordered));
     }
 
-    auto max_size() const noexcept -> sdlw::video::size {
-        auto sz = sdlw::video::size();
+    auto max_size() const noexcept -> sdlw::size {
+        auto sz = sdlw::size();
         SDL_GetWindowMaximumSize(get_pointer(), &sz.w, &sz.h);
         return sz;
     }
 
-    void set_max_size(const sdlw::video::size &size) noexcept {
+    void set_max_size(const sdlw::size &size) noexcept {
         SDL_SetWindowMaximumSize(get_pointer(), size.w, size.h);
     }
 
-    auto min_size() const noexcept -> sdlw::video::size {
-        auto sz = sdlw::video::size();
+    auto min_size() const noexcept -> sdlw::size {
+        auto sz = sdlw::size();
         SDL_GetWindowMinimumSize(get_pointer(), &sz.w, &sz.h);
         return sz;
     }
 
-    void set_min_size(const sdlw::video::size &size) noexcept {
+    void set_min_size(const sdlw::size &size) noexcept {
         SDL_SetWindowMinimumSize(get_pointer(), size.w, size.h);
     }
 
@@ -219,19 +219,19 @@ public:
         return SDL_SetWindowData(get_pointer(), name, user_data);
     }
 
-    auto surface() const -> const sdlw::video::surface & {
-        static auto s = ::sdlw::detail::storage<sdlw::video::surface>();
+    auto surface() const -> const sdlw::surface & {
+        static auto s = ::sdlw::detail::storage<sdlw::surface>();
         if (const auto ptr = SDL_GetWindowSurface(get_pointer())) {
-            return *new (&s) sdlw::video::surface(ptr);
+            return *new (&s) sdlw::surface(ptr);
         } else {
             throw error();
         }
     }
 
-    auto surface() -> sdlw::video::surface & {
-        static auto s = ::sdlw::detail::storage<sdlw::video::surface>();
+    auto surface() -> sdlw::surface & {
+        static auto s = ::sdlw::detail::storage<sdlw::surface>();
         if (const auto psurface = SDL_GetWindowSurface(get_pointer())) {
-            return *new (&s) sdlw::video::surface(psurface);
+            return *new (&s) sdlw::surface(psurface);
         } else {
             throw error();
         }
@@ -252,16 +252,16 @@ public:
         }
     }
 
-    auto display_mode() const -> display::mode {
+    auto display_mode() const -> sdlw::display_mode {
         auto mode = SDL_DisplayMode();
         if (SDL_GetWindowDisplayMode(get_pointer(), &mode) == 0) {
-            return display::mode(mode);
+            return sdlw::display_mode(mode);
         } else {
             throw error();
         }
     }
 
-    void set_display_mode(const display::mode *mode) {
+    void set_display_mode(const sdlw::display_mode *mode) {
         const auto pmode = reinterpret_cast<const SDL_DisplayMode *>(mode);
         if (SDL_SetWindowDisplayMode(get_pointer(), pmode) < 0) {
             throw error();
@@ -277,12 +277,12 @@ public:
         }
     }
 
-    auto pixel_format_type() const -> pixels::pixel_format_type {
+    auto pixel_format_type() const -> sdlw::pixel_format_type {
         const auto format = SDL_GetWindowPixelFormat(get_pointer());
         if (format == SDL_PIXELFORMAT_UNKNOWN) {
             throw error();
         } else {
-            return static_cast<pixels::pixel_format_type>(format);
+            return static_cast<sdlw::pixel_format_type>(format);
         }
     }
 
@@ -337,7 +337,7 @@ public:
         }
     }
 
-    void set_icon(const ::sdlw::video::surface &icon) noexcept {
+    void set_icon(const ::sdlw::surface &icon) noexcept {
         SDL_SetWindowIcon(get_pointer(), icon.get_pointer());
     }
 
@@ -483,4 +483,4 @@ inline auto get_grabbed_window() -> window_ref {
     }
 }
 
-} // namespace sdlw::video
+} // namespace sdlw

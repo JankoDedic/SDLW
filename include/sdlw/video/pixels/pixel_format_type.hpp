@@ -4,7 +4,7 @@
 
 #include <sdlw/types.hpp>
 
-namespace sdlw::video::pixels {
+namespace sdlw {
 
 enum class pixel_type {
     unknown  = SDL_PIXELTYPE_UNKNOWN,
@@ -159,4 +159,4 @@ is_fourcc(pixel_format_type pixel_format) noexcept
     return SDL_ISPIXELFORMAT_FOURCC(static_cast<u32>(pixel_format));
 }
 
-} // sdlw::video::pixels
+} // sdlw

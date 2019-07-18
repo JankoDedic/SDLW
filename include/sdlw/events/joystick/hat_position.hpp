@@ -4,9 +4,9 @@
 
 #include <sdlw/types.hpp>
 
-namespace sdlw::events::joystick {
+namespace sdlw {
 
-enum class hat_position : u8 {
+enum class joystick_hat_position : u8 {
     centered   = SDL_HAT_CENTERED,
     up         = SDL_HAT_UP,
     right      = SDL_HAT_RIGHT,
@@ -18,4 +18,4 @@ enum class hat_position : u8 {
     left_down  = SDL_HAT_LEFTDOWN
 };
 
-} // namespace sdlw::events::joystick
+} // namespace sdlw

@@ -175,8 +175,8 @@ inline auto open_font(const char* filename, int ptsize, long index) -> font {
     }
 }
 
-inline auto text_render_size(const font& f, const char* text) -> video::size {
-    auto size = video::size();
+inline auto text_render_size(const font& f, const char* text) -> size {
+    auto size = sdlw::size();
     if (TTF_SizeText(f.get_pointer(), text, &size.w, &size.h) == 0) {
         return size;
     } else {
@@ -184,77 +184,77 @@ inline auto text_render_size(const font& f, const char* text) -> video::size {
     }
 }
 
-inline auto solid_text_render(const font& f, const char* text, video::color fg_color) -> video::surface {
+inline auto solid_text_render(const font& f, const char* text, color fg_color) -> surface {
     const auto pfont = f.get_pointer();
     if (const auto psurface = TTF_RenderText_Solid(pfont, text, fg_color)) {
-        return video::surface(psurface);
+        return surface(psurface);
     } else {
         throw error();
     }
 }
 
-inline auto solid_utf8_render(const font& f, const char* text, video::color fg_color) -> video::surface {
+inline auto solid_utf8_render(const font& f, const char* text, color fg_color) -> surface {
     const auto pfont = f.get_pointer();
     if (const auto psurface = TTF_RenderUTF8_Solid(pfont, text, fg_color)) {
-        return video::surface(psurface);
+        return surface(psurface);
     } else {
         throw error();
     }
 }
 
-inline auto shaded_text_render(const font& f, const char* text, video::color fg, video::color bg) -> video::surface {
+inline auto shaded_text_render(const font& f, const char* text, color fg, color bg) -> surface {
     const auto pfont = f.get_pointer();
     if (const auto psurface = TTF_RenderText_Shaded(pfont, text, fg, bg)) {
-        return video::surface(psurface);
+        return surface(psurface);
     } else {
         throw error();
     }
 }
 
-inline auto shaded_utf8_render(const font& f, const char* text, video::color fg, video::color bg) -> video::surface {
+inline auto shaded_utf8_render(const font& f, const char* text, color fg, color bg) -> surface {
     const auto pfont = f.get_pointer();
     if (const auto psurface = TTF_RenderUTF8_Shaded(pfont, text, fg, bg)) {
-        return video::surface(psurface);
+        return surface(psurface);
     } else {
         throw error();
     }
 }
 
-inline auto blended_text_render(const font& f, const char* text, video::color fg_color) -> video::surface {
+inline auto blended_text_render(const font& f, const char* text, color fg_color) -> surface {
     const auto pfont = f.get_pointer();
     if (const auto psurface = TTF_RenderText_Blended(pfont, text, fg_color)) {
-        return video::surface(psurface);
+        return surface(psurface);
     } else {
         throw error();
     }
 }
 
-inline auto blended_utf8_render(const font& f, const char* text, video::color fg_color) -> video::surface {
+inline auto blended_utf8_render(const font& f, const char* text, color fg_color) -> surface {
     const auto pfont = f.get_pointer();
     if (const auto psurface = TTF_RenderUTF8_Blended(pfont, text, fg_color)) {
-        return video::surface(psurface);
+        return surface(psurface);
     } else {
         throw error();
     }
 }
 
-inline auto blended_wrapped_text_render(const font& f, const char* txt, video::color fg, u32 wrap_length) -> video::surface {
+inline auto blended_wrapped_text_render(const font& f, const char* txt, color fg, u32 wrap_length) -> surface {
     const auto pfont = f.get_pointer();
     const auto wrap = wrap_length;
     const auto psurface = TTF_RenderText_Blended_Wrapped(pfont, txt, fg, wrap);
     if (psurface) {
-        return video::surface(psurface);
+        return surface(psurface);
     } else {
         throw error();
     }
 }
 
-inline auto blended_wrapped_utf8_render(const font& f, const char* txt, video::color fg, u32 wrap_length) -> video::surface {
+inline auto blended_wrapped_utf8_render(const font& f, const char* txt, color fg, u32 wrap_length) -> surface {
     const auto pfont = f.get_pointer();
     const auto wrap = wrap_length;
     const auto psurface = TTF_RenderUTF8_Blended_Wrapped(pfont, txt, fg, wrap);
     if (psurface) {
-        return video::surface(psurface);
+        return surface(psurface);
     } else {
         throw error();
     }

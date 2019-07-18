@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL.h>
 
-namespace sdlw::video {
+namespace sdlw {
 
 enum class blend_mode {
     none  = SDL_BLENDMODE_NONE,
@@ -11,4 +11,4 @@ enum class blend_mode {
     mod   = SDL_BLENDMODE_MOD
 };
 
-} // namespace sdlw::video
+} // namespace sdlw

@@ -7,7 +7,7 @@
 #include <sdlw/video/point.hpp>
 #include <sdlw/video/size.hpp>
 
-namespace sdlw::video {
+namespace sdlw {
 
 using rectangle = SDL_Rect;
 
@@ -105,4 +105,4 @@ rectangle_union(const rectangle& r1, const rectangle& r2) noexcept
     return result;
 }
 
-} // namespace sdlw::video
+} // namespace sdlw

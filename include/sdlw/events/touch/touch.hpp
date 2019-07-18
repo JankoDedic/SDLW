@@ -8,18 +8,18 @@
 #include <sdlw/events/touch/device_id.hpp>
 #include <sdlw/events/touch/finger.hpp>
 
-namespace sdlw::events::touch {
+namespace sdlw {
 
 inline
 int
-num_devices() noexcept
+num_touch_devices() noexcept
 {
     return SDL_GetNumTouchDevices();
 }
 
 inline
 device_id
-get_device_id(int device_index)
+get_touch_device(int device_index)
 {
     if (const auto result = SDL_GetTouchDevice(device_index); result == 0) {
         throw error();
@@ -30,7 +30,7 @@ get_device_id(int device_index)
 
 inline
 int
-num_fingers(device_id id)
+num_touch_fingers(device_id id)
 {
     const auto result = SDL_GetNumTouchFingers(static_cast<SDL_TouchID>(id));
     if (result == 0) {
@@ -42,7 +42,7 @@ num_fingers(device_id id)
 
 inline
 finger
-get_finger(device_id id, int finger_index)
+get_touch_finger(device_id id, int finger_index)
 {
     if (const auto fing = SDL_GetTouchFinger(SDL_TouchID(id), finger_index)) {
         return finger(*fing);
@@ -51,4 +51,4 @@ get_finger(device_id id, int finger_index)
     }
 }
 
-} // namespace sdlw::events::touch
+} // namespace sdlw

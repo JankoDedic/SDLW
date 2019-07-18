@@ -6,7 +6,7 @@
 
 #include <sdlw/utility.hpp>
 
-namespace sdlw::video {
+namespace sdlw {
 
 class surface {
     using deleter = detail::make_functor<SDL_FreeSurface>;
@@ -42,4 +42,4 @@ operator!=(const surface& lhs, const surface& rhs) noexcept
     return !(lhs == rhs);
 }
 
-} // namespace sdlw::video
+} // namespace sdlw

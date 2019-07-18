@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL.h>
 
-namespace sdlw::events::keyboard {
+namespace sdlw {
 
 enum class scancode {
     unknown             = SDL_SCANCODE_UNKNOWN,
@@ -251,4 +251,4 @@ enum class scancode {
     num_scancodes       = SDL_NUM_SCANCODES
 };
 
-} // namespace sdlw::events::keyboard
+} // namespace sdlw

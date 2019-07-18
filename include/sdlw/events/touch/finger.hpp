@@ -4,7 +4,7 @@
 
 #include <sdlw/types.hpp>
 
-namespace sdlw::events::touch {
+namespace sdlw {
 
 using finger_id = i64;
 
@@ -43,4 +43,4 @@ public:
     }
 };
 
-} // namespace sdlw::events::touch
+} // namespace sdlw

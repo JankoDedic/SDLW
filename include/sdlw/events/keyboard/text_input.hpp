@@ -4,7 +4,7 @@
 
 #include <sdlw/video/rectangle.hpp>
 
-namespace sdlw::events::keyboard {
+namespace sdlw {
 
 struct text_input {
     static auto is_active() noexcept -> bool {
@@ -19,9 +19,9 @@ struct text_input {
         SDL_StopTextInput();
     }
 
-    static void set_candidate_list_bounds(const video::rectangle &bounds) noexcept {
+    static void set_candidate_list_bounds(const rectangle &bounds) noexcept {
         SDL_SetTextInputRect(const_cast<SDL_Rect *>(&bounds));
     }
 };
 
-} // namespace sdlw::events::keyboard
+} // namespace sdlw

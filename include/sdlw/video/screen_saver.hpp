@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL.h>
 
-namespace sdlw::video {
+namespace sdlw {
 
 struct screen_saver {
     static
@@ -27,4 +27,4 @@ struct screen_saver {
     }
 };
 
-} // namespace sdlw::video
+} // namespace sdlw

@@ -59,7 +59,6 @@
     #include <sdlw/video/texture.hpp>
     #include <sdlw/video/window.hpp>
     #include <sdlw/video/window_and_renderer.hpp>
-    #include <sdlw/video/renderer_and_texture.hpp>
 
         #include <sdlw/video/display/display.hpp>
         #include <sdlw/video/display/mode.hpp>

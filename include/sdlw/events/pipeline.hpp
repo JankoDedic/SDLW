@@ -2,7 +2,7 @@
 
 #include <sdlw/events/event.hpp>
 
-namespace sdlw::events {
+namespace sdlw {
 
 inline void pump_events() noexcept {
     SDL_PumpEvents();
@@ -203,4 +203,4 @@ namespace event_queue {
 
 } // namespace queue
 
-} // namespace sdlw::events
+} // namespace sdlw

@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL.h>
 
-namespace sdlw::video {
+namespace sdlw {
 
 using color = SDL_Color;
 
@@ -11,4 +11,4 @@ enum alpha : u8 {
     opaque      = SDL_ALPHA_OPAQUE
 };
 
-} // namespace sdlw::video
+} // namespace sdlw

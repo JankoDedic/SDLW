@@ -6,9 +6,9 @@
 #include <sdlw/video/pixels/pixel_format_type.hpp>
 #include <sdlw/video/size.hpp>
 
-namespace sdlw::video::display {
+namespace sdlw {
 
-class mode {
+class display_mode {
     SDL_DisplayMode _display_mode;
 
 public:
@@ -19,39 +19,39 @@ public:
         return _display_mode;
     }
 
-    mode() noexcept = default;
+    display_mode() noexcept = default;
 
     constexpr
     explicit
-    mode(const SDL_DisplayMode& display_mode) noexcept
+    display_mode(const SDL_DisplayMode& display_mode) noexcept
         : _display_mode(display_mode)
     {
     }
 
     constexpr
-    pixels::pixel_format_type
+    pixel_format_type
     format() const noexcept
     {
-        return static_cast<pixels::pixel_format_type>(_display_mode.format);
+        return static_cast<pixel_format_type>(_display_mode.format);
     }
 
     constexpr
     void
-    set_format(pixels::pixel_format_type format) noexcept
+    set_format(pixel_format_type format) noexcept
     {
         _display_mode.format = static_cast<u32>(format);
     }
 
     constexpr
-    sdlw::video::size
+    sdlw::size
     size() const noexcept
     {
-        return sdlw::video::size{_display_mode.w, _display_mode.h};
+        return sdlw::size{_display_mode.w, _display_mode.h};
     }
 
     constexpr
     void
-    set_size(const sdlw::video::size& size) noexcept
+    set_size(const sdlw::size& size) noexcept
     {
         _display_mode.w = size.w;
         _display_mode.h = size.h;
@@ -86,4 +86,4 @@ public:
     }
 };
 
-} // namespace sdlw::video::display
+} // namespace sdlw

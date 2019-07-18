@@ -16,7 +16,7 @@
 #include <sdlw/events/touch/device_id.hpp>
 #include <sdlw/events/touch/finger.hpp>
 
-namespace sdlw::events {
+namespace sdlw {
 
 enum class event_type {
     first_event                = SDL_FIRSTEVENT,
@@ -92,21 +92,21 @@ class controller_axis_event {
     SDL_ControllerAxisEvent _event;
 
 public:
-    auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
-    auto which()     const noexcept -> joystick::instance_id   { return {_event.which};                                                   }
-    auto axis()      const noexcept -> game_controller::axis   { return static_cast<game_controller::axis>(_event.axis);                  }
-    auto value()     const noexcept -> i16                     { return _event.value;                                                     }
+    auto type()      const noexcept -> event_type           { return static_cast<event_type>(_event.type);                 }
+    auto timestamp() const noexcept -> clock::time_point    { return clock::time_point{clock::duration{_event.timestamp}}; }
+    auto which()     const noexcept -> joystick_id          { return {_event.which};                                       }
+    auto axis()      const noexcept -> game_controller_axis { return static_cast<game_controller_axis>(_event.axis);       }
+    auto value()     const noexcept -> i16                  { return _event.value;                                         }
 };
 
 class controller_button_event {
     SDL_ControllerButtonEvent _event;
 
 public:
-    auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
-    auto which()     const noexcept -> joystick::instance_id   { return {_event.which};                                                   }
-    auto button()    const noexcept -> game_controller::button { return static_cast<game_controller::button>(_event.button);              }
+    auto type()      const noexcept -> event_type             { return static_cast<event_type>(_event.type);                 }
+    auto timestamp() const noexcept -> clock::time_point      { return clock::time_point{clock::duration{_event.timestamp}}; }
+    auto which()     const noexcept -> joystick_id            { return {_event.which};                                       }
+    auto button()    const noexcept -> game_controller_button { return static_cast<game_controller_button>(_event.button);   }
 };
 
 class controller_device_event {
@@ -122,14 +122,14 @@ class dollar_gesture_event {
     SDL_DollarGestureEvent _event;
 
 public:
-    auto type()        const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
+    auto type()        const noexcept -> event_type        { return static_cast<event_type>(_event.type);                 }
     auto timestamp()   const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
-    auto touch_id()    const noexcept -> touch::device_id        { return {_event.touchId};                                                 }
-    auto gesture_id()  const noexcept -> gesture::id             { return {_event.gestureId};                                               }
-    auto num_fingers() const noexcept -> u32                     { return _event.numFingers;                                                }
-    auto error()       const noexcept -> float                   { return _event.error;                                                     }
-    auto x()           const noexcept -> float                   { return _event.x;                                                         }
-    auto y()           const noexcept -> float                   { return _event.y;                                                         }
+    auto touch_id()    const noexcept -> sdlw::touch_id    { return {_event.touchId};                                     }
+    auto gesture_id()  const noexcept -> gesture_id        { return {_event.gestureId};                                   }
+    auto num_fingers() const noexcept -> u32               { return _event.numFingers;                                    }
+    auto error()       const noexcept -> float             { return _event.error;                                         }
+    auto x()           const noexcept -> float             { return _event.x;                                             }
+    auto y()           const noexcept -> float             { return _event.y;                                             }
 };
 
 class drop_event {
@@ -138,7 +138,7 @@ class drop_event {
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
     auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
-    auto window_id() const noexcept -> video::window_id        { return {_event.windowID};                                                }
+    auto window_id() const noexcept -> window_id        { return {_event.windowID};                                                }
     auto file()      const noexcept -> const char*             { return _event.file;                                                      }
 };
 
@@ -146,70 +146,70 @@ class touch_finger_event {
     SDL_TouchFingerEvent _event;
 
 public:
-    auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
+    auto type()      const noexcept -> event_type        { return static_cast<event_type>(_event.type);                 }
     auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
-    auto touch_id()  const noexcept -> touch::device_id        { return {_event.touchId};                                                 }
-    auto finger_id() const noexcept -> touch::finger_id        { return {_event.fingerId};                                                }
-    auto x()         const noexcept -> float                   { return _event.x;                                                         }
-    auto y()         const noexcept -> float                   { return _event.y;                                                         }
-    auto dx()        const noexcept -> float                   { return _event.dx;                                                        }
-    auto dy()        const noexcept -> float                   { return _event.dy;                                                        }
-    auto pressure()  const noexcept -> float                   { return _event.pressure;                                                  }
+    auto touch_id()  const noexcept -> sdlw::touch_id    { return {_event.touchId};                                     }
+    auto finger_id() const noexcept -> sdlw::finger_id   { return {_event.fingerId};                                    }
+    auto x()         const noexcept -> float             { return _event.x;                                             }
+    auto y()         const noexcept -> float             { return _event.y;                                             }
+    auto dx()        const noexcept -> float             { return _event.dx;                                            }
+    auto dy()        const noexcept -> float             { return _event.dy;                                            }
+    auto pressure()  const noexcept -> float             { return _event.pressure;                                      }
 };
 
 class keyboard_event {
     SDL_KeyboardEvent _event;
 
 public:
-    auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
+    auto type()      const noexcept -> event_type        { return static_cast<event_type>(_event.type);                 }
     auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
-    auto window_id() const noexcept -> video::window_id        { return {_event.windowID};                                                }
-    auto key()       const noexcept -> keyboard::key           { return keyboard::key{_event.keysym};                                     }
-    auto repeat()    const noexcept -> int                     { return _event.repeat;                                                    }
+    auto window_id() const noexcept -> window_id  { return {_event.windowID};                                    }
+    auto key()       const noexcept -> sdlw::key         { return sdlw::key{_event.keysym};                             }
+    auto repeat()    const noexcept -> int               { return _event.repeat;                                        }
 };
 
 class joy_axis_event {
     SDL_JoyAxisEvent _event;
 
 public:
-    auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
+    auto type()      const noexcept -> event_type        { return static_cast<event_type>(_event.type);                 }
     auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
-    auto which()     const noexcept -> joystick::instance_id   { return {_event.which};                                                   }
-    auto axis()      const noexcept -> u8                      { return _event.axis;                                                      }
-    auto value()     const noexcept -> i16                     { return _event.value;                                                     }
+    auto which()     const noexcept -> joystick_id       { return {_event.which};                                       }
+    auto axis()      const noexcept -> u8                { return _event.axis;                                          }
+    auto value()     const noexcept -> i16               { return _event.value;                                         }
 };
 
 class joy_ball_event {
     SDL_JoyBallEvent _event;
 
 public:
-    auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
+    auto type()      const noexcept -> event_type        { return static_cast<event_type>(_event.type);                 }
     auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
-    auto which()     const noexcept -> joystick::instance_id   { return {_event.which};                                                   }
-    auto ball()      const noexcept -> u8                      { return _event.ball;                                                      }
-    auto xrel()      const noexcept -> i16                     { return _event.xrel;                                                      }
-    auto yrel()      const noexcept -> i16                     { return _event.yrel;                                                      }
+    auto which()     const noexcept -> joystick_id       { return {_event.which};                                       }
+    auto ball()      const noexcept -> u8                { return _event.ball;                                          }
+    auto xrel()      const noexcept -> i16               { return _event.xrel;                                          }
+    auto yrel()      const noexcept -> i16               { return _event.yrel;                                          }
 };
 
 class joy_hat_event {
     SDL_JoyHatEvent _event;
 
 public:
-    auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
-    auto which()     const noexcept -> joystick::instance_id   { return {_event.which};                                                   }
-    auto hat()       const noexcept -> u8                      { return _event.hat;                                                       }
-    auto value()     const noexcept -> joystick::hat_position  { return static_cast<joystick::hat_position>(_event.value);                }
+    auto type()      const noexcept -> event_type            { return static_cast<event_type>(_event.type);                 }
+    auto timestamp() const noexcept -> clock::time_point     { return clock::time_point{clock::duration{_event.timestamp}}; }
+    auto which()     const noexcept -> joystick_id           { return {_event.which};                                       }
+    auto hat()       const noexcept -> u8                    { return _event.hat;                                           }
+    auto value()     const noexcept -> joystick_hat_position { return static_cast<joystick_hat_position>(_event.value);     }
 };
 
 class joy_button_event {
     SDL_JoyButtonEvent _event;
 
 public:
-    auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
+    auto type()      const noexcept -> event_type        { return static_cast<event_type>(_event.type);                 }
     auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
-    auto which()     const noexcept -> joystick::instance_id   { return {_event.which};                                                   }
-    auto button()    const noexcept -> u8                      { return _event.button;                                                    }
+    auto which()     const noexcept -> joystick_id       { return {_event.which};                                       }
+    auto button()    const noexcept -> u8                { return _event.button;                                        }
 };
 
 class joy_device_event {
@@ -225,56 +225,56 @@ class mouse_motion_event {
     SDL_MouseMotionEvent _event;
 
 public:
-    auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
-    auto window_id() const noexcept -> video::window_id        { return {_event.windowID};                                                }
-    auto which()     const noexcept -> u32                     { return _event.which;                                                     }
-    auto state()     const noexcept -> mouse::button_state     { return static_cast<mouse::button_state>(_event.state);                   }
-    auto x()         const noexcept -> i32                     { return _event.x;                                                         }
-    auto y()         const noexcept -> i32                     { return _event.y;                                                         }
-    auto xrel()      const noexcept -> i32                     { return _event.xrel;                                                      }
-    auto yrel()      const noexcept -> i32                     { return _event.yrel;                                                      }
+    auto type()      const noexcept -> event_type         { return static_cast<event_type>(_event.type);                 }
+    auto timestamp() const noexcept -> clock::time_point  { return clock::time_point{clock::duration{_event.timestamp}}; }
+    auto window_id() const noexcept -> window_id   { return {_event.windowID};                                    }
+    auto which()     const noexcept -> u32                { return _event.which;                                         }
+    auto state()     const noexcept -> mouse_button_state { return static_cast<mouse_button_state>(_event.state);        }
+    auto x()         const noexcept -> i32                { return _event.x;                                             }
+    auto y()         const noexcept -> i32                { return _event.y;                                             }
+    auto xrel()      const noexcept -> i32                { return _event.xrel;                                          }
+    auto yrel()      const noexcept -> i32                { return _event.yrel;                                          }
 };
 
 class mouse_button_event {
     SDL_MouseButtonEvent _event;
 
 public:
-    auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
+    auto type()      const noexcept -> event_type        { return static_cast<event_type>(_event.type);                 }
     auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
-    auto window_id() const noexcept -> video::window_id        { return {_event.windowID};                                                }
-    auto which()     const noexcept -> u32                     { return _event.which;                                                     }
-    auto button()    const noexcept -> mouse::button           { return mouse::button{_event.button};                                     }
-    auto x()         const noexcept -> i32                     { return _event.x;                                                         }
-    auto y()         const noexcept -> i32                     { return _event.y;                                                         }
-    auto clicks()    const noexcept -> u8                      { return _event.clicks;                                                    }
+    auto window_id() const noexcept -> window_id  { return {_event.windowID};                                    }
+    auto which()     const noexcept -> u32               { return _event.which;                                         }
+    auto button()    const noexcept -> mouse_button      { return mouse_button{_event.button};                          }
+    auto x()         const noexcept -> i32               { return _event.x;                                             }
+    auto y()         const noexcept -> i32               { return _event.y;                                             }
+    auto clicks()    const noexcept -> u8                { return _event.clicks;                                        }
 };
 
 class mouse_wheel_event {
     SDL_MouseWheelEvent _event;
 
 public:
-    auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
-    auto window_id() const noexcept -> video::window_id        { return {_event.windowID};                                                }
-    auto which()     const noexcept -> u32                     { return _event.which;                                                     }
-    auto x()         const noexcept -> i32                     { return _event.x;                                                         }
-    auto y()         const noexcept -> i32                     { return _event.y;                                                         }
-    auto direction() const noexcept -> mouse::wheel_direction  { return static_cast<mouse::wheel_direction>(_event.direction);            }
+    auto type()      const noexcept -> event_type            { return static_cast<event_type>(_event.type);                 }
+    auto timestamp() const noexcept -> clock::time_point     { return clock::time_point{clock::duration{_event.timestamp}}; }
+    auto window_id() const noexcept -> window_id      { return {_event.windowID};                                    }
+    auto which()     const noexcept -> u32                   { return _event.which;                                         }
+    auto x()         const noexcept -> i32                   { return _event.x;                                             }
+    auto y()         const noexcept -> i32                   { return _event.y;                                             }
+    auto direction() const noexcept -> mouse_wheel_direction { return static_cast<mouse_wheel_direction>(_event.direction); }
 };
 
 class multi_gesture_event {
     SDL_MultiGestureEvent _event;
 
 public:
-    auto type()            const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
-    auto timestamp()       const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
-    auto touch_device_id() const noexcept -> touch::device_id        { return {_event.touchId};                                                 }
-    auto rotation()        const noexcept -> float                   { return _event.dTheta;                                                    }
-    auto pinch()           const noexcept -> float                   { return _event.dDist;                                                     }
-    auto x()               const noexcept -> float                   { return _event.x;                                                         }
-    auto y()               const noexcept -> float                   { return _event.y;                                                         }
-    auto num_fingers()     const noexcept -> u16                     { return _event.numFingers;                                                }
+    auto type()        const noexcept -> event_type        { return static_cast<event_type>(_event.type);                 }
+    auto timestamp()   const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
+    auto touch_id()    const noexcept -> sdlw::touch_id    { return {_event.touchId};                                     }
+    auto rotation()    const noexcept -> float             { return _event.dTheta;                                        }
+    auto pinch()       const noexcept -> float             { return _event.dDist;                                         }
+    auto x()           const noexcept -> float             { return _event.x;                                             }
+    auto y()           const noexcept -> float             { return _event.y;                                             }
+    auto num_fingers() const noexcept -> u16               { return _event.numFingers;                                    }
 };
 
 class quit_event {
@@ -300,7 +300,7 @@ class text_editing_event {
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
     auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
-    auto window_id() const noexcept -> video::window_id        { return {_event.windowID};                                                }
+    auto window_id() const noexcept -> window_id        { return {_event.windowID};                                                }
     auto text()      const noexcept -> const char*             { return _event.text;                                                      }
     auto start()     const noexcept -> i32                     { return _event.start;                                                     }
     auto length()    const noexcept -> i32                     { return _event.length;                                                    }
@@ -312,7 +312,7 @@ class text_input_event {
 public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
     auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
-    auto window_id() const noexcept -> video::window_id        { return {_event.windowID};                                                }
+    auto window_id() const noexcept -> window_id        { return {_event.windowID};                                                }
     auto text()      const noexcept -> const char*             { return _event.text;                                                      }
 };
 
@@ -343,7 +343,7 @@ public:
     auto type()      const noexcept -> event_type              { return static_cast<event_type>(_event.type);                             }
     auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto event()     const noexcept -> window_event_type       { return static_cast<window_event_type>(_event.event);                     }
-    auto window_id() const noexcept -> video::window_id        { return {_event.windowID};                                                }
+    auto window_id() const noexcept -> window_id        { return {_event.windowID};                                                }
     auto data1()     const noexcept -> i32                     { return _event.data1;                                                     }
     auto data2()     const noexcept -> i32                     { return _event.data2;                                                     }
 };
@@ -380,4 +380,4 @@ public:
     auto window()            const noexcept { return reinterpret_cast<const window_event&            > (_event.window);   }
 };
 
-} // namespace sdlw::events
+} // namespace sdlw

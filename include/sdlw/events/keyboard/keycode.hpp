@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL.h>
 
-namespace sdlw::events::keyboard {
+namespace sdlw {
 
 enum class keycode {
     unknown             = SDLK_UNKNOWN,
@@ -247,4 +247,4 @@ enum class keycode {
     audio_fast_forward  = SDLK_AUDIOFASTFORWARD
 };
 
-} // namespace sdlw::events::keyboard
+} // namespace sdlw

@@ -4,7 +4,7 @@
 
 #include <SDL2/SDL.h>
 
-namespace sdlw::video {
+namespace sdlw {
 
 using point = SDL_Point;
 
@@ -213,4 +213,4 @@ operator/=(point& lhs, T rhs) noexcept
     return lhs;
 }
 
-} // namespace sdlw::video
+} // namespace sdlw

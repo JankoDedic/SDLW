@@ -2,9 +2,9 @@
 
 #include <SDL2/SDL.h>
 
-namespace sdlw::events::game_controller {
+namespace sdlw {
 
-enum class button {
+enum class game_controller_button {
     invalid        = SDL_CONTROLLER_BUTTON_INVALID,
     a              = SDL_CONTROLLER_BUTTON_A,
     b              = SDL_CONTROLLER_BUTTON_B,
@@ -24,4 +24,4 @@ enum class button {
     max            = SDL_CONTROLLER_BUTTON_MAX
 };
 
-} // namespace sdlw::events::game_controller
+} // namespace sdlw

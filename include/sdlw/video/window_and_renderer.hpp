@@ -3,31 +3,7 @@
 #include <sdlw/video/window.hpp>
 #include <sdlw/video/renderer.hpp>
 
-namespace sdlw::video {
-
-/* inline */
-/* const renderer& */
-/* window_ref::renderer() const */
-/* { */
-/*     static auto s = ::sdlw::detail::storage<sdlw::video::renderer>(); */
-/*     if (const auto ptr = SDL_GetRenderer(get_pointer())) { */
-/*         return *new (&s) sdlw::video::renderer(ptr); */
-/*     } else { */
-/*         throw error(); */
-/*     } */
-/* } */
-
-/* inline */
-/* renderer& */
-/* window_ref::renderer() */
-/* { */
-/*     static auto s = ::sdlw::detail::storage<sdlw::video::renderer>(); */
-/*     if (const auto ptr = SDL_GetRenderer(get_pointer())) { */
-/*         return *new (&s) sdlw::video::renderer(ptr); */
-/*     } else { */
-/*         throw error(); */
-/*     } */
-/* } */
+namespace sdlw {
 
 inline
 std::pair<window, renderer>
@@ -46,4 +22,4 @@ make_window_and_renderer(const size& window_size, window_flags flags)
     }
 }
 
-} // namespace sdlw::video
+} // namespace sdlw
