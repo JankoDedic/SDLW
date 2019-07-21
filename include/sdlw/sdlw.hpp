@@ -9,58 +9,58 @@
 
     #include <sdlw/audio.hpp>
 
-    #include <sdlw/events/event.hpp>
-    #include <sdlw/events/event_pipeline.hpp>
+    #include <sdlw/event.hpp>
+    #include <sdlw/event_pipeline.hpp>
 
-        #include <sdlw/events/game_controller/game_controller_axis.hpp>
-        #include <sdlw/events/game_controller/game_controller_button.hpp>
+        #include <sdlw/game_controller_axis.hpp>
+        #include <sdlw/game_controller_button.hpp>
 
-        #include <sdlw/events/gesture/gesture_id.hpp>
+        #include <sdlw/gesture_id.hpp>
 
-        #include <sdlw/events/joystick/joystick_hat_position.hpp>
-        #include <sdlw/events/joystick/joystick_instance_id.hpp>
+        #include <sdlw/joystick_hat_position.hpp>
+        #include <sdlw/joystick_instance_id.hpp>
 
-        #include <sdlw/events/keyboard/key.hpp>
-        #include <sdlw/events/keyboard/keyboard.hpp>
-        #include <sdlw/events/keyboard/keycode.hpp>
-        #include <sdlw/events/keyboard/keymod.hpp>
-        #include <sdlw/events/keyboard/scancode.hpp>
-        #include <sdlw/events/keyboard/screen_keyboard.hpp>
-        #include <sdlw/events/keyboard/text_input.hpp>
+        #include <sdlw/key.hpp>
+        #include <sdlw/keyboard.hpp>
+        #include <sdlw/keycode.hpp>
+        #include <sdlw/keymod.hpp>
+        #include <sdlw/scancode.hpp>
+        #include <sdlw/screen_keyboard.hpp>
+        #include <sdlw/text_input.hpp>
 
-        #include <sdlw/events/mouse/active_cursor.hpp>
-        #include <sdlw/events/mouse/mouse_button.hpp>
-        #include <sdlw/events/mouse/mouse_button_state.hpp>
-        #include <sdlw/events/mouse/cursor.hpp>
-        #include <sdlw/events/mouse/mouse.hpp>
-        #include <sdlw/events/mouse/relative_mouse_mode.hpp>
-        #include <sdlw/events/mouse/mouse_wheel_direction.hpp>
+        #include <sdlw/active_cursor.hpp>
+        #include <sdlw/mouse_button.hpp>
+        #include <sdlw/mouse_button_state.hpp>
+        #include <sdlw/cursor.hpp>
+        #include <sdlw/mouse.hpp>
+        #include <sdlw/relative_mouse_mode.hpp>
+        #include <sdlw/mouse_wheel_direction.hpp>
 
-        #include <sdlw/events/touch/touch_device_id.hpp>
-        #include <sdlw/events/touch/touch_finger.hpp>
-        #include <sdlw/events/touch/touch.hpp>
+        #include <sdlw/touch_device_id.hpp>
+        #include <sdlw/touch_finger.hpp>
+        #include <sdlw/touch.hpp>
 
     #include <sdlw/power.hpp>
 
     #include <sdlw/time.hpp>
 
     #include <sdlw/blend_mode.hpp>
-    #include <sdlw/video/color.hpp>
-    #include <sdlw/video/video_driver.hpp>
-    #include <sdlw/video/message_box.hpp>
-    #include <sdlw/video/point.hpp>
-    #include <sdlw/video/rectangle.hpp>
-    #include <sdlw/video/render_driver.hpp>
-    #include <sdlw/video/renderer.hpp>
-    #include <sdlw/video/screen_saver.hpp>
-    #include <sdlw/video/size.hpp>
-    #include <sdlw/video/video_subsystem.hpp>
-    #include <sdlw/video/surface.hpp>
-    #include <sdlw/video/texture.hpp>
-    #include <sdlw/video/window.hpp>
-    #include <sdlw/video/window_and_renderer.hpp>
+    #include <sdlw/color.hpp>
+    #include <sdlw/video_driver.hpp>
+    #include <sdlw/message_box.hpp>
+    #include <sdlw/point.hpp>
+    #include <sdlw/rectangle.hpp>
+    #include <sdlw/render_driver.hpp>
+    #include <sdlw/renderer.hpp>
+    #include <sdlw/screen_saver.hpp>
+    #include <sdlw/size.hpp>
+    #include <sdlw/video_subsystem.hpp>
+    #include <sdlw/surface.hpp>
+    #include <sdlw/texture.hpp>
+    #include <sdlw/window.hpp>
+    #include <sdlw/window_and_renderer.hpp>
 
-        #include <sdlw/video/display/display.hpp>
-        #include <sdlw/video/display/display_mode.hpp>
+        #include <sdlw/display.hpp>
+        #include <sdlw/display_mode.hpp>
 
-        #include <sdlw/video/pixels/pixel_format_type.hpp>
+        #include <sdlw/pixel_format_type.hpp>

@@ -2,10 +2,10 @@
 
 #include <optional>
 
-#include <sdlw/video/window.hpp>
-#include <sdlw/events/keyboard/keycode.hpp>
-#include <sdlw/events/keyboard/keymod.hpp>
-#include <sdlw/events/keyboard/scancode.hpp>
+#include <sdlw/window.hpp>
+#include <sdlw/keycode.hpp>
+#include <sdlw/keymod.hpp>
+#include <sdlw/scancode.hpp>
 
 namespace sdlw {
 

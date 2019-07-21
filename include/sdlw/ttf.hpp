@@ -7,9 +7,9 @@
 #include <sdlw/error.hpp>
 #include <sdlw/types.hpp>
 #include <sdlw/utility.hpp>
-#include <sdlw/video/color.hpp>
-#include <sdlw/video/size.hpp>
-#include <sdlw/video/surface.hpp>
+#include <sdlw/color.hpp>
+#include <sdlw/size.hpp>
+#include <sdlw/surface.hpp>
 
 namespace sdlw::ttf {
 

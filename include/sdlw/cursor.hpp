@@ -3,9 +3,9 @@
 #include <SDL2/SDL.h>
 
 #include <sdlw/utility.hpp>
-#include <sdlw/video/point.hpp>
-#include <sdlw/video/size.hpp>
-#include <sdlw/video/surface.hpp>
+#include <sdlw/point.hpp>
+#include <sdlw/size.hpp>
+#include <sdlw/surface.hpp>
 
 namespace sdlw {
 

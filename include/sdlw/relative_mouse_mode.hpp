@@ -3,8 +3,8 @@
 #include <utility>
 
 #include <sdlw/error.hpp>
-#include <sdlw/video/point.hpp>
-#include <sdlw/events/mouse/mouse_button_state.hpp>
+#include <sdlw/point.hpp>
+#include <sdlw/mouse_button_state.hpp>
 
 namespace sdlw {
 

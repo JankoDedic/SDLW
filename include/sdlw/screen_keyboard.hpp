@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL.h>
 
-#include <sdlw/video/window.hpp>
+#include <sdlw/window.hpp>
 
 namespace sdlw {
 

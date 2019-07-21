@@ -5,8 +5,8 @@
 #include <SDL2/SDL.h>
 
 #include <sdlw/error.hpp>
-#include <sdlw/events/touch/touch_device_id.hpp>
-#include <sdlw/events/touch/touch_finger.hpp>
+#include <sdlw/touch_device_id.hpp>
+#include <sdlw/touch_finger.hpp>
 
 namespace sdlw {
 

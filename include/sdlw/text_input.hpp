@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL.h>
 
-#include <sdlw/video/rectangle.hpp>
+#include <sdlw/rectangle.hpp>
 
 namespace sdlw {
 

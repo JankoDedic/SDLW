@@ -4,9 +4,9 @@
 
 #include <SDL2/SDL.h>
 
-#include <sdlw/video/rectangle.hpp>
-#include <sdlw/video/window.hpp>
-#include <sdlw/video/display/display_mode.hpp>
+#include <sdlw/rectangle.hpp>
+#include <sdlw/window.hpp>
+#include <sdlw/display_mode.hpp>
 
 namespace sdlw {
 

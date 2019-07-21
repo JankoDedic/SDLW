@@ -2,9 +2,9 @@
 
 #include <SDL2/SDL_image.h>
 
-#include <sdlw/video/renderer.hpp>
-#include <sdlw/video/surface.hpp>
-#include <sdlw/video/texture.hpp>
+#include <sdlw/renderer.hpp>
+#include <sdlw/surface.hpp>
+#include <sdlw/texture.hpp>
 #include <sdlw/utility.hpp>
 
 namespace sdlw::img {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <sdlw/video/window.hpp>
-#include <sdlw/video/renderer.hpp>
+#include <sdlw/window.hpp>
+#include <sdlw/renderer.hpp>
 
 namespace sdlw {
 

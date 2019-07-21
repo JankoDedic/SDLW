@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sdlw/events/event.hpp>
+#include <sdlw/event.hpp>
 
 namespace sdlw {
 

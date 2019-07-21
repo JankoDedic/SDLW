@@ -3,10 +3,10 @@
 #include <SDL2/SDL.h>
 
 #include <sdlw/utility.hpp>
-#include <sdlw/video/color.hpp>
+#include <sdlw/color.hpp>
 #include <sdlw/blend_mode.hpp>
-#include <sdlw/video/surface.hpp>
-#include <sdlw/video/window.hpp>
+#include <sdlw/surface.hpp>
+#include <sdlw/window.hpp>
 
 namespace sdlw {
 

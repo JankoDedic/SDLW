@@ -4,8 +4,8 @@
 
 #include <SDL2/SDL.h>
 
-#include <sdlw/video/point.hpp>
-#include <sdlw/video/size.hpp>
+#include <sdlw/point.hpp>
+#include <sdlw/size.hpp>
 
 namespace sdlw {
 

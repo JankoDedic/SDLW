@@ -2,9 +2,9 @@
 
 #include <SDL2/SDL.h>
 
-#include <sdlw/video/renderer.hpp>
+#include <sdlw/renderer.hpp>
 
-namespace sdlw::video {
+namespace sdlw {
 
 struct render_driver {
     static
@@ -31,4 +31,4 @@ struct render_driver {
     }
 };
 
-} // namespace sdlw::video
+} // namespace sdlw

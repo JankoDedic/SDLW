@@ -4,7 +4,7 @@
 
 #include <SDL2/SDL.h>
 
-#include <sdlw/events/mouse/cursor.hpp>
+#include <sdlw/cursor.hpp>
 
 namespace sdlw {
 

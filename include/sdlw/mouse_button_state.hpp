@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sdlw/events/mouse/mouse_button.hpp>
+#include <sdlw/mouse_button.hpp>
 #include <sdlw/types.hpp>
 #include <sdlw/utility.hpp>
 

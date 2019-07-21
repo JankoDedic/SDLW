@@ -11,9 +11,9 @@
 
 #include <sdlw/error.hpp>
 #include <sdlw/utility.hpp>
-#include <sdlw/video/display/display_mode.hpp>
-#include <sdlw/video/rectangle.hpp>
-#include <sdlw/video/surface.hpp>
+#include <sdlw/display_mode.hpp>
+#include <sdlw/rectangle.hpp>
+#include <sdlw/surface.hpp>
 
 namespace sdlw {
 

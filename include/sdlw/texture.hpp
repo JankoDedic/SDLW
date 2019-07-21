@@ -2,9 +2,9 @@
 
 #include <sdlw/utility.hpp>
 #include <sdlw/blend_mode.hpp>
-#include <sdlw/video/pixels/pixel_format_type.hpp>
-#include <sdlw/video/size.hpp>
-#include <sdlw/video/renderer.hpp>
+#include <sdlw/pixel_format_type.hpp>
+#include <sdlw/size.hpp>
+#include <sdlw/renderer.hpp>
 
 namespace sdlw {
 

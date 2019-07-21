@@ -3,8 +3,8 @@
 #include <SDL2/SDL.h>
 
 #include <sdlw/types.hpp>
-#include <sdlw/video/pixels/pixel_format_type.hpp>
-#include <sdlw/video/size.hpp>
+#include <sdlw/pixel_format_type.hpp>
+#include <sdlw/size.hpp>
 
 namespace sdlw {
 
