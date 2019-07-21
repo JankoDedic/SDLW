@@ -382,7 +382,7 @@ inline auto operator!=(const renderer& lhs, const renderer& rhs) noexcept -> boo
     return !(lhs == rhs);
 }
 
-auto window_ref::renderer() -> renderer_ref {
+inline auto window_ref::renderer() -> renderer_ref {
     if (const auto ptr = SDL_GetRenderer(_pwindow)) {
         return {ptr};
     } else {

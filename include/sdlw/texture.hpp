@@ -230,7 +230,7 @@ operator!=(const texture& lhs, const texture& rhs) noexcept
     return !(lhs == rhs);
 }
 
-auto renderer_ref::target() -> texture_ref {
+inline auto renderer_ref::target() -> texture_ref {
     if (const auto ptr = SDL_GetRenderTarget(_prenderer)) {
         return {ptr};
     } else {
@@ -238,7 +238,7 @@ auto renderer_ref::target() -> texture_ref {
     }
 }
 
-void renderer_ref::set_target(texture* t) {
+inline void renderer_ref::set_target(texture* t) {
     if (SDL_SetRenderTarget(_prenderer, t ? t->get_pointer() : nullptr) < 0) {
         throw error{};
     }

@@ -36,7 +36,7 @@ namespace filter::custom {
         SDL_SetEventFilter(sdl_callback, &f);
     }
 
-    void set(bool(*filter)(const event&)) {
+    inline void set(bool(*filter)(const event&)) {
         constexpr auto fp_sdl_callback = [] (void* userdata, SDL_Event* e) -> int {
             auto f = reinterpret_cast<bool(*)(const event&)>(userdata);
             const auto& ev = *reinterpret_cast<event*>(e);
@@ -76,7 +76,7 @@ namespace watch {
         SDL_AddEventWatch(detail::watch_generator<EventWatch>::sdl_callback, &w);
     }
 
-    void add(void(*watch)(const event&)) {
+    inline void add(void(*watch)(const event&)) {
         SDL_AddEventWatch(detail::fp_sdl_callback, reinterpret_cast<void*>(watch));
     }
 
@@ -86,7 +86,7 @@ namespace watch {
         SDL_DelEventWatch(detail::watch_generator<EventWatch>::sdl_callback, &w);
     }
 
-    void remove(void(*watch)(const event&)) {
+    inline void remove(void(*watch)(const event&)) {
         SDL_DelEventWatch(detail::fp_sdl_callback, reinterpret_cast<void*>(watch));
     }
 
@@ -113,7 +113,7 @@ namespace event_queue {
         SDL_FilterEvents(sdl_callback, &f);
     }
 
-    void filter(bool(*filter)(const event&)) {
+    inline void filter(bool(*filter)(const event&)) {
         constexpr auto fp_sdl_callback = [] (void* userdata, SDL_Event* e) -> int {
             auto f = reinterpret_cast<bool(*)(const event&)>(userdata);
             const auto& ev = *reinterpret_cast<event*>(e);
