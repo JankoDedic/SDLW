@@ -28,13 +28,7 @@
         #include <sdlw/screen_keyboard.hpp>
         #include <sdlw/text_input.hpp>
 
-        #include <sdlw/active_cursor.hpp>
-        #include <sdlw/mouse_button.hpp>
-        #include <sdlw/mouse_button_state.hpp>
-        #include <sdlw/cursor.hpp>
         #include <sdlw/mouse.hpp>
-        #include <sdlw/relative_mouse_mode.hpp>
-        #include <sdlw/mouse_wheel_direction.hpp>
 
         #include <sdlw/touch_device_id.hpp>
         #include <sdlw/touch_finger.hpp>

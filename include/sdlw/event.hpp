@@ -11,8 +11,7 @@
 #include <sdlw/joystick_hat_position.hpp>
 #include <sdlw/joystick_instance_id.hpp>
 #include <sdlw/key.hpp>
-#include <sdlw/mouse_button_state.hpp>
-#include <sdlw/mouse_wheel_direction.hpp>
+#include <sdlw/mouse.hpp>
 #include <sdlw/touch_device_id.hpp>
 #include <sdlw/touch_finger.hpp>
 
