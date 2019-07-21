@@ -6,7 +6,7 @@
 #include <sdlw/color.hpp>
 #include <sdlw/blend_mode.hpp>
 #include <sdlw/surface.hpp>
-#include <sdlw/window.hpp>
+#include <sdlw/video.hpp>
 
 namespace sdlw {
 

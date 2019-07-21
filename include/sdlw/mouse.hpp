@@ -7,7 +7,7 @@
 
 #include <sdlw/error.hpp>
 #include <sdlw/point.hpp>
-#include <sdlw/window.hpp>
+#include <sdlw/video.hpp>
 #include "sdlw/utility.hpp"
 
 namespace sdlw {

@@ -2,7 +2,7 @@
 
 #include <optional>
 
-#include <sdlw/window.hpp>
+#include <sdlw/video.hpp>
 #include <sdlw/keycode.hpp>
 #include <sdlw/keymod.hpp>
 #include <sdlw/scancode.hpp>

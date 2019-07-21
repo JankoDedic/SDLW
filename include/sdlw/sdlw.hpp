@@ -38,23 +38,17 @@
 
     #include <sdlw/time.hpp>
 
+    #include <sdlw/video.hpp>
     #include <sdlw/blend_mode.hpp>
     #include <sdlw/color.hpp>
-    #include <sdlw/video_driver.hpp>
     #include <sdlw/message_box.hpp>
     #include <sdlw/point.hpp>
     #include <sdlw/rectangle.hpp>
     #include <sdlw/render_driver.hpp>
     #include <sdlw/renderer.hpp>
-    #include <sdlw/screen_saver.hpp>
     #include <sdlw/size.hpp>
-    #include <sdlw/video_subsystem.hpp>
     #include <sdlw/surface.hpp>
     #include <sdlw/texture.hpp>
-    #include <sdlw/window.hpp>
     #include <sdlw/window_and_renderer.hpp>
-
-        #include <sdlw/display.hpp>
-        #include <sdlw/display_mode.hpp>
 
         #include <sdlw/pixel_format_type.hpp>

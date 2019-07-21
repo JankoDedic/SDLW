@@ -6,6 +6,7 @@
 
 #include <sdlw/point.hpp>
 #include <sdlw/size.hpp>
+#include <sdlw/types.hpp>
 
 namespace sdlw {
 
