@@ -11,7 +11,7 @@
 
 #include <sdlw/error.hpp>
 #include <sdlw/utility.hpp>
-#include <sdlw/video/display/mode.hpp>
+#include <sdlw/video/display/display_mode.hpp>
 #include <sdlw/video/rectangle.hpp>
 #include <sdlw/video/surface.hpp>
 

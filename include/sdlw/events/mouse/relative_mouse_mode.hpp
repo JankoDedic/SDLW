@@ -4,7 +4,7 @@
 
 #include <sdlw/error.hpp>
 #include <sdlw/video/point.hpp>
-#include <sdlw/events/mouse/button_state.hpp>
+#include <sdlw/events/mouse/mouse_button_state.hpp>
 
 namespace sdlw {
 

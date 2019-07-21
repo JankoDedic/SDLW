@@ -6,7 +6,7 @@
 
 #include <sdlw/video/rectangle.hpp>
 #include <sdlw/video/window.hpp>
-#include <sdlw/video/display/mode.hpp>
+#include <sdlw/video/display/display_mode.hpp>
 
 namespace sdlw {
 

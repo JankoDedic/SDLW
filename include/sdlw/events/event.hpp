@@ -5,16 +5,16 @@
 #include <sdlw/audio.hpp>
 #include <sdlw/time.hpp>
 #include <sdlw/video/window.hpp>
-#include <sdlw/events/game_controller/axis.hpp>
-#include <sdlw/events/game_controller/button.hpp>
-#include <sdlw/events/gesture/id.hpp>
-#include <sdlw/events/joystick/hat_position.hpp>
-#include <sdlw/events/joystick/instance_id.hpp>
+#include <sdlw/events/game_controller/game_controller_axis.hpp>
+#include <sdlw/events/game_controller/game_controller_button.hpp>
+#include <sdlw/events/gesture/gesture_id.hpp>
+#include <sdlw/events/joystick/joystick_hat_position.hpp>
+#include <sdlw/events/joystick/joystick_instance_id.hpp>
 #include <sdlw/events/keyboard/key.hpp>
-#include <sdlw/events/mouse/button_state.hpp>
-#include <sdlw/events/mouse/wheel_direction.hpp>
-#include <sdlw/events/touch/device_id.hpp>
-#include <sdlw/events/touch/finger.hpp>
+#include <sdlw/events/mouse/mouse_button_state.hpp>
+#include <sdlw/events/mouse/mouse_wheel_direction.hpp>
+#include <sdlw/events/touch/touch_device_id.hpp>
+#include <sdlw/events/touch/touch_finger.hpp>
 
 namespace sdlw {
 
