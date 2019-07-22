@@ -11,8 +11,7 @@
 
     #include <sdlw/events.hpp>
 
-        #include <sdlw/game_controller_axis.hpp>
-        #include <sdlw/game_controller_button.hpp>
+        #include <sdlw/game_controller.hpp>
 
         #include <sdlw/gesture_id.hpp>
 
