@@ -10,8 +10,7 @@
 #include <sdlw/joystick.hpp>
 #include <sdlw/keyboard.hpp>
 #include <sdlw/mouse.hpp>
-#include <sdlw/touch_device_id.hpp>
-#include <sdlw/touch_finger.hpp>
+#include <sdlw/touch.hpp>
 
 namespace sdlw {
 
