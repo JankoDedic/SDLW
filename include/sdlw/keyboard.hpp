@@ -106,7 +106,7 @@ struct text_input {
     }
 
     static void set_candidate_list_bounds(const rectangle &bounds) noexcept {
-        SDL_SetTextInputRect(const_cast<SDL_Rect *>(&bounds));
+        SDL_SetTextInputRect(const_cast<SDL_Rect*>(static_cast<const SDL_Rect*>(&bounds)));
     }
 };
 

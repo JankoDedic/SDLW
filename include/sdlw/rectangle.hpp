@@ -9,7 +9,7 @@
 
 namespace sdlw {
 
-using point = SDL_Point;
+struct point : SDL_Point {};
 
 // Comparison
 
@@ -426,7 +426,7 @@ operator/=(size& lhs, T rhs) noexcept
     return lhs;
 }
 
-using rectangle = SDL_Rect;
+struct rectangle : SDL_Rect {};
 
 constexpr
 bool

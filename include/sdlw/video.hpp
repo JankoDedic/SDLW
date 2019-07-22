@@ -436,7 +436,7 @@ public:
     void set_hit_test(hit_test_result(*ht)(window_ref, const point&)) {
         constexpr auto fp_sdl_callback = [] (SDL_Window* win, const SDL_Point* area, void* data) -> SDL_HitTestResult {
             auto test = reinterpret_cast<hit_test_result(*)(window_ref, const point&)>(data);
-            const auto result = test(window_ref{win}, *area);
+            const auto result = test(window_ref{win}, *static_cast<const point*>(area));
             return static_cast<SDL_HitTestResult>(result);
         };
         if (SDL_SetWindowHitTest(get_pointer(), fp_sdl_callback, ht) < 0) {
