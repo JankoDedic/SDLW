@@ -565,12 +565,8 @@ namespace event_queue {
         return SDL_WaitEvent(reinterpret_cast<SDL_Event *>(&e)) == 1;
     }
 
-    template<typename Rep, typename Period>
-    inline auto await_for(event &e, const std::chrono::duration<Rep, Period> &timeout) noexcept -> bool {
-        using namespace std::chrono;
-        const auto pevent = reinterpret_cast<SDL_Event *>(&e);
-        const auto timeout_ = duration_cast<time::clock::duration>(timeout);
-        return SDL_WaitEventTimeout(pevent, timeout_.count()) == 1;
+    inline auto await(event& e, clock::duration timeout) noexcept -> bool {
+        SDL_WaitEventTimeout(reinterpret_cast<SDL_Event*>(&e), timeout.count());
     }
 
 } // namespace queue
