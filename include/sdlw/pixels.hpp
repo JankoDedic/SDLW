@@ -6,6 +6,13 @@
 
 namespace sdlw {
 
+using color = SDL_Color;
+
+enum alpha : u8 {
+    transparent = SDL_ALPHA_TRANSPARENT,
+    opaque      = SDL_ALPHA_OPAQUE
+};
+
 enum class pixel_type {
     unknown  = SDL_PIXELTYPE_UNKNOWN,
     index1   = SDL_PIXELTYPE_INDEX1,

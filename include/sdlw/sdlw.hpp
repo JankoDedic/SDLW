@@ -31,7 +31,6 @@
 
     #include <sdlw/video.hpp>
     #include <sdlw/blend_mode.hpp>
-    #include <sdlw/color.hpp>
     #include <sdlw/message_box.hpp>
     #include <sdlw/point.hpp>
     #include <sdlw/rectangle.hpp>

@@ -3,7 +3,6 @@
 #include <SDL2/SDL_render.h>
 
 #include <sdlw/utility.hpp>
-#include <sdlw/color.hpp>
 #include <sdlw/blend_mode.hpp>
 #include <sdlw/surface.hpp>
 #include <sdlw/video.hpp>

@@ -7,7 +7,7 @@
 #include <sdlw/error.hpp>
 #include <sdlw/types.hpp>
 #include <sdlw/utility.hpp>
-#include <sdlw/color.hpp>
+#include <sdlw/pixels.hpp>
 #include <sdlw/size.hpp>
 #include <sdlw/surface.hpp>
 
