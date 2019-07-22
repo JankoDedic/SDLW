@@ -4,7 +4,7 @@
 
 #include <SDL2/SDL_video.h>
 
-#include <sdlw/pixel_format_type.hpp>
+#include <sdlw/pixels.hpp>
 #include <sdlw/rectangle.hpp>
 #include <sdlw/surface.hpp>
 

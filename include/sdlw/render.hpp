@@ -7,7 +7,7 @@
 #include <sdlw/blend_mode.hpp>
 #include <sdlw/surface.hpp>
 #include <sdlw/video.hpp>
-#include <sdlw/pixel_format_type.hpp>
+#include <sdlw/pixels.hpp>
 #include <sdlw/size.hpp>
 
 namespace sdlw {

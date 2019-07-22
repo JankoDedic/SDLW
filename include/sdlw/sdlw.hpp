@@ -40,4 +40,4 @@
     #include <sdlw/size.hpp>
     #include <sdlw/surface.hpp>
 
-        #include <sdlw/pixel_format_type.hpp>
+        #include <sdlw/pixels.hpp>
