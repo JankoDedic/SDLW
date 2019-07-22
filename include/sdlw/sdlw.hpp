@@ -15,8 +15,7 @@
 
         #include <sdlw/gesture_id.hpp>
 
-        #include <sdlw/joystick_hat_position.hpp>
-        #include <sdlw/joystick_instance_id.hpp>
+        #include <sdlw/joystick.hpp>
 
         #include <sdlw/key.hpp>
         #include <sdlw/keyboard.hpp>

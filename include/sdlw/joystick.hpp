@@ -1,10 +1,12 @@
 #pragma once
 
-#include <SDL2/SDL.h>
+#include <SDL2/SDL_joystick.h>
 
 #include <sdlw/types.hpp>
 
 namespace sdlw {
+
+using joystick_id = SDL_JoystickID;
 
 enum class joystick_hat_position : u8 {
     centered   = SDL_HAT_CENTERED,

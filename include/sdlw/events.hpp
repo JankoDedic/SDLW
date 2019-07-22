@@ -7,8 +7,7 @@
 #include <sdlw/video.hpp>
 #include <sdlw/game_controller.hpp>
 #include <sdlw/gesture_id.hpp>
-#include <sdlw/joystick_hat_position.hpp>
-#include <sdlw/joystick_instance_id.hpp>
+#include <sdlw/joystick.hpp>
 #include <sdlw/key.hpp>
 #include <sdlw/mouse.hpp>
 #include <sdlw/touch_device_id.hpp>
