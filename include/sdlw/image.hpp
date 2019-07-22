@@ -2,9 +2,8 @@
 
 #include <SDL2/SDL_image.h>
 
-#include <sdlw/renderer.hpp>
+#include <sdlw/render.hpp>
 #include <sdlw/surface.hpp>
-#include <sdlw/texture.hpp>
 #include <sdlw/utility.hpp>
 
 namespace sdlw::img {

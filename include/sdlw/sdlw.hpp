@@ -41,11 +41,8 @@
     #include <sdlw/message_box.hpp>
     #include <sdlw/point.hpp>
     #include <sdlw/rectangle.hpp>
-    #include <sdlw/render_driver.hpp>
-    #include <sdlw/renderer.hpp>
+    #include <sdlw/render.hpp>
     #include <sdlw/size.hpp>
     #include <sdlw/surface.hpp>
-    #include <sdlw/texture.hpp>
-    #include <sdlw/window_and_renderer.hpp>
 
         #include <sdlw/pixel_format_type.hpp>
