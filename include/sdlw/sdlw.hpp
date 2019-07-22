@@ -9,8 +9,7 @@
 
     #include <sdlw/audio.hpp>
 
-    #include <sdlw/event.hpp>
-    #include <sdlw/event_pipeline.hpp>
+    #include <sdlw/events.hpp>
 
         #include <sdlw/game_controller_axis.hpp>
         #include <sdlw/game_controller_button.hpp>
