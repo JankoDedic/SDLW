@@ -5,11 +5,11 @@
 #include <SDL2/SDL_ttf.h>
 
 #include <sdlw/error.hpp>
-#include <sdlw/types.hpp>
-#include <sdlw/utility.hpp>
 #include <sdlw/pixels.hpp>
 #include <sdlw/rectangle.hpp>
 #include <sdlw/surface.hpp>
+#include <sdlw/types.hpp>
+#include <sdlw/utility.hpp>
 
 namespace sdlw::ttf {
 

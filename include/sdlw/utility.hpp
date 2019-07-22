@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-#include <SDL2/SDL.h>
+#include <SDL2/SDL_stdinc.h>
 
 #define SDLW_DETAIL_DEFINE_FLAG_OPERATIONS(enum_type)                         \
     constexpr                                                                 \

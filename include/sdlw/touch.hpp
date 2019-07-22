@@ -5,6 +5,7 @@
 #include <SDL2/SDL_touch.h>
 
 #include <sdlw/error.hpp>
+#include <sdlw/types.hpp>
 
 namespace sdlw {
 
@@ -57,19 +58,19 @@ num_touch_devices() noexcept
 }
 
 inline
-device_id
+touch_id
 get_touch_device(int device_index)
 {
     if (const auto result = SDL_GetTouchDevice(device_index); result == 0) {
         throw error();
     } else {
-        return device_id(result);
+        return touch_id(result);
     }
 }
 
 inline
 int
-num_touch_fingers(device_id id)
+num_touch_fingers(touch_id id)
 {
     const auto result = SDL_GetNumTouchFingers(static_cast<SDL_TouchID>(id));
     if (result == 0) {
@@ -81,7 +82,7 @@ num_touch_fingers(device_id id)
 
 inline
 finger
-get_touch_finger(device_id id, int finger_index)
+get_touch_finger(touch_id id, int finger_index)
 {
     if (const auto fing = SDL_GetTouchFinger(SDL_TouchID(id), finger_index)) {
         return finger(*fing);

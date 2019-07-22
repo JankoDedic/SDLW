@@ -4,6 +4,8 @@
 
 #include <SDL2/SDL_timer.h>
 
+#include <sdlw/types.hpp>
+
 namespace sdlw {
 
 struct clock {

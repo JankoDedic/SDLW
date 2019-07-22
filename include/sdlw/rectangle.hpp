@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include <tuple>
 
 #include <SDL2/SDL_rect.h>
