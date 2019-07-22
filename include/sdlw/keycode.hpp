@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SDL2/SDL.h>
+#include <SDL2/SDL_keycode.h>
 
 namespace sdlw {
 
@@ -246,5 +246,23 @@ enum class keycode {
     audio_rewind        = SDLK_AUDIOREWIND,
     audio_fast_forward  = SDLK_AUDIOFASTFORWARD
 };
+
+enum class keymod : u16 {
+    none     = KMOD_NONE,
+    lshift   = KMOD_LSHIFT,
+    rshift   = KMOD_RSHIFT,
+    lctrl    = KMOD_LCTRL,
+    rctrl    = KMOD_RCTRL,
+    lalt     = KMOD_LALT,
+    ralt     = KMOD_RALT,
+    lgui     = KMOD_LGUI,
+    rgui     = KMOD_RGUI,
+    num      = KMOD_NUM,
+    caps     = KMOD_CAPS,
+    mode     = KMOD_MODE,
+    reserved = KMOD_RESERVED
+};
+
+SDLW_DETAIL_DEFINE_FLAG_OPERATIONS(keymod);
 
 } // namespace sdlw

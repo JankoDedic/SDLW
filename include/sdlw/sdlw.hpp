@@ -19,7 +19,6 @@
 
         #include <sdlw/keyboard.hpp>
         #include <sdlw/keycode.hpp>
-        #include <sdlw/keymod.hpp>
         #include <sdlw/scancode.hpp>
 
         #include <sdlw/mouse.hpp>

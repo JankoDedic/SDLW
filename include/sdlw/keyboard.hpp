@@ -4,7 +4,6 @@
 
 #include <sdlw/video.hpp>
 #include <sdlw/keycode.hpp>
-#include <sdlw/keymod.hpp>
 #include <sdlw/scancode.hpp>
 
 namespace sdlw {
