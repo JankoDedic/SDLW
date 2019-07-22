@@ -6,7 +6,7 @@
 #include <sdlw/time.hpp>
 #include <sdlw/video.hpp>
 #include <sdlw/game_controller.hpp>
-#include <sdlw/gesture_id.hpp>
+#include <sdlw/gesture.hpp>
 #include <sdlw/joystick.hpp>
 #include <sdlw/keyboard.hpp>
 #include <sdlw/mouse.hpp>
