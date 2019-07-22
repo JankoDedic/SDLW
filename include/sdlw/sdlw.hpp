@@ -17,13 +17,10 @@
 
         #include <sdlw/joystick.hpp>
 
-        #include <sdlw/key.hpp>
         #include <sdlw/keyboard.hpp>
         #include <sdlw/keycode.hpp>
         #include <sdlw/keymod.hpp>
         #include <sdlw/scancode.hpp>
-        #include <sdlw/screen_keyboard.hpp>
-        #include <sdlw/text_input.hpp>
 
         #include <sdlw/mouse.hpp>
 
