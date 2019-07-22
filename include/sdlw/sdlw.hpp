@@ -27,7 +27,7 @@
 
     #include <sdlw/power.hpp>
 
-    #include <sdlw/time.hpp>
+    #include <sdlw/timer.hpp>
 
     #include <sdlw/video.hpp>
     #include <sdlw/blend_mode.hpp>

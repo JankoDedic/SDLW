@@ -3,7 +3,7 @@
 #include <SDL2/SDL_events.h>
 
 #include <sdlw/audio.hpp>
-#include <sdlw/time.hpp>
+#include <sdlw/timer.hpp>
 #include <sdlw/video.hpp>
 #include <sdlw/game_controller.hpp>
 #include <sdlw/gesture.hpp>
