@@ -2,7 +2,7 @@
 
 #include <optional>
 
-#include <SDL2/SDL.h>
+#include <SDL2/SDL_touch.h>
 
 #include <sdlw/error.hpp>
 

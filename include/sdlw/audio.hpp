@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SDL2/SDL_audio.h>
+
 #include <sdlw/types.hpp>
 
 namespace sdlw {

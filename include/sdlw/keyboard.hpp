@@ -2,6 +2,8 @@
 
 #include <optional>
 
+#include <SDL2/SDL_keyboard.h>
+
 #include <sdlw/video.hpp>
 #include <sdlw/keycode.hpp>
 #include <sdlw/scancode.hpp>

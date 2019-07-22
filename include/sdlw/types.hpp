@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SDL2/SDL_types.h>
 #include <nonstd/span.hpp>
 
 namespace sdlw {

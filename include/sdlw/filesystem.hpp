@@ -3,7 +3,7 @@
 #include <memory>
 #include <optional>
 
-#include <SDL2/SDL.h>
+#include <SDL2/SDL_filesystem.h>
 
 #include <sdlw/error.hpp>
 #include <sdlw/utility.hpp>
