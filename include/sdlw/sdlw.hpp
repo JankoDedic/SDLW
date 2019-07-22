@@ -32,10 +32,8 @@
     #include <sdlw/video.hpp>
     #include <sdlw/blend_mode.hpp>
     #include <sdlw/message_box.hpp>
-    #include <sdlw/point.hpp>
     #include <sdlw/rectangle.hpp>
     #include <sdlw/render.hpp>
-    #include <sdlw/size.hpp>
     #include <sdlw/surface.hpp>
 
         #include <sdlw/pixels.hpp>

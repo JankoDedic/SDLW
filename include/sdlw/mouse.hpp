@@ -6,7 +6,7 @@
 #include <optional>
 
 #include <sdlw/error.hpp>
-#include <sdlw/point.hpp>
+#include <sdlw/rectangle.hpp>
 #include <sdlw/video.hpp>
 #include "sdlw/utility.hpp"
 

@@ -7,7 +7,7 @@
 #include <sdlw/surface.hpp>
 #include <sdlw/video.hpp>
 #include <sdlw/pixels.hpp>
-#include <sdlw/size.hpp>
+#include <sdlw/rectangle.hpp>
 
 namespace sdlw {
 

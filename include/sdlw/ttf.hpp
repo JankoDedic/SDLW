@@ -8,7 +8,7 @@
 #include <sdlw/types.hpp>
 #include <sdlw/utility.hpp>
 #include <sdlw/pixels.hpp>
-#include <sdlw/size.hpp>
+#include <sdlw/rectangle.hpp>
 #include <sdlw/surface.hpp>
 
 namespace sdlw::ttf {
