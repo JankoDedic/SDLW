@@ -380,7 +380,7 @@ inline void pump_events() noexcept {
     SDL_PumpEvents();
 }
 
-namespace filter::by_type {
+namespace event_filter::by_type {
 
     inline void set(event_type etype, bool enable) noexcept {
         const auto type = static_cast<u32>(etype);
@@ -393,9 +393,9 @@ namespace filter::by_type {
         return SDL_GetEventState(type) == SDL_ENABLE ? false : true;
     }
 
-} // namespace filter::by_type
+} // namespace event_filter::by_type
 
-namespace filter::custom {
+namespace event_filter::custom {
 
     template<typename EventFilter>
     void set(EventFilter& f) {
@@ -417,9 +417,9 @@ namespace filter::custom {
         SDL_SetEventFilter(fp_sdl_callback, reinterpret_cast<void*>(filter));
     }
 
-} // namespace filter::custom
+} // namespace event_filter::custom
 
-namespace watch {
+namespace event_watch {
 
     namespace detail {
 
@@ -462,7 +462,7 @@ namespace watch {
         SDL_DelEventWatch(detail::fp_sdl_callback, reinterpret_cast<void*>(watch));
     }
 
-} // namespace watch
+} // namespace event_watch
 
 namespace event_queue {
 
