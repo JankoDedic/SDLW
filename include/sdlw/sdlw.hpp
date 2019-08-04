@@ -20,6 +20,7 @@
 #include <sdlw/power.hpp>
 #include <sdlw/rectangle.hpp>
 #include <sdlw/render.hpp>
+#include <sdlw/rwops.hpp>
 #include <sdlw/scancode.hpp>
 #include <sdlw/subsystem.hpp>
 #include <sdlw/surface.hpp>
