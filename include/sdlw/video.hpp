@@ -439,7 +439,7 @@ public:
             const auto result = test(window_ref{win}, *static_cast<const point*>(area));
             return static_cast<SDL_HitTestResult>(result);
         };
-        if (SDL_SetWindowHitTest(get_pointer(), fp_sdl_callback, ht) < 0) {
+        if (SDL_SetWindowHitTest(get_pointer(), fp_sdl_callback, reinterpret_cast<void*>(ht)) < 0) {
             throw error{};
         }
     }
