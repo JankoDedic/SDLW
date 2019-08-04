@@ -67,8 +67,8 @@ void run() {
         if (e.type() == event_type::mouse_button_down) SDL_Log("MOUSE BUTTON DOWN!\n");
         if (e.type() == event_type::mouse_button_up  ) SDL_Log("MOUSE BUTTON UP!\n");
     };
-    watch::add(w);
-    watch::remove(w);
+    event_watch::add(w);
+    event_watch::remove(w);
     for (;;) {
         // Handle the events
         while (event_queue::poll(e)) {
