@@ -301,21 +301,10 @@ public:
         return SDL_SetWindowData(get_pointer(), name, user_data);
     }
 
-    auto surface() const -> const sdlw::surface&
+    auto surface() -> surface_ref
     {
-        static auto s = ::sdlw::detail::storage<sdlw::surface>();
         if (const auto ptr = SDL_GetWindowSurface(get_pointer())) {
-            return *new (&s) sdlw::surface(ptr);
-        } else {
-            throw error{};
-        }
-    }
-
-    auto surface() -> sdlw::surface&
-    {
-        static auto s = ::sdlw::detail::storage<sdlw::surface>();
-        if (const auto psurface = SDL_GetWindowSurface(get_pointer())) {
-            return *new (&s) sdlw::surface(psurface);
+            return surface_ref{ptr};
         } else {
             throw error{};
         }

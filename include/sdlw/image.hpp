@@ -38,7 +38,7 @@ struct subsystem {
 inline auto load_as_surface(const char* filename) -> surface
 {
     if (const auto psurface = IMG_Load(filename)) {
-        return {psurface};
+        return surface{psurface};
     } else {
         throw error{};
     }

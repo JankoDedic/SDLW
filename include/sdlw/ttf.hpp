@@ -203,7 +203,7 @@ inline auto solid_text_render(const font& f, const char* text, color fg_color) -
 {
     const auto pfont = f.get_pointer();
     if (const auto psurface = TTF_RenderText_Solid(pfont, text, fg_color)) {
-        return {psurface};
+        return surface{psurface};
     } else {
         throw error{};
     }
@@ -213,7 +213,7 @@ inline auto solid_utf8_render(const font& f, const char* text, color fg_color) -
 {
     const auto pfont = f.get_pointer();
     if (const auto psurface = TTF_RenderUTF8_Solid(pfont, text, fg_color)) {
-        return {psurface};
+        return surface{psurface};
     } else {
         throw error{};
     }
@@ -223,7 +223,7 @@ inline auto shaded_text_render(const font& f, const char* text, color fg, color 
 {
     const auto pfont = f.get_pointer();
     if (const auto psurface = TTF_RenderText_Shaded(pfont, text, fg, bg)) {
-        return {psurface};
+        return surface{psurface};
     } else {
         throw error{};
     }
@@ -233,7 +233,7 @@ inline auto shaded_utf8_render(const font& f, const char* text, color fg, color 
 {
     const auto pfont = f.get_pointer();
     if (const auto psurface = TTF_RenderUTF8_Shaded(pfont, text, fg, bg)) {
-        return {psurface};
+        return surface{psurface};
     } else {
         throw error{};
     }
@@ -243,7 +243,7 @@ inline auto blended_text_render(const font& f, const char* text, color fg_color)
 {
     const auto pfont = f.get_pointer();
     if (const auto psurface = TTF_RenderText_Blended(pfont, text, fg_color)) {
-        return {psurface};
+        return surface{psurface};
     } else {
         throw error{};
     }
@@ -253,7 +253,7 @@ inline auto blended_utf8_render(const font& f, const char* text, color fg_color)
 {
     const auto pfont = f.get_pointer();
     if (const auto psurface = TTF_RenderUTF8_Blended(pfont, text, fg_color)) {
-        return {psurface};
+        return surface{psurface};
     } else {
         throw error{};
     }
@@ -265,7 +265,7 @@ inline auto blended_wrapped_text_render(const font& f, const char* txt, color fg
     const auto wrap = wrap_length;
     const auto psurface = TTF_RenderText_Blended_Wrapped(pfont, txt, fg, wrap);
     if (psurface) {
-        return {psurface};
+        return surface{psurface};
     } else {
         throw error{};
     }
@@ -277,7 +277,7 @@ inline auto blended_wrapped_utf8_render(const font& f, const char* txt, color fg
     const auto wrap = wrap_length;
     const auto psurface = TTF_RenderUTF8_Blended_Wrapped(pfont, txt, fg, wrap);
     if (psurface) {
-        return {psurface};
+        return surface{psurface};
     } else {
         throw error{};
     }
