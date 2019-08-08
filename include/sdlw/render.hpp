@@ -84,11 +84,16 @@ protected:
     SDL_Renderer* _prenderer = nullptr;
 
 public:
+    explicit operator bool() const noexcept
+    {
+        return static_cast<bool>(_prenderer);
+    }
+
     renderer_ref() noexcept
         : _prenderer{nullptr}
     {}
 
-    renderer_ref(SDL_Renderer* pointer) noexcept
+    explicit renderer_ref(SDL_Renderer* pointer) noexcept
         : _prenderer{pointer}
     {}
 
@@ -315,9 +320,7 @@ public:
 
     void fill_rectangles(span<const rect> rectangles)
     {
-        if (!rectangles.data()) {
-            return;
-        }
+        if (!rectangles.data()) return;
         const auto sz = static_cast<int>(rectangles.size());
         if (SDL_RenderFillRects(get_pointer(), rectangles.data(), sz) < 0) {
             throw error{};
@@ -339,6 +342,7 @@ public:
     using renderer_ref::renderer_ref;
 
     renderer(const renderer&) = delete;
+
     auto operator=(const renderer&) = delete;
 
     renderer(renderer&& other) noexcept
@@ -393,7 +397,7 @@ inline auto operator!=(const renderer& lhs, const renderer& rhs) noexcept -> boo
 inline auto window_ref::renderer() -> renderer_ref
 {
     if (const auto ptr = SDL_GetRenderer(_pwindow)) {
-        return {ptr};
+        return renderer_ref{ptr};
     } else {
         throw error{};
     }
@@ -414,11 +418,16 @@ protected:
     SDL_Texture* _ptexture = nullptr;
 
 public:
+    explicit operator bool() const noexcept
+    {
+        return static_cast<bool>(_ptexture);
+    }
+
     texture_ref() noexcept
         : _ptexture{nullptr}
     {}
 
-    texture_ref(SDL_Texture* pointer) noexcept
+    explicit texture_ref(SDL_Texture* pointer) noexcept
         : _ptexture{pointer}
     {}
 
@@ -559,6 +568,7 @@ public:
     using texture_ref::texture_ref;
 
     texture(const texture&) = delete;
+
     auto operator=(const texture&) -> texture& = delete;
 
     texture(texture&& other) noexcept
@@ -578,38 +588,25 @@ public:
         _ptexture = nullptr;
     }
 
-    texture(const renderer& rend, pixel_format_type format, texture_access access, const sdlw::size& sz)
+    texture(const renderer& r, pixel_format_type format, texture_access access, const sdlw::size& sz)
+        : texture_ref{SDL_CreateTexture(r.get_pointer(), static_cast<u32>(format), static_cast<int>(access), sz.w, sz.h)}
     {
-        const auto prend = rend.get_pointer();
-        const auto format_ = static_cast<u32>(format);
-        const auto access_ = static_cast<int>(access);
-        const auto ptr = SDL_CreateTexture(prend, format_, access_, sz.w, sz.h);
-        if (ptr) {
-            _ptexture = ptr;
-        } else {
-            throw error{};
-        }
+        if (!_ptexture) throw error{};
     }
 
     texture(const renderer& rend, const surface& surf)
+        : texture_ref{SDL_CreateTextureFromSurface(rend.get_pointer(), surf.get_pointer())}
     {
-        const auto prend = rend.get_pointer();
-        const auto psurf = surf.get_pointer();
-        const auto ptr = SDL_CreateTextureFromSurface(prend, psurf);
-        if (ptr) {
-            _ptexture = ptr;
-        } else {
-            throw error{};
-        }
+        if (!_ptexture) throw error{};
     }
 };
 
-inline bool operator==(const texture& lhs, const texture& rhs) noexcept
+inline auto operator==(const texture& lhs, const texture& rhs) noexcept -> bool
 {
     return lhs.get_pointer() == rhs.get_pointer();
 }
 
-inline bool operator!=(const texture& lhs, const texture& rhs) noexcept
+inline auto operator!=(const texture& lhs, const texture& rhs) noexcept -> bool
 {
     return !(lhs == rhs);
 }
@@ -617,7 +614,7 @@ inline bool operator!=(const texture& lhs, const texture& rhs) noexcept
 inline auto renderer_ref::target() -> texture_ref
 {
     if (const auto ptr = SDL_GetRenderTarget(_prenderer)) {
-        return {ptr};
+        return texture_ref{ptr};
     } else {
         throw error{};
     }
