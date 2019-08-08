@@ -4,6 +4,8 @@
 
 namespace sdlw {
 
+// clang-format off
+
 enum class game_controller_axis {
     invalid       = SDL_CONTROLLER_AXIS_INVALID,
     left_x        = SDL_CONTROLLER_AXIS_LEFTX,
@@ -34,5 +36,7 @@ enum class game_controller_button {
     dpad_right     = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
     max            = SDL_CONTROLLER_BUTTON_MAX
 };
+
+// clang-format on
 
 } // namespace sdlw

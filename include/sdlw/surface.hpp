@@ -18,26 +18,20 @@ public:
 
     surface(SDL_Surface* pointer) noexcept
         : _surface(pointer)
-    {
-    }
+    {}
 
-    SDL_Surface*
-    get_pointer() const noexcept
+    SDL_Surface* get_pointer() const noexcept
     {
         return _surface.get();
     }
 };
 
-inline
-bool
-operator==(const surface& lhs, const surface& rhs) noexcept
+inline bool operator==(const surface& lhs, const surface& rhs) noexcept
 {
     return lhs.get_pointer() == rhs.get_pointer();
 }
 
-inline
-bool
-operator!=(const surface& lhs, const surface& rhs) noexcept
+inline bool operator!=(const surface& lhs, const surface& rhs) noexcept
 {
     return !(lhs == rhs);
 }

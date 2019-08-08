@@ -6,7 +6,7 @@
 
 #include <sdlw/error.hpp>
 #include <sdlw/pixels.hpp>
-#include <sdlw/rectangle.hpp>
+#include <sdlw/rect.hpp>
 #include <sdlw/surface.hpp>
 
 namespace sdlw {
@@ -15,81 +15,62 @@ class display_mode {
     SDL_DisplayMode _display_mode;
 
 public:
-    constexpr
-    explicit
-    operator SDL_DisplayMode() const noexcept
+    constexpr explicit operator SDL_DisplayMode() const noexcept
     {
         return _display_mode;
     }
 
     display_mode() noexcept = default;
 
-    constexpr
-    explicit
-    display_mode(const SDL_DisplayMode& display_mode) noexcept
+    constexpr explicit display_mode(const SDL_DisplayMode& display_mode) noexcept
         : _display_mode(display_mode)
-    {
-    }
+    {}
 
-    constexpr
-    pixel_format_type
-    format() const noexcept
+    constexpr pixel_format_type format() const noexcept
     {
         return static_cast<pixel_format_type>(_display_mode.format);
     }
 
-    constexpr
-    void
-    set_format(pixel_format_type format) noexcept
+    constexpr void set_format(pixel_format_type format) noexcept
     {
         _display_mode.format = static_cast<u32>(format);
     }
 
-    constexpr
-    sdlw::size
-    size() const noexcept
+    constexpr sdlw::size size() const noexcept
     {
         return sdlw::size{_display_mode.w, _display_mode.h};
     }
 
-    constexpr
-    void
-    set_size(const sdlw::size& size) noexcept
+    constexpr void set_size(const sdlw::size& size) noexcept
     {
         _display_mode.w = size.w;
         _display_mode.h = size.h;
     }
 
-    constexpr
-    const int&
-    refresh_rate() const noexcept
+    constexpr const int& refresh_rate() const noexcept
     {
         return _display_mode.refresh_rate;
     }
 
-    constexpr
-    int&
-    refresh_rate() noexcept
+    constexpr int& refresh_rate() noexcept
     {
         return _display_mode.refresh_rate;
     }
 
-    constexpr
-    void* const&
-    driver_data() const noexcept
+    constexpr void* const& driver_data() const noexcept
     {
         return _display_mode.driverdata;
     }
 
-    constexpr
-    void*&
-    driver_data() noexcept
+    constexpr void*& driver_data() noexcept
     {
         return _display_mode.driverdata;
     }
 };
 
 class renderer_ref; // for window::renderer
+
+// clang-format off
 
 enum class window_flags : u32 {
     fullscreen         = SDL_WINDOW_FULLSCREEN,
@@ -138,6 +119,8 @@ enum class hit_test_result {
     resize_left         = SDL_HITTEST_RESIZE_LEFT
 };
 
+// clang-format on
+
 struct window_border_sizes {
     int top;
     int left;
@@ -147,283 +130,332 @@ struct window_border_sizes {
 
 class window_ref {
 protected:
-    SDL_Window *_pwindow;
+    SDL_Window* _pwindow;
 
 public:
-    window_ref() noexcept : _pwindow(nullptr) {};
+    window_ref() noexcept
+        : _pwindow{nullptr}
+    {}
 
-    window_ref(SDL_Window *pointer) noexcept : _pwindow(pointer) {}
+    window_ref(SDL_Window* pointer) noexcept
+        : _pwindow{pointer}
+    {}
 
-    auto get_pointer() const noexcept -> SDL_Window * {
+    auto get_pointer() const noexcept -> SDL_Window*
+    {
         return _pwindow;
     }
 
-    auto flags() const noexcept -> window_flags {
+    auto flags() const noexcept -> window_flags
+    {
         return static_cast<window_flags>(SDL_GetWindowFlags(get_pointer()));
     }
 
-    auto id() const noexcept -> window_id {
-        return static_cast<window_id>(SDL_GetWindowID(get_pointer()));;
+    auto id() const noexcept -> window_id
+    {
+        return static_cast<window_id>(SDL_GetWindowID(get_pointer()));
     }
 
-    auto title() const noexcept -> const char * {
+    auto title() const noexcept -> const char*
+    {
         return SDL_GetWindowTitle(get_pointer());
     }
 
-    void set_title(const char *title) noexcept {
+    void set_title(const char* title) noexcept
+    {
         SDL_SetWindowTitle(get_pointer(), title);
     }
 
-    auto position() const noexcept -> point {
-        auto x = int();
-        auto y = int();
+    auto position() const noexcept -> point
+    {
+        auto x = int{};
+        auto y = int{};
         SDL_GetWindowPosition(get_pointer(), &x, &y);
         return point{x, y};
     }
 
-    void set_position(const point &position) noexcept {
+    void set_position(const point& position) noexcept
+    {
         SDL_SetWindowPosition(get_pointer(), position.x, position.y);
     }
 
-    auto size() const noexcept -> sdlw::size {
-        auto width = int();
-        auto height = int();
+    auto size() const noexcept -> sdlw::size
+    {
+        auto width = int{};
+        auto height = int{};
         SDL_GetWindowSize(get_pointer(), &width, &height);
         return sdlw::size{width, height};
     }
 
-    void set_size(const sdlw::size &size) noexcept {
+    void set_size(const sdlw::size& size) noexcept
+    {
         SDL_SetWindowSize(get_pointer(), size.w, size.h);
     }
 
-    void set_resizable(bool resizable) noexcept {
+    void set_resizable(bool resizable) noexcept
+    {
         SDL_SetWindowResizable(get_pointer(), static_cast<SDL_bool>(resizable));
     }
 
-    auto border_sizes() const -> window_border_sizes {
+    auto border_sizes() const -> window_border_sizes
+    {
         const auto pwin = get_pointer();
         auto wbsizes = window_border_sizes();
         if (SDL_GetWindowBordersSize(pwin, &wbsizes.top, &wbsizes.left, &wbsizes.bottom, &wbsizes.right) < 0) {
-            throw error();
+            throw error{};
         } else {
             return wbsizes;
         }
     }
 
-    auto top_border_size() const -> int {
+    auto top_border_size() const -> int
+    {
         const auto pwin = get_pointer();
-        auto top = int();
+        auto top = int{};
         if (SDL_GetWindowBordersSize(pwin, &top, nullptr, nullptr, nullptr) == 0) {
             return top;
         } else {
-            throw error();
+            throw error{};
         }
     }
 
-    auto left_border_size() const -> int {
+    auto left_border_size() const -> int
+    {
         const auto pwin = get_pointer();
-        auto left = int();
+        auto left = int{};
         if (SDL_GetWindowBordersSize(pwin, nullptr, &left, nullptr, nullptr) == 0) {
             return left;
         } else {
-            throw error();
+            throw error{};
         }
     }
 
-    auto bottom_border_size() const -> int {
+    auto bottom_border_size() const -> int
+    {
         const auto pwin = get_pointer();
-        auto bottom = int();
+        auto bottom = int{};
         if (SDL_GetWindowBordersSize(pwin, nullptr, nullptr, &bottom, nullptr) == 0) {
             return bottom;
         } else {
-            throw error();
+            throw error{};
         }
     }
 
-    auto right_border_size() const -> int {
+    auto right_border_size() const -> int
+    {
         const auto pwin = get_pointer();
-        auto right = int();
+        auto right = int{};
         if (SDL_GetWindowBordersSize(pwin, nullptr, nullptr, nullptr, &right) < 0) {
             return right;
         } else {
-            throw error();
+            throw error{};
         }
     }
 
-    void set_bordered(bool bordered) noexcept {
+    void set_bordered(bool bordered) noexcept
+    {
         SDL_SetWindowBordered(get_pointer(), static_cast<SDL_bool>(bordered));
     }
 
-    auto max_size() const noexcept -> sdlw::size {
-        auto sz = sdlw::size();
+    auto max_size() const noexcept -> sdlw::size
+    {
+        auto sz = sdlw::size{};
         SDL_GetWindowMaximumSize(get_pointer(), &sz.w, &sz.h);
         return sz;
     }
 
-    void set_max_size(const sdlw::size &size) noexcept {
+    void set_max_size(const sdlw::size& size) noexcept
+    {
         SDL_SetWindowMaximumSize(get_pointer(), size.w, size.h);
     }
 
-    auto min_size() const noexcept -> sdlw::size {
-        auto sz = sdlw::size();
+    auto min_size() const noexcept -> sdlw::size
+    {
+        auto sz = sdlw::size{};
         SDL_GetWindowMinimumSize(get_pointer(), &sz.w, &sz.h);
         return sz;
     }
 
-    void set_min_size(const sdlw::size &size) noexcept {
+    void set_min_size(const sdlw::size& size) noexcept
+    {
         SDL_SetWindowMinimumSize(get_pointer(), size.w, size.h);
     }
 
-    auto is_input_grabbed() const noexcept -> bool {
+    auto is_input_grabbed() const noexcept -> bool
+    {
         return static_cast<bool>(SDL_GetWindowGrab(get_pointer()));
     }
 
-    void set_input_grab(bool is_grabbed) noexcept {
+    void set_input_grab(bool is_grabbed) noexcept
+    {
         SDL_SetWindowGrab(get_pointer(), static_cast<SDL_bool>(is_grabbed));
     }
 
-    auto data(const char *name) const noexcept -> void * {
+    auto data(const char* name) const noexcept -> void*
+    {
         return SDL_GetWindowData(get_pointer(), name);
     }
 
-    auto set_data(const char *name, void *user_data) noexcept -> void * {
+    auto set_data(const char* name, void* user_data) noexcept -> void*
+    {
         return SDL_SetWindowData(get_pointer(), name, user_data);
     }
 
-    auto surface() const -> const sdlw::surface & {
+    auto surface() const -> const sdlw::surface&
+    {
         static auto s = ::sdlw::detail::storage<sdlw::surface>();
         if (const auto ptr = SDL_GetWindowSurface(get_pointer())) {
             return *new (&s) sdlw::surface(ptr);
         } else {
-            throw error();
+            throw error{};
         }
     }
 
-    auto surface() -> sdlw::surface & {
+    auto surface() -> sdlw::surface&
+    {
         static auto s = ::sdlw::detail::storage<sdlw::surface>();
         if (const auto psurface = SDL_GetWindowSurface(get_pointer())) {
             return *new (&s) sdlw::surface(psurface);
         } else {
-            throw error();
+            throw error{};
         }
     }
 
-    auto opacity() const -> float {
-        auto opacity = float();
+    auto opacity() const -> float
+    {
+        auto opacity = float{};
         if (SDL_GetWindowOpacity(get_pointer(), &opacity) == 0) {
             return opacity;
         } else {
-            throw error();
+            throw error{};
         }
     }
 
-    void set_opacity(float opacity) {
+    void set_opacity(float opacity)
+    {
         if (SDL_SetWindowOpacity(get_pointer(), opacity) == 0) {
-            throw error();
+            throw error{};
         }
     }
 
-    auto display_mode() const -> sdlw::display_mode {
-        auto mode = SDL_DisplayMode();
+    auto display_mode() const -> sdlw::display_mode
+    {
+        auto mode = SDL_DisplayMode{};
         if (SDL_GetWindowDisplayMode(get_pointer(), &mode) == 0) {
             return sdlw::display_mode(mode);
         } else {
-            throw error();
+            throw error{};
         }
     }
 
-    void set_display_mode(const sdlw::display_mode *mode) {
-        const auto pmode = reinterpret_cast<const SDL_DisplayMode *>(mode);
+    void set_display_mode(const sdlw::display_mode* mode)
+    {
+        const auto pmode = reinterpret_cast<const SDL_DisplayMode*>(mode);
         if (SDL_SetWindowDisplayMode(get_pointer(), pmode) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
-    auto display_index() const -> int {
+    auto display_index() const -> int
+    {
         const auto index = SDL_GetWindowDisplayIndex(get_pointer());
         if (index < 0) {
-            throw error();
+            throw error{};
         } else {
             return index;
         }
     }
 
-    auto pixel_format_type() const -> sdlw::pixel_format_type {
+    auto pixel_format_type() const -> sdlw::pixel_format_type
+    {
         const auto format = SDL_GetWindowPixelFormat(get_pointer());
         if (format == SDL_PIXELFORMAT_UNKNOWN) {
-            throw error();
+            throw error{};
         } else {
             return static_cast<sdlw::pixel_format_type>(format);
         }
     }
 
-    void hide() noexcept {
+    void hide() noexcept
+    {
         SDL_HideWindow(get_pointer());
     }
 
-    void show() noexcept {
+    void show() noexcept
+    {
         SDL_ShowWindow(get_pointer());
     }
 
-    void set_fullscreen_mode(window_fullscreen_mode mode) {
+    void set_fullscreen_mode(window_fullscreen_mode mode)
+    {
         const auto sdl_mode = static_cast<u32>(mode);
         if (SDL_SetWindowFullscreen(get_pointer(), sdl_mode) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
-    void maximize() noexcept {
+    void maximize() noexcept
+    {
         SDL_MaximizeWindow(get_pointer());
     }
 
-    void minimize() noexcept {
+    void minimize() noexcept
+    {
         SDL_MinimizeWindow(get_pointer());
     }
 
-    void restore() noexcept {
+    void restore() noexcept
+    {
         SDL_RestoreWindow(get_pointer());
     }
 
-    void raise() noexcept {
+    void raise() noexcept
+    {
         SDL_RaiseWindow(get_pointer());
     }
 
-    void set_input_focus() {
+    void set_input_focus()
+    {
         if (SDL_SetWindowInputFocus(get_pointer()) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
-    void update_surface() {
+    void update_surface()
+    {
         if (SDL_UpdateWindowSurface(get_pointer()) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
-    void update_surface_areas(span<const rectangle> areas) {
+    void update_surface_areas(span<const rect> areas)
+    {
         const auto pwin = get_pointer();
         const auto sz = static_cast<int>(areas.size());
         if (SDL_UpdateWindowSurfaceRects(pwin, areas.data(), sz) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
-    void set_icon(const ::sdlw::surface &icon) noexcept {
+    void set_icon(const ::sdlw::surface& icon) noexcept
+    {
         SDL_SetWindowIcon(get_pointer(), icon.get_pointer());
     }
 
     auto renderer() -> renderer_ref;
 
-    void set_modal(window_ref modal) {
+    void set_modal(window_ref modal)
+    {
         if (SDL_SetWindowModalFor(modal.get_pointer(), get_pointer()) < 0) {
-            throw error();
+            throw error{};
         }
     }
 
     template<typename HitTest>
-    void set_hit_test(HitTest& ht) {
+    void set_hit_test(HitTest& ht)
+    {
         static_assert(std::is_invocable_r_v<hit_test_result, HitTest, window_ref, const point&>);
-        constexpr auto sdl_callback = [] (SDL_Window* win, const SDL_Point* area, void* data) -> SDL_HitTestResult {
+        constexpr auto sdl_callback = [](SDL_Window* win, const SDL_Point* area, void* data) -> SDL_HitTestResult {
             auto& test = *static_cast<HitTest*>(data);
             const auto result = test(window_ref{win}, *area);
             return static_cast<SDL_HitTestResult>(result);
@@ -433,9 +465,10 @@ public:
         }
     }
 
-    void set_hit_test(hit_test_result(*ht)(window_ref, const point&)) {
-        constexpr auto fp_sdl_callback = [] (SDL_Window* win, const SDL_Point* area, void* data) -> SDL_HitTestResult {
-            auto test = reinterpret_cast<hit_test_result(*)(window_ref, const point&)>(data);
+    void set_hit_test(hit_test_result (*ht)(window_ref, const point&))
+    {
+        constexpr auto fp_sdl_callback = [](SDL_Window* win, const SDL_Point* area, void* data) -> SDL_HitTestResult {
+            auto test = reinterpret_cast<hit_test_result (*)(window_ref, const point&)>(data);
             const auto result = test(window_ref{win}, *static_cast<const point*>(area));
             return static_cast<SDL_HitTestResult>(result);
         };
@@ -446,42 +479,52 @@ public:
 };
 
 struct window : window_ref {
-    static constexpr auto centered = SDL_WINDOWPOS_CENTERED;
-    static constexpr auto undefined = SDL_WINDOWPOS_UNDEFINED;
-    static constexpr auto pos_centered = point{centered, centered};
+    // clang-format off
+    static constexpr auto centered      = SDL_WINDOWPOS_CENTERED;
+    static constexpr auto undefined     = SDL_WINDOWPOS_UNDEFINED;
+    static constexpr auto pos_centered  = point{centered, centered};
     static constexpr auto pos_undefined = point{undefined, undefined};
+    // clang-format on
 
-    static constexpr auto centered_on_display(int display_index) noexcept -> int {
+    static constexpr auto centered_on_display(int display_index) noexcept -> int
+    {
         return SDL_WINDOWPOS_CENTERED_DISPLAY(display_index);
     }
 
-    static constexpr auto undefined_on_display(int display_index) noexcept -> int {
+    static constexpr auto undefined_on_display(int display_index) noexcept -> int
+    {
         return SDL_WINDOWPOS_UNDEFINED_DISPLAY(display_index);
     }
 
-    static constexpr auto pos_centered_on_display(int display_index) noexcept -> point {
+    static constexpr auto pos_centered_on_display(int display_index) noexcept -> point
+    {
         const auto value = centered_on_display(display_index);
         return point{value, value};
     }
 
-    static constexpr auto pos_undefined_on_display(int display_index) noexcept -> point {
+    static constexpr auto pos_undefined_on_display(int display_index) noexcept -> point
+    {
         const auto value = undefined_on_display(display_index);
         return point{value, value};
     }
 
-    static constexpr auto is_centered(int coordinate) noexcept -> bool {
+    static constexpr auto is_centered(int coordinate) noexcept -> bool
+    {
         return SDL_WINDOWPOS_ISCENTERED(coordinate);
     }
 
-    static constexpr auto is_undefined(int coordinate) noexcept -> bool {
+    static constexpr auto is_undefined(int coordinate) noexcept -> bool
+    {
         return SDL_WINDOWPOS_ISUNDEFINED(coordinate);
     }
 
-    static constexpr auto is_pos_centered(const point &position) noexcept -> bool {
+    static constexpr auto is_pos_centered(const point& position) noexcept -> bool
+    {
         return is_centered(position.x) && is_centered(position.y);
     }
 
-    static constexpr auto is_pos_undefined(const point &position) noexcept -> bool {
+    static constexpr auto is_pos_undefined(const point& position) noexcept -> bool
+    {
         return is_undefined(position.x) && is_undefined(position.y);
     }
 
@@ -489,35 +532,35 @@ struct window : window_ref {
 
     window() noexcept = default;
 
-    window(const char *title, const rectangle &bounds, window_flags flags)
+    window(const char* title, const rect& bounds, window_flags flags)
     {
         /* const auto &[x, y, w, h] = bounds; */
         const auto flags_ = static_cast<u32>(flags);
         if (const auto ptr = SDL_CreateWindow(title, bounds.x, bounds.y, bounds.w, bounds.h, flags_)) {
             _pwindow = ptr;
         } else {
-            throw error();
+            throw error{};
         }
     }
 
-    window(void *native_window_data)
+    window(void* native_window_data)
     {
         if (const auto ptr = SDL_CreateWindowFrom(native_window_data)) {
             _pwindow = ptr;
         } else {
-            throw error();
+            throw error{};
         }
     }
 
-    window(const window &) = delete;
-    auto operator=(const window &) -> window & = delete;
+    window(const window&) = delete;
+    auto operator=(const window&) -> window& = delete;
 
-    window(window &&other) noexcept
+    window(window&& other) noexcept
         : window_ref(std::exchange(other._pwindow, nullptr))
-    {
-    }
+    {}
 
-    auto operator=(window &&other) noexcept -> window & {
+    auto operator=(window&& other) noexcept -> window&
+    {
         SDL_DestroyWindow(_pwindow);
         _pwindow = std::exchange(other._pwindow, nullptr);
         return *this;
@@ -530,270 +573,220 @@ struct window : window_ref {
     }
 };
 
-inline auto operator==(const window &lhs, const window &rhs) noexcept -> bool {
+inline auto operator==(const window& lhs, const window& rhs) noexcept -> bool
+{
     return lhs.get_pointer() == rhs.get_pointer();
 }
 
-inline auto operator!=(const window &lhs, const window &rhs) noexcept -> bool {
+inline auto operator!=(const window& lhs, const window& rhs) noexcept -> bool
+{
     return !(lhs == rhs);
 }
 
-inline auto get_window(window_id id) -> window_ref {
+inline auto get_window(window_id id) -> window_ref
+{
     if (const auto ptr = SDL_GetWindowFromID(static_cast<u32>(id))) {
-        return window_ref(ptr);
+        return window_ref{ptr};
     } else {
-        throw error();
+        throw error{};
     }
 }
 
-inline auto get_grabbed_window() -> window_ref {
+inline auto get_grabbed_window() -> window_ref
+{
     if (const auto ptr = SDL_GetGrabbedWindow()) {
-        return window_ref(ptr);
+        return window_ref{ptr};
     } else {
-        throw error();
+        throw error{};
     }
 }
 
-inline
-display_mode
-closest_display_mode(int display_index, const display_mode& m)
+inline auto closest_display_mode(int display_index, const display_mode& m) -> display_mode
 {
     const auto pmode = reinterpret_cast<const SDL_DisplayMode*>(&m);
     auto closest = SDL_DisplayMode();
     if (SDL_GetClosestDisplayMode(display_index, pmode, &closest)) {
-        return display_mode(closest);
+        return display_mode{closest};
     } else {
-        throw error();
+        throw error{};
     }
 }
 
-inline
-display_mode
-current_display_mode(int display_index)
+inline auto current_display_mode(int display_index) -> display_mode
 {
-    auto current = SDL_DisplayMode();
+    auto current = SDL_DisplayMode{};
     if (SDL_GetCurrentDisplayMode(display_index, &current) == 0) {
-        return display_mode(current);
+        return display_mode{current};
     } else {
-        throw error();
+        throw error{};
     }
 }
 
-inline
-display_mode
-desktop_display_mode(int display_index)
+inline auto desktop_display_mode(int display_index) -> display_mode
 {
-    auto desktop = SDL_DisplayMode();
+    auto desktop = SDL_DisplayMode{};
     if (SDL_GetDesktopDisplayMode(display_index, &desktop) == 0) {
-        return display_mode(desktop);
+        return display_mode{desktop};
     } else {
-        throw error();
+        throw error{};
     }
 }
 
-inline
-rectangle
-display_bounds(int display_index)
+inline auto display_bounds(int display_index) -> rect
 {
-    auto bounds = rectangle();
+    auto bounds = rect{};
     if (SDL_GetDisplayBounds(display_index, &bounds) == 0) {
         return bounds;
     } else {
-        throw error();
+        throw error{};
     }
 }
 
-inline
-std::array<float, 3>
-display_dpi(int display_index)
+inline auto display_dpi(int display_index) -> std::array<float, 3>
 {
-    auto ddpi = float();
-    auto hdpi = float();
-    auto vdpi = float();
+    auto ddpi = float{};
+    auto hdpi = float{};
+    auto vdpi = float{};
     if (SDL_GetDisplayDPI(display_index, &ddpi, &hdpi, &vdpi) == 0) {
         return std::array{ddpi, hdpi, vdpi};
     } else {
-        throw error();
+        throw error{};
     }
 }
 
-inline
-float
-display_diagonal_dpi(int display_index)
+inline auto display_diagonal_dpi(int display_index) -> float
 {
-    auto ddpi = float();
+    auto ddpi = float{};
     if (SDL_GetDisplayDPI(display_index, &ddpi, nullptr, nullptr) == 0) {
         return ddpi;
     } else {
-        throw error();
+        throw error{};
     }
 }
 
-inline
-float
-display_horizontal_dpi(int display_index)
+inline auto display_horizontal_dpi(int display_index) -> float
 {
-    auto hdpi = float();
+    auto hdpi = float{};
     if (SDL_GetDisplayDPI(display_index, nullptr, &hdpi, nullptr) == 0) {
         return hdpi;
     } else {
-        throw error();
+        throw error{};
     }
 }
 
-inline
-float
-display_vertical_dpi(int display_index)
+inline auto display_vertical_dpi(int display_index) -> float
 {
-    auto vdpi = float();
+    auto vdpi = float{};
     if (SDL_GetDisplayDPI(display_index, nullptr, nullptr, &vdpi) == 0) {
         return vdpi;
     } else {
-        throw error();
+        throw error{};
     }
 }
 
-inline
-display_mode
-get_display_mode(int display_index, int mode_index)
+inline auto get_display_mode(int display_index, int mode_index) -> display_mode
 {
-    auto m = SDL_DisplayMode();
+    auto m = SDL_DisplayMode{};
     if (SDL_GetDisplayMode(display_index, mode_index, &m) == 0) {
-        return display_mode(m);
+        return display_mode{m};
     } else {
-        throw error();
+        throw error{};
     }
 }
 
-inline
-const char*
-get_display_name(int display_index) noexcept
+inline auto get_display_name(int display_index) noexcept -> const char*
 {
     return SDL_GetDisplayName(display_index);
 }
 
-inline
-rectangle
-display_usable_bounds(int display_index)
+inline auto display_usable_bounds(int display_index) -> rect
 {
-    auto rect = rectangle();
-    if (SDL_GetDisplayUsableBounds(display_index, &rect) == 0) {
-        return rect;
+    auto r = rect{};
+    if (SDL_GetDisplayUsableBounds(display_index, &r) == 0) {
+        return r;
     } else {
-        throw error();
+        throw error{};
     }
 }
 
-inline
-int
-num_display_modes(int display_index)
+inline auto num_display_modes(int display_index) -> int
 {
     if (const auto count = SDL_GetNumDisplayModes(display_index); count < 0) {
-        throw error();
+        throw error{};
     } else {
         return count;
     }
 }
 
-inline
-int
-num_video_displays()
+inline auto num_video_displays() -> int
 {
     if (const auto cnt = SDL_GetNumVideoDisplays(); cnt < 0) {
-        throw error();
+        throw error{};
     } else {
         return cnt;
     }
 }
 
-inline
-float
-display_brightness(const window& win) noexcept
+inline auto display_brightness(const window& win) noexcept -> float
 {
     return SDL_GetWindowBrightness(win.get_pointer());
 }
 
-inline
-void
-set_display_brightness(const window& win, float brightness)
+inline void set_display_brightness(const window& win, float brightness)
 {
     if (SDL_SetWindowBrightness(win.get_pointer(), brightness) < 0) {
-        throw error();
+        throw error{};
     }
 }
 
-inline
-void
-get_display_gamma_ramp(
-    const window& win,
-    span<u16, 256> red,
-    span<u16, 256> green,
-    span<u16, 256> blue)
+inline void get_display_gamma_ramp(const window& win, span<u16, 256> red, span<u16, 256> green, span<u16, 256> blue)
 {
     const auto r = red.data();
     const auto g = green.data();
     const auto b = blue.data();
     if (SDL_GetWindowGammaRamp(win.get_pointer(), r, g, b) < 0) {
-        throw error();
+        throw error{};
     }
 }
 
-inline
-void
-set_display_gamma_ramp(
-    const window& win,
-    span<const u16, 256> red,
-    span<const u16, 256> green,
-    span<const u16, 256> blue)
+inline void set_display_gamma_ramp(const window& win, span<const u16, 256> red, span<const u16, 256> green, span<const u16, 256> blue)
 {
     const auto r = red.data();
     const auto g = green.data();
     const auto b = blue.data();
     if (SDL_SetWindowGammaRamp(win.get_pointer(), r, g, b) < 0) {
-        throw error();
+        throw error{};
     }
 }
 
 struct screen_saver {
-    static
-    bool
-    is_enabled() noexcept
+    static auto is_enabled() noexcept -> bool
     {
         return SDL_IsScreenSaverEnabled();
     }
 
-    static
-    void
-    enable() noexcept
+    static void enable() noexcept
     {
         SDL_EnableScreenSaver();
     }
 
-    static
-    void
-    disable() noexcept
+    static void disable() noexcept
     {
         SDL_DisableScreenSaver();
     }
 };
 
-inline
-int
-num_video_drivers() noexcept
+inline auto num_video_drivers() noexcept -> int
 {
     return SDL_GetNumVideoDrivers();
 }
 
-inline
-const char*
-video_driver_name(int driver_index) noexcept
+inline auto video_driver_name(int driver_index) noexcept -> const char*
 {
     return SDL_GetVideoDriver(driver_index);
 }
 
-inline
-const char*
-current_video_driver() noexcept
+inline auto current_video_driver() noexcept -> const char*
 {
     return SDL_GetCurrentVideoDriver();
 }
@@ -802,7 +795,7 @@ struct video_subsystem {
     video_subsystem(const char* driver_name)
     {
         if (SDL_VideoInit(driver_name) < 0) {
-            throw error();
+            throw error{};
         }
     }
 

@@ -1,8 +1,8 @@
-#include <sdlw/rectangle.hpp>
+#include <sdlw/rect.hpp>
 
 void foo() {
-    auto r1 = sdlw::rectangle{};
-    auto r2 = sdlw::rectangle{};
+    auto r1 = sdlw::rect{};
+    auto r2 = sdlw::rect{};
     r1 == r2;
 
     auto p1 = sdlw::point{};

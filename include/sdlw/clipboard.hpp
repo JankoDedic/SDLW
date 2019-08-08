@@ -7,26 +7,20 @@
 namespace sdlw {
 
 struct clipboard {
-    static
-    bool
-    has_text() noexcept
+    static bool has_text() noexcept
     {
         return SDL_HasClipboardText();
     }
 
-    static
-    const char*
-    text() noexcept
+    static const char* text() noexcept
     {
         return SDL_GetClipboardText();
     }
 
-    static
-    void
-    set_text(const char* text)
+    static void set_text(const char* text)
     {
         if (SDL_SetClipboardText(text) < 0) {
-            throw error();
+            throw error{};
         }
     }
 };

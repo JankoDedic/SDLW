@@ -4,6 +4,8 @@
 
 namespace sdlw {
 
+// clang-format off
+
 struct cpu_info {
     static auto cache_line_size() noexcept -> int  { return SDL_GetCPUCacheLineSize(); }
     static auto cpu_count()       noexcept -> int  { return SDL_GetCPUCount();         }
@@ -20,5 +22,7 @@ struct cpu_info {
     static auto has_sse41()       noexcept -> bool { return SDL_HasSSE41();            }
     static auto has_sse42()       noexcept -> bool { return SDL_HasSSE42();            }
 };
+
+// clang-format on
 
 } // namespace sdlw

@@ -4,6 +4,8 @@
 
 namespace sdlw {
 
+// clang-format off
+
 enum class scancode {
     unknown             = SDL_SCANCODE_UNKNOWN,
     a                   = SDL_SCANCODE_A,
@@ -250,5 +252,7 @@ enum class scancode {
     audio_fast_forward  = SDL_SCANCODE_AUDIOFASTFORWARD,
     num_scancodes       = SDL_NUM_SCANCODES
 };
+
+// clang-format on
 
 } // namespace sdlw

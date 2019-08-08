@@ -18,7 +18,7 @@
 #include <sdlw/pixels.hpp>
 #include <sdlw/platform.hpp>
 #include <sdlw/power.hpp>
-#include <sdlw/rectangle.hpp>
+#include <sdlw/rect.hpp>
 #include <sdlw/render.hpp>
 #include <sdlw/rwops.hpp>
 #include <sdlw/scancode.hpp>

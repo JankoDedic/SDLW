@@ -9,28 +9,29 @@ namespace sdlw {
 
 class stream {
 public:
-    stream() noexcept {
-        _rwops.size = [] (SDL_RWops* context) -> i64 {
+    stream() noexcept
+    {
+        _rwops.size = [](SDL_RWops* context) -> i64 {
             const auto& s = *reinterpret_cast<stream*>(context);
             return s.size();
         };
 
-        _rwops.seek = [] (SDL_RWops* context, i64 offset, int whence) -> i64 {
+        _rwops.seek = [](SDL_RWops* context, i64 offset, int whence) -> i64 {
             auto& s = *reinterpret_cast<stream*>(context);
             return s.seek(offset, whence);
         };
 
-        _rwops.read = [] (SDL_RWops* context, void* ptr, std::size_t size, std::size_t maxnum) -> std::size_t {
+        _rwops.read = [](SDL_RWops* context, void* ptr, std::size_t size, std::size_t maxnum) -> std::size_t {
             auto& s = *reinterpret_cast<stream*>(context);
             return s.read(ptr, size, maxnum);
         };
 
-        _rwops.write = [] (SDL_RWops* context, const void* ptr, std::size_t size, std::size_t num) -> std::size_t {
+        _rwops.write = [](SDL_RWops* context, const void* ptr, std::size_t size, std::size_t num) -> std::size_t {
             auto& s = *reinterpret_cast<stream*>(context);
             return s.write(ptr, size, num);
         };
 
-        _rwops.close = [] (SDL_RWops* context) -> int {
+        _rwops.close = [](SDL_RWops* context) -> int {
             auto& s = *reinterpret_cast<stream*>(context);
             return s.close();
         };
@@ -39,9 +40,10 @@ public:
     stream(const stream&) = delete;
     auto operator=(const stream&) -> stream& = delete;
     stream(stream&&) = delete;
-    auto operator=(stream&&) -> stream& = delete;
+    auto operator=(stream &&) -> stream& = delete;
 
-    auto get_pointer() noexcept -> SDL_RWops* {
+    auto get_pointer() noexcept -> SDL_RWops*
+    {
         return &_rwops;
     }
 
@@ -51,7 +53,8 @@ public:
     virtual auto write(const void* ptr, std::size_t size, std::size_t num) -> std::size_t = 0;
     virtual auto close() -> int = 0;
 
-    auto tell() -> i64 {
+    auto tell() -> i64
+    {
         return SDL_RWtell(&_rwops);
     }
 
@@ -73,23 +76,28 @@ public:
         if (!_file_stream) throw error{};
     }
 
-    auto size() const -> i64 override {
+    auto size() const -> i64 override
+    {
         return SDL_RWsize(_file_stream);
     }
 
-    auto seek(i64 offset, int whence) -> i64 override {
+    auto seek(i64 offset, int whence) -> i64 override
+    {
         return SDL_RWseek(_file_stream, offset, whence);
     }
 
-    auto read(void* ptr, std::size_t size, std::size_t maxnum) -> std::size_t override {
+    auto read(void* ptr, std::size_t size, std::size_t maxnum) -> std::size_t override
+    {
         return SDL_RWread(_file_stream, ptr, size, maxnum);
     }
 
-    auto write(const void* ptr, std::size_t size, std::size_t num) -> std::size_t override {
+    auto write(const void* ptr, std::size_t size, std::size_t num) -> std::size_t override
+    {
         return SDL_RWwrite(_file_stream, ptr, size, num);
     }
 
-    auto close() -> int override {
+    auto close() -> int override
+    {
         return SDL_RWclose(_file_stream);
     }
 
@@ -111,23 +119,28 @@ public:
         if (!_memory_stream) throw error{};
     }
 
-    auto size() const -> i64 override {
+    auto size() const -> i64 override
+    {
         return SDL_RWsize(_memory_stream);
     }
 
-    auto seek(i64 offset, int whence) -> i64 override {
+    auto seek(i64 offset, int whence) -> i64 override
+    {
         return SDL_RWseek(_memory_stream, offset, whence);
     }
 
-    auto read(void* ptr, std::size_t size, std::size_t maxnum) -> std::size_t override {
+    auto read(void* ptr, std::size_t size, std::size_t maxnum) -> std::size_t override
+    {
         return SDL_RWread(_memory_stream, ptr, size, maxnum);
     }
 
-    auto write(const void* ptr, std::size_t size, std::size_t num) -> std::size_t override {
+    auto write(const void* ptr, std::size_t size, std::size_t num) -> std::size_t override
+    {
         return SDL_RWwrite(_memory_stream, ptr, size, num);
     }
 
-    auto close() -> int override {
+    auto close() -> int override
+    {
         return SDL_RWclose(_memory_stream);
     }
 

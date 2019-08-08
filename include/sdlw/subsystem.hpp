@@ -8,6 +8,8 @@
 
 namespace sdlw {
 
+// clang-format off
+
 enum class subsystem_flags : u32 {
     timer           = SDL_INIT_TIMER,
     audio           = SDL_INIT_AUDIO,
@@ -20,6 +22,8 @@ enum class subsystem_flags : u32 {
     everything      = SDL_INIT_EVERYTHING
 };
 
+// clang-format on
+
 SDLW_DETAIL_DEFINE_FLAG_OPERATIONS(subsystem_flags);
 
 class subsystem {
@@ -30,7 +34,7 @@ public:
         : _flags(static_cast<u32>(flags))
     {
         if (SDL_InitSubSystem(_flags) < 0) {
-            throw error();
+            throw error{};
         }
     }
 

@@ -8,9 +8,8 @@ namespace sdlw {
 
 struct error : std::runtime_error {
     error() noexcept
-        : std::runtime_error(SDL_GetError())
-    {
-    }
+        : std::runtime_error{SDL_GetError()}
+    {}
 };
 
 } // namespace sdlw

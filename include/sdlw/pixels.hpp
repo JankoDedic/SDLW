@@ -8,6 +8,8 @@ namespace sdlw {
 
 using color = SDL_Color;
 
+// clang-format off
+
 enum alpha : u8 {
     transparent = SDL_ALPHA_TRANSPARENT,
     opaque      = SDL_ALPHA_OPAQUE
@@ -107,63 +109,49 @@ enum class pixel_format_type : u32 {
     nv21        = SDL_PIXELFORMAT_NV21
 };
 
-constexpr
-pixel_type
-type(pixel_format_type pixel_format) noexcept
+// clang-format on
+
+constexpr auto type(pixel_format_type pixel_format) noexcept -> pixel_type
 {
     const auto sdl_pixel_format = static_cast<u32>(pixel_format);
     return static_cast<pixel_type>(SDL_PIXELTYPE(sdl_pixel_format));
 }
 
-constexpr
-pixel_order
-order(pixel_format_type pixel_format) noexcept
+constexpr auto order(pixel_format_type pixel_format) noexcept -> pixel_order
 {
-    auto const sdl_pixel_format = static_cast<u32>(pixel_format);
+    const auto sdl_pixel_format = static_cast<u32>(pixel_format);
     return static_cast<pixel_order>(SDL_PIXELORDER(sdl_pixel_format));
 }
 
-constexpr
-pixel_layout
-layout(pixel_format_type pixel_format) noexcept
+constexpr auto layout(pixel_format_type pixel_format) noexcept -> pixel_layout
 {
     const auto sdl_pixel_format = static_cast<u32>(pixel_format);
     return static_cast<pixel_layout>(SDL_PIXELLAYOUT(sdl_pixel_format));
 }
 
-constexpr
-int
-bits_per_pixel(pixel_format_type pixel_format) noexcept
+constexpr auto bits_per_pixel(pixel_format_type pixel_format) noexcept -> int
 {
     return SDL_BITSPERPIXEL(static_cast<u32>(pixel_format));
 }
 
-constexpr
-int
-bytes_per_pixel(pixel_format_type pixel_format) noexcept
+constexpr auto bytes_per_pixel(pixel_format_type pixel_format) noexcept -> int
 {
     return SDL_BYTESPERPIXEL(static_cast<u32>(pixel_format));
 }
 
-constexpr
-bool
-is_indexed(pixel_format_type pixel_format) noexcept
+constexpr auto is_indexed(pixel_format_type pixel_format) noexcept -> bool
 {
     return SDL_ISPIXELFORMAT_INDEXED(static_cast<u32>(pixel_format));
 }
 
-constexpr
-bool
-is_alpha(pixel_format_type pixel_format) noexcept
+constexpr auto is_alpha(pixel_format_type pixel_format) noexcept -> bool
 {
     return SDL_ISPIXELFORMAT_ALPHA(static_cast<u32>(pixel_format));
 }
 
-constexpr
-bool
-is_fourcc(pixel_format_type pixel_format) noexcept
+constexpr auto is_fourcc(pixel_format_type pixel_format) noexcept -> bool
 {
     return SDL_ISPIXELFORMAT_FOURCC(static_cast<u32>(pixel_format));
 }
 
-} // sdlw
+} // namespace sdlw

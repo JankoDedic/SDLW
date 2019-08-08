@@ -8,6 +8,8 @@ namespace sdlw {
 
 using joystick_id = SDL_JoystickID;
 
+// clang-format off
+
 enum class joystick_hat_position : u8 {
     centered   = SDL_HAT_CENTERED,
     up         = SDL_HAT_UP,
@@ -19,5 +21,7 @@ enum class joystick_hat_position : u8 {
     left_up    = SDL_HAT_LEFTUP,
     left_down  = SDL_HAT_LEFTDOWN
 };
+
+// clang-format on
 
 } // namespace sdlw

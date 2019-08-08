@@ -2,7 +2,11 @@
 
 #include <SDL2/SDL_keycode.h>
 
+#include "sdlw/utility.hpp"
+
 namespace sdlw {
+
+// clang-format off
 
 enum class keycode {
     unknown             = SDLK_UNKNOWN,
@@ -263,6 +267,8 @@ enum class keymod : u16 {
     reserved = KMOD_RESERVED
 };
 
-SDLW_DETAIL_DEFINE_FLAG_OPERATIONS(keymod);
+SDLW_DETAIL_DEFINE_FLAG_OPERATIONS(keymod)
+
+// clang-format on
 
 } // namespace sdlw

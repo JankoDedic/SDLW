@@ -42,7 +42,7 @@ void run() {
     const auto sdlw_guard = sdlw::subsystem(sdlw::subsystem_flags::video);
     // Create the window
     const auto win_size = size_of(display_usable_bounds(0)) / 2;
-    const auto win_bounds = rectangle{50, 50, win_size.w, win_size.h};
+    const auto win_bounds = rect{50, 50, win_size.w, win_size.h};
     auto win = window("title", win_bounds, window_flags::shown);
     get_window(win.id()).set_title("new title");
     win.set_hit_test([] (auto...) { return hit_test_result::draggable; });

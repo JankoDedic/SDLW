@@ -4,6 +4,8 @@
 
 namespace sdlw {
 
+// clang-format off
+
 enum class battery_state {
     unknown    = SDL_POWERSTATE_UNKNOWN,
     on_battery = SDL_POWERSTATE_ON_BATTERY,
@@ -12,6 +14,8 @@ enum class battery_state {
     charged    = SDL_POWERSTATE_CHARGED
 };
 
+// clang-format on
+
 class battery_info {
     battery_state _battery_state;
     int _seconds_left;
@@ -19,40 +23,34 @@ class battery_info {
 
 public:
     battery_info(battery_state battery_state_, int seconds_left, int percentage_left) noexcept
-        : _battery_state(battery_state_)
-        , _seconds_left(seconds_left)
-        , _percentage_left(percentage_left)
-    {
-    }
+        : _battery_state{battery_state_}
+        , _seconds_left{seconds_left}
+        , _percentage_left{percentage_left}
+    {}
 
-    battery_state
-    state() const noexcept
+    auto state() const noexcept -> battery_state
     {
         return _battery_state;
     }
 
-    int
-    seconds_left() const noexcept
+    auto seconds_left() const noexcept -> int
     {
         return _seconds_left;
     }
 
-    int
-    percentageLeft() const noexcept
+    auto percentage_left() const noexcept -> int
     {
         return _percentage_left;
     }
 };
 
-inline
-battery_info
-get_battery_info() noexcept
+inline auto get_battery_info() noexcept -> battery_info
 {
-    auto seconds_left = int();
-    auto percentage_left = int();
+    auto seconds_left = int{};
+    auto percentage_left = int{};
     const auto power_state = SDL_GetPowerInfo(&seconds_left, &percentage_left);
     const auto battery_state_ = static_cast<battery_state>(power_state);
-    return battery_info(battery_state_, seconds_left, percentage_left);
+    return {battery_state_, seconds_left, percentage_left};
 }
 
 } // namespace sdlw
