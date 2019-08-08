@@ -2,9 +2,6 @@
 
 #include <SDL2/SDL_mouse.h>
 
-#include <memory>
-#include <optional>
-
 #include <sdlw/error.hpp>
 #include <sdlw/rect.hpp>
 #include <sdlw/video.hpp>
@@ -33,51 +30,78 @@ enum class system_cursor {
 
 // clang-format on
 
-class cursor {
-    using deleter = detail::make_functor<SDL_FreeCursor>;
-
-    std::unique_ptr<SDL_Cursor, deleter> _cursor;
+class cursor_ref {
+protected:
+    SDL_Cursor* _cursor = nullptr;
 
 public:
-    cursor() noexcept = default;
+    explicit operator bool() const noexcept
+    {
+        return static_cast<bool>(_cursor);
+    }
 
-    cursor(SDL_Cursor* pointer) noexcept
+    cursor_ref() noexcept
+        : _cursor{nullptr}
+    {}
+
+    explicit cursor_ref(SDL_Cursor* pointer) noexcept
         : _cursor{pointer}
     {}
 
+    auto get_pointer() const noexcept -> SDL_Cursor*
+    {
+        return _cursor;
+    }
+};
+
+class cursor : public cursor_ref {
+public:
+    using cursor_ref::cursor_ref;
+
+    cursor(const cursor&) = delete;
+
+    auto operator=(const cursor&) -> cursor& = delete;
+
+    cursor(cursor&& other) noexcept
+        : cursor_ref{std::exchange(other._cursor, nullptr)}
+    {}
+
+    auto operator=(cursor&& other) noexcept -> cursor&
+    {
+        SDL_FreeCursor(_cursor);
+        _cursor = std::exchange(other._cursor, nullptr);
+        return *this;
+    }
+
+    ~cursor() noexcept
+    {
+        SDL_FreeCursor(_cursor);
+        _cursor = nullptr;
+    }
+
     cursor(const u8* data, const u8* mask, const size& sz, const point& topleft_corner)
-        : _cursor{SDL_CreateCursor(data, mask, sz.w, sz.h, topleft_corner.x, topleft_corner.y)}
+        : cursor_ref{SDL_CreateCursor(data, mask, sz.w, sz.h, topleft_corner.x, topleft_corner.y)}
     {
         if (!_cursor) throw error{};
     }
 
     cursor(const surface& surf, const point& topleft_corner)
-        : _cursor{SDL_CreateColorCursor(surf.get_pointer(), topleft_corner.x, topleft_corner.y)}
+        : cursor_ref{SDL_CreateColorCursor(surf.get_pointer(), topleft_corner.x, topleft_corner.y)}
     {
         if (!_cursor) throw error{};
     }
 
-    cursor(system_cursor sysc)
-        : _cursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(sysc))}
+    explicit cursor(system_cursor sysc)
+        : cursor_ref{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(sysc))}
     {
         if (!_cursor) throw error{};
-    }
-
-    auto get_pointer() const noexcept -> SDL_Cursor*
-    {
-        return _cursor.get();
     }
 };
 
 struct active_cursor {
-    static cursor* get() noexcept
+    static auto get() noexcept -> cursor_ref
     {
-        static auto s = detail::storage<cursor>();
-        if (const auto pcursor = SDL_GetCursor()) {
-            return new (&s) cursor(pcursor);
-        } else {
-            return nullptr;
-        }
+        return cursor_ref{SDL_GetCursor()};
     }
 
     static void set(const cursor& c) noexcept
@@ -150,7 +174,7 @@ inline auto state() noexcept -> std::pair<mouse_button_state, point>
     return {bstate, pos};
 }
 
-inline std::pair<mouse_button_state, point> global_state() noexcept
+inline auto global_state() noexcept -> std::pair<mouse_button_state, point>
 {
     auto pos = point{};
     const auto sdl_button_state = SDL_GetMouseState(&pos.x, &pos.y);
@@ -158,13 +182,9 @@ inline std::pair<mouse_button_state, point> global_state() noexcept
     return {bstate, pos};
 }
 
-inline auto mouse_focus() noexcept -> std::optional<window_ref>
+inline auto mouse_focus() noexcept -> window_ref
 {
-    if (const auto ptr = SDL_GetMouseFocus()) {
-        return window_ref{ptr};
-    } else {
-        return std::nullopt;
-    }
+    return window_ref{SDL_GetMouseFocus()};
 }
 
 inline auto capture_mouse(bool enabled) noexcept -> bool
