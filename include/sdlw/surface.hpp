@@ -9,18 +9,13 @@
 namespace sdlw {
 
 class surface_ref {
-protected:
-    SDL_Surface* _surface = nullptr;
-
 public:
     explicit operator bool() const noexcept
     {
         return static_cast<bool>(_surface);
     }
 
-    surface_ref() noexcept
-        : _surface{nullptr}
-    {}
+    surface_ref() = default;
 
     explicit surface_ref(SDL_Surface* s) noexcept
         : _surface{s}
@@ -30,6 +25,29 @@ public:
     {
         return _surface;
     }
+
+    auto format() const noexcept -> pixel_format_ref
+    {
+        return pixel_format_ref{_surface->format};
+    }
+
+    auto size() const noexcept -> sdlw::size
+    {
+        return {_surface->w, _surface->h};
+    }
+
+    auto pitch() const noexcept -> int
+    {
+        return _surface->pitch;
+    }
+
+    auto clip() const noexcept -> rect
+    {
+        return _surface->clip_rect;
+    }
+
+protected:
+    SDL_Surface* _surface = nullptr;
 };
 
 class surface : public surface_ref {
