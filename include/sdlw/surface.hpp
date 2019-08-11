@@ -74,6 +74,30 @@ public:
         SDL_FreeSurface(_surface);
         _surface = nullptr;
     }
+
+    surface(int width, int height, int depth, u32 rmask, u32 gmask, u32 bmask, u32 amask)
+        : surface_ref{SDL_CreateRGBSurface(0, width, height, depth, rmask, gmask, bmask, amask)}
+    {
+        if (!_surface) throw error{};
+    }
+
+    surface(void* pixels, int width, int height, int depth, int pitch, u32 rmask, u32 gmask, u32 bmask, u32 amask)
+        : surface_ref{SDL_CreateRGBSurfaceFrom(pixels, width, height, depth, pitch, rmask, gmask, bmask, amask)}
+    {
+        if (!_surface) throw error{};
+    }
+
+    surface(int width, int height, int depth, pixel_format_type format)
+        : surface_ref{SDL_CreateRGBSurfaceWithFormat(0, width, height, depth, static_cast<u32>(format))}
+    {
+        if (!_surface) throw error{};
+    }
+
+    surface(void* pixels, int width, int height, int depth, int pitch, pixel_format_type format)
+        : surface_ref{SDL_CreateRGBSurfaceWithFormatFrom(pixels, width, height, depth, pitch, static_cast<u32>(format))}
+    {
+        if (!_surface) throw error{};
+    }
 };
 
 inline auto operator==(const surface& lhs, const surface& rhs) noexcept -> bool
