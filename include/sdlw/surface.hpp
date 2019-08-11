@@ -6,6 +6,7 @@
 
 #include <sdlw/blend_mode.hpp>
 #include <sdlw/rwops.hpp>
+
 #include "sdlw/utility.hpp"
 
 namespace sdlw {
