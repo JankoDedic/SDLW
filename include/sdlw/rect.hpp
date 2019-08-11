@@ -11,7 +11,19 @@ namespace sdlw {
 
 // clang-format off
 
-struct point : SDL_Point {};
+struct point : SDL_Point {
+    point() = default;
+
+    constexpr point(const SDL_Point& p) noexcept
+        : SDL_Point{p}
+    {
+    }
+
+    constexpr point(int x, int y) noexcept
+        : SDL_Point{x, y}
+    {
+    }
+};
 
 // Comparison
 
@@ -140,7 +152,19 @@ constexpr auto operator*=(size& lhs, T rhs) noexcept -> size& { return lhs = lhs
 template<typename T, class = std::enable_if_t<std::is_arithmetic_v<T>>>
 constexpr auto operator/=(size& lhs, T rhs) noexcept -> size& { return lhs = lhs / rhs; }
 
-struct rect : SDL_Rect {};
+struct rect : SDL_Rect {
+    rect() = default;
+
+    constexpr rect(const SDL_Rect& r) noexcept
+        : SDL_Rect{r}
+    {
+    }
+
+    constexpr rect(int x, int y, int w, int h) noexcept
+        : SDL_Rect{x, y, w, h}
+    {
+    }
+};
 
 constexpr auto operator==(const rect& lhs, const rect& rhs) noexcept -> bool {
     return lhs.x == rhs.x
