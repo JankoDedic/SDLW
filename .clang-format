@@ -1,6 +1,6 @@
 Language: Cpp
 AccessModifierOffset: -4
-AlignAfterOpenBracket: DontAlign
+AlignAfterOpenBracket: AlwaysBreak
 #UNKNOWN KEY AlignConsecutiveMacros: true
 AlignConsecutiveAssignments: false
 AlignConsecutiveDeclarations: false
@@ -67,7 +67,7 @@ PenaltyBreakComment: 0
 PenaltyBreakFirstLessLess: 0
 PenaltyBreakString: 0
 PenaltyBreakTemplateDeclaration: 0
-PenaltyExcessCharacter: 0
+# PenaltyExcessCharacter: 0
 PenaltyReturnTypeOnItsOwnLine: 0
 PointerAlignment: Left
 ReflowComments: true
