@@ -154,4 +154,78 @@ constexpr auto is_fourcc(pixel_format_type pixel_format) noexcept -> bool
     return SDL_ISPIXELFORMAT_FOURCC(static_cast<u32>(pixel_format));
 }
 
+class palette_ref {
+public:
+    explicit operator bool() const noexcept
+    {
+        return static_cast<bool>(_palette);
+    }
+
+    palette_ref() = default;
+
+    explicit palette_ref(SDL_Palette* ptr) noexcept
+        : _palette{ptr}
+    {}
+
+    auto get_pointer() const noexcept -> SDL_Palette*
+    {
+        return _palette;
+    }
+
+    auto colors() const noexcept -> span<color>
+    {
+        return {_palette->colors, _palette->ncolors};
+    }
+
+private:
+    SDL_Palette* _palette = nullptr;
+};
+
+class pixel_format_ref {
+public:
+    explicit operator bool() const noexcept
+    {
+        return static_cast<bool>(_pixel_format);
+    }
+
+    pixel_format_ref() = default;
+
+    explicit pixel_format_ref(SDL_PixelFormat* ptr) noexcept
+        : _pixel_format{ptr}
+    {}
+
+    auto get_pointer() const noexcept -> SDL_PixelFormat*
+    {
+        return _pixel_format;
+    }
+
+    auto format() const noexcept -> pixel_format_type
+    {
+        return static_cast<pixel_format_type>(_pixel_format->format);
+    }
+
+    auto palette() const noexcept -> palette_ref
+    {
+        return palette_ref{_pixel_format->palette};
+    }
+
+    auto bits_per_pixel() const noexcept -> u8
+    {
+        return _pixel_format->BitsPerPixel;
+    }
+
+    auto bytes_per_pixel() const noexcept -> u8
+    {
+        return _pixel_format->BytesPerPixel;
+    }
+
+    auto mask() const noexcept -> std::array<u32, 4>
+    {
+        return {_pixel_format->Rmask, _pixel_format->Gmask, _pixel_format->Bmask, _pixel_format->Amask};
+    }
+
+private:
+    SDL_PixelFormat* _pixel_format = nullptr;
+};
+
 } // namespace sdlw
