@@ -3,7 +3,7 @@
 #include <SDL2/SDL_types.h>
 #include <nonstd/span.hpp>
 
-namespace sdlw {
+namespace sdl {
 
 using namespace nonstd;
 
@@ -18,4 +18,4 @@ using i64 = Sint64;
 using u64 = Uint64;
 // clang-format on
 
-} // namespace sdlw
+} // namespace sdl

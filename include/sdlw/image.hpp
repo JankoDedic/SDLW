@@ -6,7 +6,7 @@
 #include <sdlw/surface.hpp>
 #include <sdlw/utility.hpp>
 
-namespace sdlw::img {
+namespace sdl::img {
 
 // clang-format off
 
@@ -68,4 +68,4 @@ inline void save_as_jpg(const surface& surf, const char* filename, int quality)
     }
 }
 
-} // namespace sdlw::img
+} // namespace sdl::img

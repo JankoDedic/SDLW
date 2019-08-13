@@ -6,7 +6,7 @@
 #include <sdlw/types.hpp>
 #include <sdlw/utility.hpp>
 
-namespace sdlw {
+namespace sdl {
 
 // clang-format off
 
@@ -44,4 +44,4 @@ public:
     }
 };
 
-} // namespace sdlw
+} // namespace sdl

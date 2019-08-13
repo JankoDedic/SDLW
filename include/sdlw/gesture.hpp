@@ -4,8 +4,8 @@
 
 #include <sdlw/types.hpp>
 
-namespace sdlw {
+namespace sdl {
 
 using gesture_id = i64;
 
-} // namespace sdlw
+} // namespace sdl

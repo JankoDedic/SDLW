@@ -8,7 +8,7 @@
 
 #include "sdlw/utility.hpp"
 
-namespace sdlw {
+namespace sdl {
 
 // clang-format off
 
@@ -231,4 +231,4 @@ struct relative_mode {
     }
 };
 
-} // namespace sdlw
+} // namespace sdl

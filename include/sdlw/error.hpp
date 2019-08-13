@@ -4,7 +4,7 @@
 
 #include <SDL2/SDL_error.h>
 
-namespace sdlw {
+namespace sdl {
 
 struct error : std::runtime_error {
     error() noexcept
@@ -12,4 +12,4 @@ struct error : std::runtime_error {
     {}
 };
 
-} // namespace sdlw
+} // namespace sdl

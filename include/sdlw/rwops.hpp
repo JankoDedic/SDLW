@@ -5,7 +5,7 @@
 #include <sdlw/error.hpp>
 #include <sdlw/types.hpp>
 
-namespace sdlw {
+namespace sdl {
 
 class stream {
 public:
@@ -148,4 +148,4 @@ private:
     SDL_RWops* _memory_stream = nullptr;
 };
 
-} // namespace sdlw
+} // namespace sdl

@@ -12,7 +12,7 @@
 #include <sdlw/touch.hpp>
 #include <sdlw/video.hpp>
 
-namespace sdlw {
+namespace sdl {
 
 // clang-format off
 
@@ -122,7 +122,7 @@ class dollar_gesture_event {
 public:
     auto type()        const noexcept -> event_type        { return static_cast<event_type>(_event.type);                 }
     auto timestamp()   const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
-    auto touch_id()    const noexcept -> sdlw::touch_id    { return {_event.touchId};                                     }
+    auto touch_id()    const noexcept -> sdl::touch_id     { return {_event.touchId};                                     }
     auto gesture_id()  const noexcept -> gesture_id        { return {_event.gestureId};                                   }
     auto num_fingers() const noexcept -> u32               { return _event.numFingers;                                    }
     auto error()       const noexcept -> float             { return _event.error;                                         }
@@ -146,8 +146,8 @@ class touch_finger_event {
 public:
     auto type()      const noexcept -> event_type        { return static_cast<event_type>(_event.type);                 }
     auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
-    auto touch_id()  const noexcept -> sdlw::touch_id    { return {_event.touchId};                                     }
-    auto finger_id() const noexcept -> sdlw::finger_id   { return {_event.fingerId};                                    }
+    auto touch_id()  const noexcept -> sdl::touch_id     { return {_event.touchId};                                     }
+    auto finger_id() const noexcept -> sdl::finger_id    { return {_event.fingerId};                                    }
     auto x()         const noexcept -> float             { return _event.x;                                             }
     auto y()         const noexcept -> float             { return _event.y;                                             }
     auto dx()        const noexcept -> float             { return _event.dx;                                            }
@@ -162,7 +162,7 @@ public:
     auto type()      const noexcept -> event_type        { return static_cast<event_type>(_event.type);                 }
     auto timestamp() const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
     auto window_id() const noexcept -> window_id         { return {_event.windowID};                                    }
-    auto key()       const noexcept -> sdlw::key         { return sdlw::key{_event.keysym};                             }
+    auto key()       const noexcept -> sdl::key          { return sdl::key{_event.keysym};                              }
     auto repeat()    const noexcept -> int               { return _event.repeat;                                        }
 };
 
@@ -267,7 +267,7 @@ class multi_gesture_event {
 public:
     auto type()        const noexcept -> event_type        { return static_cast<event_type>(_event.type);                 }
     auto timestamp()   const noexcept -> clock::time_point { return clock::time_point{clock::duration{_event.timestamp}}; }
-    auto touch_id()    const noexcept -> sdlw::touch_id    { return {_event.touchId};                                     }
+    auto touch_id()    const noexcept -> sdl::touch_id     { return {_event.touchId};                                     }
     auto rotation()    const noexcept -> float             { return _event.dTheta;                                        }
     auto pinch()       const noexcept -> float             { return _event.dDist;                                         }
     auto x()           const noexcept -> float             { return _event.x;                                             }
@@ -600,4 +600,4 @@ inline auto await(event& e, clock::duration timeout) noexcept -> bool
 
 } // namespace event_queue
 
-} // namespace sdlw
+} // namespace sdl

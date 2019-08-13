@@ -4,7 +4,7 @@
 
 #include <sdlw/video.hpp>
 
-namespace sdlw {
+namespace sdl {
 
 // clang-format off
 
@@ -35,4 +35,4 @@ inline void show_simple_message_box(message_box_flag f, const char* title, const
     }
 }
 
-} // namespace sdlw
+} // namespace sdl

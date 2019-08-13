@@ -7,7 +7,7 @@
 #include <sdlw/error.hpp>
 #include <sdlw/types.hpp>
 
-namespace sdlw {
+namespace sdl {
 
 using finger_id = i64;
 
@@ -77,4 +77,4 @@ inline finger get_touch_finger(touch_id id, int finger_index)
     }
 }
 
-} // namespace sdlw
+} // namespace sdl

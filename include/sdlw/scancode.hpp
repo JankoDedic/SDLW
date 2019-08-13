@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL_scancode.h>
 
-namespace sdlw {
+namespace sdl {
 
 // clang-format off
 
@@ -255,4 +255,4 @@ enum class scancode {
 
 // clang-format on
 
-} // namespace sdlw
+} // namespace sdl

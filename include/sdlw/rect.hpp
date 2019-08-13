@@ -7,7 +7,7 @@
 
 #include <sdlw/types.hpp>
 
-namespace sdlw {
+namespace sdl {
 
 // clang-format off
 
@@ -16,13 +16,11 @@ struct point : SDL_Point {
 
     constexpr point(const SDL_Point& p) noexcept
         : SDL_Point{p}
-    {
-    }
+    {}
 
     constexpr point(int x, int y) noexcept
         : SDL_Point{x, y}
-    {
-    }
+    {}
 };
 
 // Comparison
@@ -157,13 +155,11 @@ struct rect : SDL_Rect {
 
     constexpr rect(const SDL_Rect& r) noexcept
         : SDL_Rect{r}
-    {
-    }
+    {}
 
     constexpr rect(int x, int y, int w, int h) noexcept
         : SDL_Rect{x, y, w, h}
-    {
-    }
+    {}
 };
 
 constexpr auto operator==(const rect& lhs, const rect& rhs) noexcept -> bool {
@@ -240,4 +236,4 @@ inline auto rectangle_union(const rect& r1, const rect& r2) noexcept -> rect
     return result;
 }
 
-} // namespace sdlw
+} // namespace sdl

@@ -7,8 +7,8 @@
 #define SDLW_DETAIL_DEFINE_FLAG_OPERATIONS(enum_type)                       \
     constexpr enum_type operator|(enum_type lhs, enum_type rhs) noexcept    \
     {                                                                       \
-        const auto l = ::sdlw::detail::to_underlying(lhs);                  \
-        const auto r = ::sdlw::detail::to_underlying(rhs);                  \
+        const auto l = ::sdl::detail::to_underlying(lhs);                   \
+        const auto r = ::sdl::detail::to_underlying(rhs);                   \
         return static_cast<enum_type>(l | r);                               \
     }                                                                       \
                                                                             \
@@ -20,8 +20,8 @@
                                                                             \
     constexpr enum_type operator&(enum_type lhs, enum_type rhs) noexcept    \
     {                                                                       \
-        const auto l = ::sdlw::detail::to_underlying(lhs);                  \
-        const auto r = ::sdlw::detail::to_underlying(rhs);                  \
+        const auto l = ::sdl::detail::to_underlying(lhs);                   \
+        const auto r = ::sdl::detail::to_underlying(rhs);                   \
         return static_cast<enum_type>(l & r);                               \
     }                                                                       \
                                                                             \
@@ -31,7 +31,7 @@
         return lhs;                                                         \
     }
 
-namespace sdlw::detail {
+namespace sdl::detail {
 
 template<typename Enum>
 constexpr auto to_underlying(Enum value) noexcept
@@ -59,4 +59,4 @@ struct sdl_string_deleter {
 template<typename T>
 using storage = std::aligned_storage_t<sizeof(T), alignof(T)>;
 
-} // namespace sdlw::detail
+} // namespace sdl::detail

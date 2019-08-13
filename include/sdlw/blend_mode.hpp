@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL_blendmode.h>
 
-namespace sdlw {
+namespace sdl {
 
 // clang-format off
 
@@ -15,4 +15,4 @@ enum class blend_mode {
 
 // clang-format on
 
-} // namespace sdlw
+} // namespace sdl

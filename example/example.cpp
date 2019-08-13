@@ -6,7 +6,7 @@
 
 using namespace std;
 using namespace std::chrono;
-using namespace sdlw;
+using namespace sdl;
 
 static auto points = std::vector<point>();
 
@@ -39,7 +39,7 @@ void my_watch(const event& e) {
 
 void run() {
     // Initialize the subsystems
-    const auto sdlw_guard = sdlw::subsystem(sdlw::subsystem_flags::video);
+    const auto sdl_guard = sdl::subsystem(sdl::subsystem_flags::video);
     // Create the window
     const auto win_size = size_of(display_usable_bounds(0)) / 2;
     const auto win_bounds = rect{50, 50, win_size.w, win_size.h};
@@ -87,8 +87,8 @@ void run() {
 auto main(int argc, char *argv[]) -> int {
     try {
         run();
-    } catch (const sdlw::error &e) {
-        SDL_Log("sdlw error: %s\n", e.what());
+    } catch (const sdl::error &e) {
+        SDL_Log("sdl error: %s\n", e.what());
     } catch (...) {
         SDL_Log("unknown exception\n");
     }

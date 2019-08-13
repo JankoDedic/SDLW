@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL_platform.h>
 
-namespace sdlw {
+namespace sdl {
 
 struct platform {
     static auto name() noexcept -> const char*
@@ -11,4 +11,4 @@ struct platform {
     }
 };
 
-} // namespace sdlw
+} // namespace sdl

@@ -8,7 +8,7 @@
 #include <sdlw/scancode.hpp>
 #include <sdlw/video.hpp>
 
-namespace sdlw {
+namespace sdl {
 
 class key {
     SDL_Keysym _keysym;
@@ -25,19 +25,19 @@ public:
         : _keysym(keysym)
     {}
 
-    constexpr auto scancode() const noexcept -> sdlw::scancode
+    constexpr auto scancode() const noexcept -> sdl::scancode
     {
-        return static_cast<sdlw::scancode>(_keysym.scancode);
+        return static_cast<sdl::scancode>(_keysym.scancode);
     }
 
-    constexpr auto keycode() const noexcept -> sdlw::keycode
+    constexpr auto keycode() const noexcept -> sdl::keycode
     {
-        return static_cast<sdlw::keycode>(_keysym.sym);
+        return static_cast<sdl::keycode>(_keysym.sym);
     }
 
-    constexpr auto keymod() const noexcept -> sdlw::keymod
+    constexpr auto keymod() const noexcept -> sdl::keymod
     {
-        return static_cast<sdlw::keymod>(_keysym.mod);
+        return static_cast<sdl::keymod>(_keysym.mod);
     }
 };
 
@@ -142,4 +142,4 @@ struct screen_keyboard {
     }
 };
 
-} // namespace sdlw
+} // namespace sdl

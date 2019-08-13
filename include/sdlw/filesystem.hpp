@@ -8,7 +8,7 @@
 
 #include "sdlw/utility.hpp"
 
-namespace sdlw {
+namespace sdl {
 
 inline auto base_path() -> std::unique_ptr<const char, detail::sdl_string_deleter>
 {
@@ -28,4 +28,4 @@ inline auto get_pref_path(const char* org, const char* app) -> std::unique_ptr<c
     }
 }
 
-} // namespace sdlw
+} // namespace sdl

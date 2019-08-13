@@ -4,7 +4,7 @@
 
 #include <sdlw/types.hpp>
 
-namespace sdlw {
+namespace sdl {
 
 using joystick_id = SDL_JoystickID;
 
@@ -24,4 +24,4 @@ enum class joystick_hat_position : u8 {
 
 // clang-format on
 
-} // namespace sdlw
+} // namespace sdl

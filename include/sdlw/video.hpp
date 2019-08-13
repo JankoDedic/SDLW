@@ -9,7 +9,7 @@
 #include <sdlw/rect.hpp>
 #include <sdlw/surface.hpp>
 
-namespace sdlw {
+namespace sdl {
 
 class display_mode {
     SDL_DisplayMode _display_mode;
@@ -36,12 +36,12 @@ public:
         _display_mode.format = static_cast<u32>(format);
     }
 
-    constexpr sdlw::size size() const noexcept
+    constexpr sdl::size size() const noexcept
     {
-        return sdlw::size{_display_mode.w, _display_mode.h};
+        return sdl::size{_display_mode.w, _display_mode.h};
     }
 
-    constexpr void set_size(const sdlw::size& size) noexcept
+    constexpr void set_size(const sdl::size& size) noexcept
     {
         _display_mode.w = size.w;
         _display_mode.h = size.h;
@@ -179,15 +179,15 @@ public:
         SDL_SetWindowPosition(get_pointer(), position.x, position.y);
     }
 
-    auto size() const noexcept -> sdlw::size
+    auto size() const noexcept -> sdl::size
     {
         auto width = int{};
         auto height = int{};
         SDL_GetWindowSize(get_pointer(), &width, &height);
-        return sdlw::size{width, height};
+        return sdl::size{width, height};
     }
 
-    void set_size(const sdlw::size& size) noexcept
+    void set_size(const sdl::size& size) noexcept
     {
         SDL_SetWindowSize(get_pointer(), size.w, size.h);
     }
@@ -257,26 +257,26 @@ public:
         SDL_SetWindowBordered(get_pointer(), static_cast<SDL_bool>(bordered));
     }
 
-    auto max_size() const noexcept -> sdlw::size
+    auto max_size() const noexcept -> sdl::size
     {
-        auto sz = sdlw::size{};
+        auto sz = sdl::size{};
         SDL_GetWindowMaximumSize(get_pointer(), &sz.w, &sz.h);
         return sz;
     }
 
-    void set_max_size(const sdlw::size& size) noexcept
+    void set_max_size(const sdl::size& size) noexcept
     {
         SDL_SetWindowMaximumSize(get_pointer(), size.w, size.h);
     }
 
-    auto min_size() const noexcept -> sdlw::size
+    auto min_size() const noexcept -> sdl::size
     {
-        auto sz = sdlw::size{};
+        auto sz = sdl::size{};
         SDL_GetWindowMinimumSize(get_pointer(), &sz.w, &sz.h);
         return sz;
     }
 
-    void set_min_size(const sdlw::size& size) noexcept
+    void set_min_size(const sdl::size& size) noexcept
     {
         SDL_SetWindowMinimumSize(get_pointer(), size.w, size.h);
     }
@@ -327,17 +327,17 @@ public:
         }
     }
 
-    auto display_mode() const -> sdlw::display_mode
+    auto display_mode() const -> sdl::display_mode
     {
         auto mode = SDL_DisplayMode{};
         if (SDL_GetWindowDisplayMode(get_pointer(), &mode) == 0) {
-            return sdlw::display_mode(mode);
+            return sdl::display_mode(mode);
         } else {
             throw error{};
         }
     }
 
-    void set_display_mode(const sdlw::display_mode* mode)
+    void set_display_mode(const sdl::display_mode* mode)
     {
         const auto pmode = reinterpret_cast<const SDL_DisplayMode*>(mode);
         if (SDL_SetWindowDisplayMode(get_pointer(), pmode) < 0) {
@@ -355,13 +355,13 @@ public:
         }
     }
 
-    auto pixel_format_type() const -> sdlw::pixel_format_type
+    auto pixel_format_type() const -> sdl::pixel_format_type
     {
         const auto format = SDL_GetWindowPixelFormat(get_pointer());
         if (format == SDL_PIXELFORMAT_UNKNOWN) {
             throw error{};
         } else {
-            return static_cast<sdlw::pixel_format_type>(format);
+            return static_cast<sdl::pixel_format_type>(format);
         }
     }
 
@@ -426,7 +426,7 @@ public:
         }
     }
 
-    void set_icon(const ::sdlw::surface& icon) noexcept
+    void set_icon(const sdl::surface& icon) noexcept
     {
         SDL_SetWindowIcon(get_pointer(), icon.get_pointer());
     }
@@ -794,4 +794,4 @@ struct video_subsystem {
     }
 };
 
-} // namespace sdlw
+} // namespace sdl

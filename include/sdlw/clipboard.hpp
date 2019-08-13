@@ -4,7 +4,7 @@
 
 #include <sdlw/error.hpp>
 
-namespace sdlw {
+namespace sdl {
 
 struct clipboard {
     static bool has_text() noexcept
@@ -25,4 +25,4 @@ struct clipboard {
     }
 };
 
-} // namespace sdlw
+} // namespace sdl

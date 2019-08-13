@@ -9,7 +9,7 @@
 
 #include "sdlw/utility.hpp"
 
-namespace sdlw {
+namespace sdl {
 
 class surface;
 
@@ -36,7 +36,7 @@ public:
         return pixel_format_ref{_surface->format};
     }
 
-    auto size() const noexcept -> sdlw::size
+    auto size() const noexcept -> sdl::size
     {
         return {_surface->w, _surface->h};
     }
@@ -94,13 +94,13 @@ public:
         }
     }
 
-    auto blend_mode() const -> sdlw::blend_mode
+    auto blend_mode() const -> sdl::blend_mode
     {
         auto bm = SDL_BlendMode{};
         if (SDL_GetSurfaceBlendMode(_surface, &bm) < 0) {
             throw error{};
         } else {
-            return static_cast<sdlw::blend_mode>(bm);
+            return static_cast<sdl::blend_mode>(bm);
         }
     }
 
@@ -147,7 +147,7 @@ public:
         }
     }
 
-    void set_blend_mode(sdlw::blend_mode bm)
+    void set_blend_mode(sdl::blend_mode bm)
     {
         if (SDL_SetSurfaceBlendMode(_surface, static_cast<SDL_BlendMode>(bm)) < 0) {
             throw error{};
@@ -365,4 +365,4 @@ inline void save_bmp(surface_ref surf, stream& s)
     }
 }
 
-} // namespace sdlw
+} // namespace sdl

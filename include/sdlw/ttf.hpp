@@ -11,7 +11,7 @@
 #include <sdlw/types.hpp>
 #include <sdlw/utility.hpp>
 
-namespace sdlw::ttf {
+namespace sdl::ttf {
 
 struct subsystem {
     subsystem()
@@ -69,12 +69,12 @@ public:
         return _font.get();
     }
 
-    auto style() const noexcept -> sdlw::ttf::style
+    auto style() const noexcept -> sdl::ttf::style
     {
-        return static_cast<sdlw::ttf::style>(TTF_GetFontStyle(get_pointer()));
+        return static_cast<sdl::ttf::style>(TTF_GetFontStyle(get_pointer()));
     }
 
-    void set_style(sdlw::ttf::style style) noexcept
+    void set_style(sdl::ttf::style style) noexcept
     {
         TTF_SetFontStyle(get_pointer(), static_cast<int>(style));
     }
@@ -89,12 +89,12 @@ public:
         TTF_SetFontOutline(get_pointer(), outline);
     }
 
-    auto hinting() const noexcept -> sdlw::ttf::hinting
+    auto hinting() const noexcept -> sdl::ttf::hinting
     {
-        return static_cast<sdlw::ttf::hinting>(TTF_GetFontHinting(get_pointer()));
+        return static_cast<sdl::ttf::hinting>(TTF_GetFontHinting(get_pointer()));
     }
 
-    void set_hinting(sdlw::ttf::hinting hinting) noexcept
+    void set_hinting(sdl::ttf::hinting hinting) noexcept
     {
         TTF_SetFontHinting(get_pointer(), static_cast<int>(hinting));
     }
@@ -154,10 +154,10 @@ public:
         return static_cast<bool>(TTF_GlyphIsProvided(get_pointer(), ch));
     }
 
-    auto glyph_metrics(u16 ch) const -> sdlw::ttf::glyph_metrics
+    auto glyph_metrics(u16 ch) const -> sdl::ttf::glyph_metrics
     {
         const auto pfont = get_pointer();
-        auto metrics = sdlw::ttf::glyph_metrics();
+        auto metrics = sdl::ttf::glyph_metrics();
         const auto minx = &metrics.minx;
         const auto maxx = &metrics.maxx;
         const auto miny = &metrics.miny;
@@ -191,7 +191,7 @@ inline auto open_font(const char* filename, int ptsize, long index) -> font
 
 inline auto text_render_size(const font& f, const char* text) -> size
 {
-    auto size = sdlw::size();
+    auto size = sdl::size();
     if (TTF_SizeText(f.get_pointer(), text, &size.w, &size.h) == 0) {
         return size;
     } else {
@@ -283,4 +283,4 @@ inline auto blended_wrapped_utf8_render(const font& f, const char* txt, color fg
     }
 }
 
-} // namespace sdlw::ttf
+} // namespace sdl::ttf

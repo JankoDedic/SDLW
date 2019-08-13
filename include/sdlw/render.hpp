@@ -9,7 +9,7 @@
 #include <sdlw/utility.hpp>
 #include <sdlw/video.hpp>
 
-namespace sdlw {
+namespace sdl {
 
 class texture;
 class texture_ref;
@@ -327,9 +327,9 @@ public:
         }
     }
 
-    void copy(const texture&, const rect* source, const rect* destination);
+    void copy(const texture&, const rect* src, const rect* dst);
 
-    void copy(const texture&, const rect* source, const rect* destination, double angle, const point* center, renderer_flip);
+    void copy(const texture&, const rect* src, const rect* dst, double angle, const point* center, renderer_flip);
 
     void present() noexcept
     {
@@ -458,11 +458,11 @@ public:
         }
     }
 
-    auto blend_mode() const -> sdlw::blend_mode
+    auto blend_mode() const -> sdl::blend_mode
     {
         auto mode = SDL_BlendMode{};
         if (SDL_GetTextureBlendMode(get_pointer(), &mode) == 0) {
-            return static_cast<sdlw::blend_mode>(mode);
+            return static_cast<sdl::blend_mode>(mode);
         } else {
             throw error{};
         }
@@ -492,14 +492,14 @@ public:
         }
     }
 
-    auto size() const -> sdlw::size
+    auto size() const -> sdl::size
     {
         const auto ptexture = get_pointer();
         auto width = int();
         auto height = int();
         constexpr auto null = nullptr;
         if (SDL_QueryTexture(ptexture, null, null, &width, &height) == 0) {
-            return sdlw::size{width, height};
+            return sdl::size{width, height};
         } else {
             throw error{};
         }
@@ -512,7 +512,7 @@ public:
         }
     }
 
-    void set_blend_mode(sdlw::blend_mode mode)
+    void set_blend_mode(sdl::blend_mode mode)
     {
         const auto sdl_blend_mode = static_cast<SDL_BlendMode>(mode);
         if (SDL_SetTextureBlendMode(get_pointer(), sdl_blend_mode) < 0) {
@@ -588,7 +588,7 @@ public:
         _ptexture = nullptr;
     }
 
-    texture(const renderer& r, pixel_format_type format, texture_access access, const sdlw::size& sz)
+    texture(const renderer& r, pixel_format_type format, texture_access access, const sdl::size& sz)
         : texture_ref{SDL_CreateTexture(r.get_pointer(), static_cast<u32>(format), static_cast<int>(access), sz.w, sz.h)}
     {
         if (!_ptexture) throw error{};
@@ -678,4 +678,4 @@ inline auto make_window_and_renderer(const size& window_size, window_flags flags
     }
 }
 
-} // namespace sdlw
+} // namespace sdl

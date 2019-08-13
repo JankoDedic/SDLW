@@ -4,7 +4,7 @@
 
 #include <sdlw/types.hpp>
 
-namespace sdlw {
+namespace sdl {
 
 using color = SDL_Color;
 
@@ -228,4 +228,4 @@ private:
     SDL_PixelFormat* _pixel_format = nullptr;
 };
 
-} // namespace sdlw
+} // namespace sdl

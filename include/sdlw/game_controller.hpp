@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL_gamecontroller.h>
 
-namespace sdlw {
+namespace sdl {
 
 // clang-format off
 
@@ -39,4 +39,4 @@ enum class game_controller_button {
 
 // clang-format on
 
-} // namespace sdlw
+} // namespace sdl

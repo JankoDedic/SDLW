@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL_power.h>
 
-namespace sdlw {
+namespace sdl {
 
 // clang-format off
 
@@ -53,4 +53,4 @@ inline auto get_battery_info() noexcept -> battery_info
     return {battery_state_, seconds_left, percentage_left};
 }
 
-} // namespace sdlw
+} // namespace sdl

@@ -6,7 +6,7 @@
 
 #include <sdlw/types.hpp>
 
-namespace sdlw {
+namespace sdl {
 
 struct clock {
     // clang-format off
@@ -28,4 +28,4 @@ inline void delay(clock::duration d) noexcept
     SDL_Delay(d.count());
 }
 
-} // namespace sdlw
+} // namespace sdl

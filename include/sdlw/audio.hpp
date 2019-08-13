@@ -4,8 +4,8 @@
 
 #include <sdlw/types.hpp>
 
-namespace sdlw {
+namespace sdl {
 
 using device_id = u32;
 
-} // namespace sdlw
+} // namespace sdl

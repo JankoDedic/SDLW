@@ -4,7 +4,7 @@
 
 #include "sdlw/utility.hpp"
 
-namespace sdlw {
+namespace sdl {
 
 // clang-format off
 
@@ -271,4 +271,4 @@ SDLW_DETAIL_DEFINE_FLAG_OPERATIONS(keymod)
 
 // clang-format on
 
-} // namespace sdlw
+} // namespace sdl

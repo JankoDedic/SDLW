@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL_cpuinfo.h>
 
-namespace sdlw {
+namespace sdl {
 
 // clang-format off
 
@@ -25,4 +25,4 @@ struct cpu_info {
 
 // clang-format on
 
-} // namespace sdlw
+} // namespace sdl
