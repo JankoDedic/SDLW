@@ -20,13 +20,13 @@ public:
         return _display_mode;
     }
 
-    display_mode() noexcept = default;
+    display_mode() = default;
 
     constexpr explicit display_mode(const SDL_DisplayMode& display_mode) noexcept
-        : _display_mode(display_mode)
+        : _display_mode{display_mode}
     {}
 
-    constexpr pixel_format_type format() const noexcept
+    constexpr auto format() const noexcept -> pixel_format_type
     {
         return static_cast<pixel_format_type>(_display_mode.format);
     }
@@ -36,9 +36,9 @@ public:
         _display_mode.format = static_cast<u32>(format);
     }
 
-    constexpr sdl::size size() const noexcept
+    constexpr auto size() const noexcept -> sdl::size
     {
-        return sdl::size{_display_mode.w, _display_mode.h};
+        return {_display_mode.w, _display_mode.h};
     }
 
     constexpr void set_size(const sdl::size& size) noexcept
@@ -47,22 +47,22 @@ public:
         _display_mode.h = size.h;
     }
 
-    constexpr const int& refresh_rate() const noexcept
+    constexpr auto refresh_rate() const noexcept -> const int&
     {
         return _display_mode.refresh_rate;
     }
 
-    constexpr int& refresh_rate() noexcept
+    constexpr auto refresh_rate() noexcept -> int&
     {
         return _display_mode.refresh_rate;
     }
 
-    constexpr void* const& driver_data() const noexcept
+    constexpr auto driver_data() const noexcept -> void* const&
     {
         return _display_mode.driverdata;
     }
 
-    constexpr void*& driver_data() noexcept
+    constexpr auto driver_data() noexcept -> void*&
     {
         return _display_mode.driverdata;
     }
@@ -130,12 +130,10 @@ struct window_border_sizes {
 
 class window_ref {
 protected:
-    SDL_Window* _pwindow;
+    SDL_Window* _pwindow = nullptr;
 
 public:
-    window_ref() noexcept
-        : _pwindow{nullptr}
-    {}
+    window_ref() = default;
 
     window_ref(SDL_Window* pointer) noexcept
         : _pwindow{pointer}
@@ -184,7 +182,7 @@ public:
         auto width = int{};
         auto height = int{};
         SDL_GetWindowSize(get_pointer(), &width, &height);
-        return sdl::size{width, height};
+        return {width, height};
     }
 
     void set_size(const sdl::size& size) noexcept
@@ -522,30 +520,23 @@ struct window : window_ref {
     window() noexcept = default;
 
     window(const char* title, const rect& bounds, window_flags flags)
+        : window_ref{SDL_CreateWindow(title, bounds.x, bounds.y, bounds.w, bounds.h, static_cast<u32>(flags))}
     {
-        /* const auto &[x, y, w, h] = bounds; */
-        const auto flags_ = static_cast<u32>(flags);
-        if (const auto ptr = SDL_CreateWindow(title, bounds.x, bounds.y, bounds.w, bounds.h, flags_)) {
-            _pwindow = ptr;
-        } else {
-            throw error{};
-        }
+        if (!_pwindow) throw error{};
     }
 
     window(void* native_window_data)
+        : window_ref{SDL_CreateWindowFrom(native_window_data)}
     {
-        if (const auto ptr = SDL_CreateWindowFrom(native_window_data)) {
-            _pwindow = ptr;
-        } else {
-            throw error{};
-        }
+        if (!_pwindow) throw error{};
     }
 
     window(const window&) = delete;
+
     auto operator=(const window&) -> window& = delete;
 
     window(window&& other) noexcept
-        : window_ref(std::exchange(other._pwindow, nullptr))
+        : window_ref{std::exchange(other._pwindow, nullptr)}
     {}
 
     auto operator=(window&& other) noexcept -> window&
@@ -557,7 +548,7 @@ struct window : window_ref {
 
     ~window() noexcept
     {
-        SDL_DestroyWindow(get_pointer());
+        SDL_DestroyWindow(_pwindow);
         _pwindow = nullptr;
     }
 };
@@ -593,7 +584,7 @@ inline auto get_grabbed_window() -> window_ref
 inline auto closest_display_mode(int display_index, const display_mode& m) -> display_mode
 {
     const auto pmode = reinterpret_cast<const SDL_DisplayMode*>(&m);
-    auto closest = SDL_DisplayMode();
+    auto closest = SDL_DisplayMode{};
     if (SDL_GetClosestDisplayMode(display_index, pmode, &closest)) {
         return display_mode{closest};
     } else {
