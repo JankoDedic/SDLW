@@ -46,11 +46,6 @@ public:
         return _surface->pitch;
     }
 
-    /* auto clip() const noexcept -> rect */
-    /* { */
-    /*     return _surface->clip_rect; */
-    /* } */
-
     void fill(const rect& r, u32 color)
     {
         if (SDL_FillRect(_surface, &r, color) < 0) {
