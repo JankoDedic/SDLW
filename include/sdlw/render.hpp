@@ -677,4 +677,26 @@ inline auto make_window_and_renderer(const size& window_size, window_flags flags
     }
 }
 
+namespace gl {
+
+inline auto bind_texture(texture_ref t) -> std::pair<float, float>
+{
+    auto texw = float{};
+    auto texh = float{};
+    if (SDL_GL_BindTexture(t.get_pointer(), &texw, &texh) < 0) {
+        throw error{};
+    } else {
+        return std::make_pair(texw, texh);
+    }
+}
+
+inline void unbind_texture(texture_ref t)
+{
+    if (SDL_GL_UnbindTexture(t.get_pointer()) < 0) {
+        throw error{};
+    }
+}
+
+} // namespace gl
+
 } // namespace sdl

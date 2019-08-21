@@ -522,7 +522,7 @@ struct window : window_ref {
 
     using window_ref::window_ref;
 
-    window() noexcept = default;
+    window() = default;
 
     window(const char* title, const rect& bounds, window_flags flags)
         : window_ref{SDL_CreateWindow(title, bounds.x, bounds.y, bounds.w, bounds.h, static_cast<u32>(flags))}
@@ -789,5 +789,196 @@ struct video_subsystem {
         SDL_VideoQuit();
     }
 };
+
+namespace gl {
+
+class context_ref {
+protected:
+    SDL_GLContext _context = nullptr;
+public:
+    explicit operator bool() const noexcept
+    {
+        return static_cast<bool>(_context);
+    }
+
+    context_ref() = default;
+
+    explicit context_ref(SDL_GLContext pointer) noexcept
+        : _context{pointer}
+    {}
+
+    auto get_pointer() const noexcept -> SDL_GLContext
+    {
+        return _context;
+    }
+};
+
+class context : public context_ref {
+public:
+    explicit context(window_ref w)
+        : context_ref{SDL_GL_CreateContext(w.get_pointer())}
+    {
+        if (!_context) throw error{};
+    }
+
+    context(const context&) = delete;
+
+    void operator=(const context&) = delete;
+
+    context(context&& other) noexcept
+        : context_ref{std::exchange(other._context, nullptr)}
+    {}
+
+    auto operator=(context&& other) noexcept -> context&
+    {
+        SDL_GL_DeleteContext(_context);
+        _context = std::exchange(other._context, nullptr);
+        return *this;
+    }
+
+    ~context()
+    {
+        SDL_GL_DeleteContext(_context);
+    }
+};
+
+enum class attr : std::underlying_type_t<SDL_GLattr> {
+    red_size                   = SDL_GL_RED_SIZE,
+    green_size                 = SDL_GL_GREEN_SIZE,
+    blue_size                  = SDL_GL_BLUE_SIZE,
+    alpha_size                 = SDL_GL_ALPHA_SIZE,
+    buffer_size                = SDL_GL_BUFFER_SIZE,
+    double_buffer              = SDL_GL_DOUBLEBUFFER,
+    depth_size                 = SDL_GL_DEPTH_SIZE,
+    stencil_size               = SDL_GL_STENCIL_SIZE,
+    accum_red_size             = SDL_GL_ACCUM_RED_SIZE,
+    accum_green_size           = SDL_GL_ACCUM_GREEN_SIZE,
+    accum_blue_size            = SDL_GL_ACCUM_BLUE_SIZE,
+    accum_alpha_size           = SDL_GL_ACCUM_ALPHA_SIZE,
+    stereo                     = SDL_GL_STEREO,
+    multisample_buffers        = SDL_GL_MULTISAMPLEBUFFERS,
+    multisample_samples        = SDL_GL_MULTISAMPLESAMPLES,
+    accelerated_visual         = SDL_GL_ACCELERATED_VISUAL,
+    retained_backing           = SDL_GL_RETAINED_BACKING,
+    context_major_version      = SDL_GL_CONTEXT_MAJOR_VERSION,
+    context_minor_version      = SDL_GL_CONTEXT_MINOR_VERSION,
+    context_egl                = SDL_GL_CONTEXT_EGL,
+    context_flags              = SDL_GL_CONTEXT_FLAGS,
+    context_profile_mask       = SDL_GL_CONTEXT_PROFILE_MASK,
+    share_with_current_context = SDL_GL_SHARE_WITH_CURRENT_CONTEXT,
+    framebuffer_srgb_capable   = SDL_GL_FRAMEBUFFER_SRGB_CAPABLE,
+    context_release_behavior   = SDL_GL_CONTEXT_RELEASE_BEHAVIOR,
+    context_reset_notification = SDL_GL_CONTEXT_RESET_NOTIFICATION,
+    context_no_error           = SDL_GL_CONTEXT_NO_ERROR,
+};
+
+enum class profile : std::underlying_type_t<SDL_GLprofile> {
+    core          = SDL_GL_CONTEXT_PROFILE_CORE,
+    compatibility = SDL_GL_CONTEXT_PROFILE_COMPATIBILITY,
+    es            = SDL_GL_CONTEXT_PROFILE_ES
+};
+
+enum class context_flag : std::underlying_type_t<SDL_GLcontextFlag> {
+    debug              = SDL_GL_CONTEXT_DEBUG_FLAG,
+    forward_compatible = SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG,
+    robust_access      = SDL_GL_CONTEXT_ROBUST_ACCESS_FLAG,
+    reset_isolation    = SDL_GL_CONTEXT_RESET_ISOLATION_FLAG
+};
+
+inline auto extension_supported(const char* extension) noexcept -> bool
+{
+    return static_cast<bool>(SDL_GL_ExtensionSupported(extension));
+}
+
+inline auto attribute(attr a) -> int
+{
+    auto result = int{};
+    if (SDL_GL_GetAttribute(static_cast<SDL_GLattr>(a), &result) < 0) {
+        throw error{};
+    } else {
+        return result;
+    }
+}
+
+inline auto current_context() -> context_ref
+{
+    if (const auto p = SDL_GL_GetCurrentContext()) {
+        return context_ref{p};
+    } else {
+        throw error{};
+    }
+}
+
+inline auto current_window() -> window_ref
+{
+    if (const auto p = SDL_GL_GetCurrentWindow()) {
+        return window_ref{p};
+    } else {
+        throw error{};
+    }
+}
+
+inline auto drawable_size(window_ref w) noexcept -> sdl::size
+{
+    auto s = sdl::size{};
+    SDL_GL_GetDrawableSize(w.get_pointer(), &s.w, &s.h);
+    return s;
+}
+
+inline auto proc_address(const char* proc) noexcept -> void*
+{
+    return SDL_GL_GetProcAddress(proc);
+}
+
+inline auto swap_interval() noexcept -> int
+{
+    return SDL_GL_GetSwapInterval();
+}
+
+inline void load_library(const char* path)
+{
+    if (SDL_GL_LoadLibrary(path) < 0) {
+        throw error{};
+    }
+}
+
+inline void make_current(window_ref w, context_ref c)
+{
+    if (SDL_GL_MakeCurrent(w.get_pointer(), c.get_pointer()) < 0) {
+        throw error{};
+    }
+}
+
+inline void reset_attributes() noexcept
+{
+    SDL_GL_ResetAttributes();
+}
+
+template<typename IntegerOrEnum>
+void set_attribute(attr a, IntegerOrEnum value)
+{
+    if (SDL_GL_SetAttribute(static_cast<SDL_GLattr>(a), static_cast<int>(value)) < 0) {
+        throw error{};
+    }
+}
+
+inline void set_swap_interval(int interval)
+{
+    if (SDL_GL_SetSwapInterval(interval) < 0) {
+        throw error{};
+    }
+}
+
+inline void swap_window(window_ref w) noexcept
+{
+    return SDL_GL_SwapWindow(w.get_pointer());
+}
+
+inline void unload_library() noexcept
+{
+    SDL_GL_UnloadLibrary();
+}
+
+} // namespace gl
 
 } // namespace sdl
