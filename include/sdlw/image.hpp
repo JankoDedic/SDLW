@@ -4,7 +4,8 @@
 
 #include <sdlw/render.hpp>
 #include <sdlw/surface.hpp>
-#include <sdlw/utility.hpp>
+
+#include "sdlw/detail/utility.hpp"
 
 namespace sdl::img {
 

@@ -6,7 +6,7 @@
 
 #include <sdlw/error.hpp>
 
-#include "sdlw/utility.hpp"
+#include "sdlw/detail/utility.hpp"
 
 namespace sdl {
 

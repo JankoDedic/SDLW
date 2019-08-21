@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL_keycode.h>
 
-#include "sdlw/utility.hpp"
+#include "sdlw/detail/utility.hpp"
 
 namespace sdl {
 

@@ -6,8 +6,9 @@
 #include <sdlw/pixels.hpp>
 #include <sdlw/rect.hpp>
 #include <sdlw/surface.hpp>
-#include <sdlw/utility.hpp>
 #include <sdlw/video.hpp>
+
+#include "sdlw/detail/utility.hpp"
 
 namespace sdl {
 

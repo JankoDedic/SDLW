@@ -7,7 +7,7 @@
 #include <sdlw/blend_mode.hpp>
 #include <sdlw/rwops.hpp>
 
-#include "sdlw/utility.hpp"
+#include "sdlw/detail/utility.hpp"
 
 namespace sdl {
 

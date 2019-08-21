@@ -9,7 +9,8 @@
 #include <sdlw/rect.hpp>
 #include <sdlw/surface.hpp>
 #include <sdlw/types.hpp>
-#include <sdlw/utility.hpp>
+
+#include "sdlw/detail/utility.hpp"
 
 namespace sdl::ttf {
 
