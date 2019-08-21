@@ -429,7 +429,7 @@ public:
         }
     }
 
-    void set_icon(const sdl::surface& icon) noexcept
+    void set_icon(sdl::surface_ref icon) noexcept
     {
         SDL_SetWindowIcon(get_pointer(), icon.get_pointer());
     }
@@ -558,12 +558,12 @@ struct window : window_ref {
     }
 };
 
-inline auto operator==(const window& lhs, const window& rhs) noexcept -> bool
+inline auto operator==(window_ref lhs, window_ref rhs) noexcept -> bool
 {
     return lhs.get_pointer() == rhs.get_pointer();
 }
 
-inline auto operator!=(const window& lhs, const window& rhs) noexcept -> bool
+inline auto operator!=(window_ref lhs, window_ref rhs) noexcept -> bool
 {
     return !(lhs == rhs);
 }
@@ -712,19 +712,19 @@ inline auto num_video_displays() -> int
     }
 }
 
-inline auto display_brightness(const window& win) noexcept -> float
+inline auto display_brightness(window_ref win) noexcept -> float
 {
     return SDL_GetWindowBrightness(win.get_pointer());
 }
 
-inline void set_display_brightness(const window& win, float brightness)
+inline void set_display_brightness(window_ref win, float brightness)
 {
     if (SDL_SetWindowBrightness(win.get_pointer(), brightness) < 0) {
         throw error{};
     }
 }
 
-inline void get_display_gamma_ramp(const window& win, span<u16, 256> red, span<u16, 256> green, span<u16, 256> blue)
+inline void get_display_gamma_ramp(window_ref win, span<u16, 256> red, span<u16, 256> green, span<u16, 256> blue)
 {
     const auto r = red.data();
     const auto g = green.data();
@@ -734,7 +734,7 @@ inline void get_display_gamma_ramp(const window& win, span<u16, 256> red, span<u
     }
 }
 
-inline void set_display_gamma_ramp(const window& win, span<const u16, 256> red, span<const u16, 256> green, span<const u16, 256> blue)
+inline void set_display_gamma_ramp(window_ref win, span<const u16, 256> red, span<const u16, 256> green, span<const u16, 256> blue)
 {
     const auto r = red.data();
     const auto g = green.data();

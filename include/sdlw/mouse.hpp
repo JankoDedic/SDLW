@@ -40,9 +40,7 @@ public:
         return static_cast<bool>(_cursor);
     }
 
-    cursor_ref() noexcept
-        : _cursor{nullptr}
-    {}
+    cursor_ref() = default;
 
     explicit cursor_ref(SDL_Cursor* pointer) noexcept
         : _cursor{pointer}
@@ -104,7 +102,7 @@ struct active_cursor {
         return cursor_ref{SDL_GetCursor()};
     }
 
-    static void set(const cursor& c) noexcept
+    static void set(cursor_ref c) noexcept
     {
         SDL_SetCursor(c.get_pointer());
     }

@@ -227,12 +227,12 @@ public:
     }
 };
 
-inline auto operator==(const surface& lhs, const surface& rhs) noexcept -> bool
+inline auto operator==(surface_ref lhs, surface_ref rhs) noexcept -> bool
 {
     return lhs.get_pointer() == rhs.get_pointer();
 }
 
-inline auto operator!=(const surface& lhs, const surface& rhs) noexcept -> bool
+inline auto operator!=(surface_ref lhs, surface_ref rhs) noexcept -> bool
 {
     return !(lhs == rhs);
 }

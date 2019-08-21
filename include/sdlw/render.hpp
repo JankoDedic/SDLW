@@ -45,7 +45,7 @@ public:
         return _renderer_info;
     }
 
-    renderer_info() noexcept = default;
+    renderer_info() = default;
 
     explicit renderer_info(const SDL_RendererInfo& info) noexcept
         : _renderer_info{info}
@@ -90,9 +90,7 @@ public:
         return static_cast<bool>(_prenderer);
     }
 
-    renderer_ref() noexcept
-        : _prenderer{nullptr}
-    {}
+    renderer_ref() = default;
 
     explicit renderer_ref(SDL_Renderer* pointer) noexcept
         : _prenderer{pointer}
@@ -145,7 +143,7 @@ public:
 
     auto target() -> texture_ref;
 
-    void set_target(texture*);
+    void set_target(texture_ref);
 
     auto output_size() const -> size
     {
@@ -328,9 +326,9 @@ public:
         }
     }
 
-    void copy(const texture&, const rect* src, const rect* dst);
+    void copy(texture_ref, const rect* src, const rect* dst);
 
-    void copy(const texture&, const rect* src, const rect* dst, double angle, const point* center, renderer_flip);
+    void copy(texture_ref, const rect* src, const rect* dst, double angle, const point* center, renderer_flip);
 
     void present() noexcept
     {
@@ -363,7 +361,7 @@ public:
         _prenderer = nullptr;
     }
 
-    renderer(const window& win, renderer_flags flags, int rendering_driver_index = -1)
+    renderer(window_ref win, renderer_flags flags, int rendering_driver_index = -1)
     {
         const auto pwin = win.get_pointer();
         const auto index = rendering_driver_index;
@@ -375,7 +373,7 @@ public:
         }
     }
 
-    renderer(const surface& surf)
+    renderer(surface_ref surf)
     {
         if (const auto ptr = SDL_CreateSoftwareRenderer(surf.get_pointer())) {
             _prenderer = ptr;
@@ -385,12 +383,12 @@ public:
     }
 };
 
-inline auto operator==(const renderer& lhs, const renderer& rhs) noexcept -> bool
+inline auto operator==(renderer_ref lhs, renderer_ref rhs) noexcept -> bool
 {
     return lhs.get_pointer() == rhs.get_pointer();
 }
 
-inline auto operator!=(const renderer& lhs, const renderer& rhs) noexcept -> bool
+inline auto operator!=(renderer_ref lhs, renderer_ref rhs) noexcept -> bool
 {
     return !(lhs == rhs);
 }
@@ -589,25 +587,25 @@ public:
         _ptexture = nullptr;
     }
 
-    texture(const renderer& r, pixel_format_type format, texture_access access, const sdl::size& sz)
+    texture(renderer_ref r, pixel_format_type format, texture_access access, const sdl::size& sz)
         : texture_ref{SDL_CreateTexture(r.get_pointer(), static_cast<u32>(format), static_cast<int>(access), sz.w, sz.h)}
     {
         if (!_ptexture) throw error{};
     }
 
-    texture(const renderer& rend, const surface& surf)
+    texture(renderer_ref rend, surface_ref surf)
         : texture_ref{SDL_CreateTextureFromSurface(rend.get_pointer(), surf.get_pointer())}
     {
         if (!_ptexture) throw error{};
     }
 };
 
-inline auto operator==(const texture& lhs, const texture& rhs) noexcept -> bool
+inline auto operator==(texture_ref lhs, texture_ref rhs) noexcept -> bool
 {
     return lhs.get_pointer() == rhs.get_pointer();
 }
 
-inline auto operator!=(const texture& lhs, const texture& rhs) noexcept -> bool
+inline auto operator!=(texture_ref lhs, texture_ref rhs) noexcept -> bool
 {
     return !(lhs == rhs);
 }
@@ -621,14 +619,14 @@ inline auto renderer_ref::target() -> texture_ref
     }
 }
 
-inline void renderer_ref::set_target(texture* t)
+inline void renderer_ref::set_target(texture_ref t)
 {
-    if (SDL_SetRenderTarget(_prenderer, t ? t->get_pointer() : nullptr) < 0) {
+    if (SDL_SetRenderTarget(_prenderer, t.get_pointer()) < 0) {
         throw error{};
     }
 }
 
-inline void renderer_ref::copy(const texture& tex, const rect* source, const rect* destination)
+inline void renderer_ref::copy(texture_ref tex, const rect* source, const rect* destination)
 {
     const auto ptexture = tex.get_pointer();
     if (SDL_RenderCopy(get_pointer(), ptexture, source, destination) < 0) {
@@ -636,7 +634,7 @@ inline void renderer_ref::copy(const texture& tex, const rect* source, const rec
     }
 }
 
-inline void renderer_ref::copy(const texture& t, const rect* src, const rect* dst, double angle, const point* center, renderer_flip f)
+inline void renderer_ref::copy(texture_ref t, const rect* src, const rect* dst, double angle, const point* center, renderer_flip f)
 {
     if (SDL_RenderCopyEx(get_pointer(), t.get_pointer(), src, dst, angle, center, static_cast<SDL_RendererFlip>(f)) < 0) {
         throw error{};
