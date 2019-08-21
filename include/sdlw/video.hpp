@@ -133,6 +133,11 @@ protected:
     SDL_Window* _pwindow = nullptr;
 
 public:
+    explicit operator bool() const noexcept
+    {
+        return static_cast<bool>(_pwindow);
+    }
+
     window_ref() = default;
 
     window_ref(SDL_Window* pointer) noexcept
