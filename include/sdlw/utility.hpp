@@ -56,7 +56,4 @@ struct sdl_string_deleter {
     }
 };
 
-template<typename T>
-using storage = std::aligned_storage_t<sizeof(T), alignof(T)>;
-
 } // namespace sdl::detail
