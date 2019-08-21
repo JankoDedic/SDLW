@@ -19,7 +19,7 @@ struct clock {
 
     static auto now() noexcept -> time_point
     {
-        return time_point(duration(SDL_GetTicks()));
+        return time_point{duration{SDL_GetTicks()}};
     }
 };
 

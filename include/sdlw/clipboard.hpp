@@ -7,12 +7,12 @@
 namespace sdl {
 
 struct clipboard {
-    static bool has_text() noexcept
+    static auto has_text() noexcept -> bool
     {
         return SDL_HasClipboardText();
     }
 
-    static const char* text() noexcept
+    static auto text() noexcept -> const char*
     {
         return SDL_GetClipboardText();
     }
