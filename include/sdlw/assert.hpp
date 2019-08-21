@@ -1,10 +1,10 @@
 #pragma once
 
-#include <SDL2/SDL_assert.h>
-
-#ifndef SDL_ASSERT_LEVEL
+#ifdef SDLW_ASSERT_LEVEL
 #    define SDL_ASSERT_LEVEL SDLW_ASSERT_LEVEL
 #endif
+
+#include <SDL2/SDL_assert.h>
 
 // clang-format off
 
