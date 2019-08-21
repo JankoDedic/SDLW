@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include <SDL2/SDL_surface.h>
 
 #include <sdlw/blend_mode.hpp>
