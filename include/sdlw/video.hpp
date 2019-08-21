@@ -467,8 +467,8 @@ public:
 
 struct window : window_ref {
     // clang-format off
-    static constexpr auto centered      = SDL_WINDOWPOS_CENTERED;
-    static constexpr auto undefined     = SDL_WINDOWPOS_UNDEFINED;
+    static constexpr auto centered      = int{SDL_WINDOWPOS_CENTERED};
+    static constexpr auto undefined     = int{SDL_WINDOWPOS_UNDEFINED};
     static constexpr auto pos_centered  = point{centered, centered};
     static constexpr auto pos_undefined = point{undefined, undefined};
     // clang-format on
