@@ -565,36 +565,6 @@ inline auto display_dpi(int display_index) -> std::array<float, 3>
     }
 }
 
-inline auto display_diagonal_dpi(int display_index) -> float
-{
-    auto ddpi = float{};
-    if (SDL_GetDisplayDPI(display_index, &ddpi, nullptr, nullptr) == 0) {
-        return ddpi;
-    } else {
-        throw error{};
-    }
-}
-
-inline auto display_horizontal_dpi(int display_index) -> float
-{
-    auto hdpi = float{};
-    if (SDL_GetDisplayDPI(display_index, nullptr, &hdpi, nullptr) == 0) {
-        return hdpi;
-    } else {
-        throw error{};
-    }
-}
-
-inline auto display_vertical_dpi(int display_index) -> float
-{
-    auto vdpi = float{};
-    if (SDL_GetDisplayDPI(display_index, nullptr, nullptr, &vdpi) == 0) {
-        return vdpi;
-    } else {
-        throw error{};
-    }
-}
-
 inline auto get_display_mode(int display_index, int mode_index) -> display_mode
 {
     auto m = SDL_DisplayMode{};
