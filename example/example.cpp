@@ -1,3 +1,4 @@
+#include <iostream>
 #include <vector>
 
 #include <sdlw/sdlw.hpp>
@@ -68,6 +69,18 @@ void run() {
     };
     event_watch::add(w);
     event_watch::remove(w);
+
+    auto f = sdl::log_output_function::get();
+    SDLW_ASSERT(f.function());
+    f(sdl::log_category::render, sdl::log_priority::critical, "DANGER!!");
+    auto callable = [&](auto...) {
+        std::cout << "oh no!\n";
+    };
+    sdl::log_output_function::set(callable);
+    f = sdl::log_output_function::get();
+    f(sdl::log_category::render, sdl::log_priority::critical, "DANGER!!");
+    sdl::log("you there, chief?\n");
+
     for (;;) {
         // Handle the events
         while (event_queue::poll(e)) {
