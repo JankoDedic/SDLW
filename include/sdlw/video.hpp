@@ -124,13 +124,6 @@ enum class hit_test_result {
 
 // clang-format on
 
-struct window_border_sizes {
-    int top;
-    int left;
-    int bottom;
-    int right;
-};
-
 class window_ref;
 
 class window {
@@ -251,58 +244,13 @@ public:
         SDL_SetWindowResizable(get_pointer(), static_cast<SDL_bool>(resizable));
     }
 
-    auto border_sizes() const -> window_border_sizes
+    auto border_sizes() const -> std::array<int, 4>
     {
-        const auto pwin = get_pointer();
-        auto wbsizes = window_border_sizes();
-        if (SDL_GetWindowBordersSize(pwin, &wbsizes.top, &wbsizes.left, &wbsizes.bottom, &wbsizes.right) < 0) {
+        auto bsizes = std::array<int, 4>{};
+        if (SDL_GetWindowBordersSize(get_pointer(), &bsizes[0], &bsizes[1], &bsizes[2], &bsizes[3]) < 0) {
             throw error{};
         } else {
-            return wbsizes;
-        }
-    }
-
-    auto top_border_size() const -> int
-    {
-        const auto pwin = get_pointer();
-        auto top = int{};
-        if (SDL_GetWindowBordersSize(pwin, &top, nullptr, nullptr, nullptr) == 0) {
-            return top;
-        } else {
-            throw error{};
-        }
-    }
-
-    auto left_border_size() const -> int
-    {
-        const auto pwin = get_pointer();
-        auto left = int{};
-        if (SDL_GetWindowBordersSize(pwin, nullptr, &left, nullptr, nullptr) == 0) {
-            return left;
-        } else {
-            throw error{};
-        }
-    }
-
-    auto bottom_border_size() const -> int
-    {
-        const auto pwin = get_pointer();
-        auto bottom = int{};
-        if (SDL_GetWindowBordersSize(pwin, nullptr, nullptr, &bottom, nullptr) == 0) {
-            return bottom;
-        } else {
-            throw error{};
-        }
-    }
-
-    auto right_border_size() const -> int
-    {
-        const auto pwin = get_pointer();
-        auto right = int{};
-        if (SDL_GetWindowBordersSize(pwin, nullptr, nullptr, nullptr, &right) < 0) {
-            return right;
-        } else {
-            throw error{};
+            return bsizes;
         }
     }
 
