@@ -1,7 +1,5 @@
 #pragma once
 
-#include <optional>
-
 #include <SDL2/SDL_keyboard.h>
 
 #include <sdlw/keycode.hpp>
@@ -84,13 +82,9 @@ inline auto name_of(scancode sc) noexcept -> const char*
     return SDL_GetScancodeName(static_cast<SDL_Scancode>(sc));
 }
 
-inline auto keyboard_focus() noexcept -> std::optional<window_ref>
+inline auto keyboard_focus() noexcept -> window_ref
 {
-    if (const auto ptr = SDL_GetKeyboardFocus()) {
-        return window_ref{ptr};
-    } else {
-        return std::nullopt;
-    }
+    return window_ref{SDL_GetKeyboardFocus()};
 }
 
 inline auto is_pressed(scancode sc) noexcept -> bool

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <SDL2/SDL_render.h>
 
 #include <sdlw/blend_mode.hpp>
@@ -80,25 +82,22 @@ public:
     }
 };
 
-class renderer_ref {
-protected:
-    SDL_Renderer* _prenderer = nullptr;
-
+class renderer {
 public:
-    explicit operator bool() const noexcept
+    renderer(class renderer_ref) = delete;
+    explicit renderer(SDL_Renderer* r) noexcept : _renderer{r} {}
+    auto get_pointer() const noexcept -> SDL_Renderer* { return _renderer.get(); }
+
+    renderer(window& win, renderer_flags flags, int rendering_driver_index = -1)
+        : renderer{SDL_CreateRenderer(win.get_pointer(), rendering_driver_index, static_cast<u32>(flags))}
     {
-        return static_cast<bool>(_prenderer);
+        if (!_renderer) throw error{};
     }
 
-    renderer_ref() = default;
-
-    explicit renderer_ref(SDL_Renderer* pointer) noexcept
-        : _prenderer{pointer}
-    {}
-
-    auto get_pointer() const noexcept -> SDL_Renderer*
+    explicit renderer(surface& s)
+        : renderer{SDL_CreateSoftwareRenderer(s.get_pointer())}
     {
-        return _prenderer;
+        if (!_renderer) throw error{};
     }
 
     auto draw_blend_mode() const -> blend_mode
@@ -143,7 +142,7 @@ public:
 
     auto target() -> texture_ref;
 
-    void set_target(texture_ref);
+    void set_target(texture&);
 
     auto output_size() const -> size
     {
@@ -326,76 +325,39 @@ public:
         }
     }
 
-    void copy(texture_ref, const rect* src, const rect* dst);
+    void copy(const texture&, const rect* src, const rect* dst);
 
-    void copy(texture_ref, const rect* src, const rect* dst, double angle, const point* center, renderer_flip);
+    void copy(const texture&, const rect* src, const rect* dst, double angle, const point* center, renderer_flip);
 
     void present() noexcept
     {
         SDL_RenderPresent(get_pointer());
     }
+
+protected:
+    std::unique_ptr<SDL_Renderer, detail::make_functor<SDL_DestroyRenderer>> _renderer;
 };
 
-class renderer : public renderer_ref {
-public:
-    using renderer_ref::renderer_ref;
-
-    renderer(const renderer&) = delete;
-
-    auto operator=(const renderer&) = delete;
-
-    renderer(renderer&& other) noexcept
-        : renderer_ref{std::exchange(other._prenderer, nullptr)}
-    {}
-
-    auto operator=(renderer&& other) noexcept -> renderer&
-    {
-        SDL_DestroyRenderer(_prenderer);
-        _prenderer = std::exchange(other._prenderer, nullptr);
-        return *this;
-    }
-
-    ~renderer() noexcept
-    {
-        SDL_DestroyRenderer(_prenderer);
-        _prenderer = nullptr;
-    }
-
-    renderer(window_ref win, renderer_flags flags, int rendering_driver_index = -1)
-    {
-        const auto pwin = win.get_pointer();
-        const auto index = rendering_driver_index;
-        const auto flags_ = static_cast<u32>(flags);
-        if (const auto ptr = SDL_CreateRenderer(pwin, index, flags_)) {
-            _prenderer = ptr;
-        } else {
-            throw error{};
-        }
-    }
-
-    renderer(surface_ref surf)
-    {
-        if (const auto ptr = SDL_CreateSoftwareRenderer(surf.get_pointer())) {
-            _prenderer = ptr;
-        } else {
-            throw error{};
-        }
-    }
-};
-
-inline auto operator==(renderer_ref lhs, renderer_ref rhs) noexcept -> bool
+inline auto operator==(const renderer& lhs, const renderer& rhs) noexcept -> bool
 {
     return lhs.get_pointer() == rhs.get_pointer();
 }
 
-inline auto operator!=(renderer_ref lhs, renderer_ref rhs) noexcept -> bool
+inline auto operator!=(const renderer& lhs, const renderer& rhs) noexcept -> bool
 {
     return !(lhs == rhs);
 }
 
-inline auto window_ref::renderer() -> renderer_ref
+class renderer_ref : public renderer {
+public:
+    explicit operator bool() const noexcept { return static_cast<bool>(_renderer); }
+    explicit renderer_ref(SDL_Renderer* r) noexcept : renderer{r} {}
+    ~renderer_ref() { _renderer.release(); }
+};
+
+inline auto window::renderer() -> renderer_ref
 {
-    if (const auto ptr = SDL_GetRenderer(_pwindow)) {
+    if (const auto ptr = SDL_GetRenderer(_window.get())) {
         return renderer_ref{ptr};
     } else {
         throw error{};
@@ -412,27 +374,22 @@ enum class texture_access : int {
 
 // clang-format on
 
-class texture_ref {
-protected:
-    SDL_Texture* _ptexture = nullptr;
-
+class texture {
 public:
-    explicit operator bool() const noexcept
+    texture(class texture_ref) = delete;
+    explicit texture(SDL_Texture* t) noexcept : _texture{t} {}
+    auto get_pointer() const noexcept -> SDL_Texture* { return _texture.get(); }
+
+    texture(const renderer& r, pixel_format_type format, texture_access access, const sdl::size& sz)
+        : texture{SDL_CreateTexture(r.get_pointer(), static_cast<u32>(format), static_cast<int>(access), sz.w, sz.h)}
     {
-        return static_cast<bool>(_ptexture);
+        if (!_texture) throw error{};
     }
 
-    texture_ref() noexcept
-        : _ptexture{nullptr}
-    {}
-
-    explicit texture_ref(SDL_Texture* pointer) noexcept
-        : _ptexture{pointer}
-    {}
-
-    auto get_pointer() const noexcept -> SDL_Texture*
+    texture(const renderer& rend, const surface& surf)
+        : texture{SDL_CreateTextureFromSurface(rend.get_pointer(), surf.get_pointer())}
     {
-        return _ptexture;
+        if (!_texture) throw error{};
     }
 
     auto access() const -> texture_access
@@ -560,83 +517,54 @@ public:
             throw error();
         }
     }
+
+protected:
+    std::unique_ptr<SDL_Texture, detail::make_functor<SDL_DestroyTexture>> _texture;
 };
 
-class texture : public texture_ref {
-public:
-    using texture_ref::texture_ref;
-
-    texture(const texture&) = delete;
-
-    auto operator=(const texture&) -> texture& = delete;
-
-    texture(texture&& other) noexcept
-        : texture_ref{std::exchange(other._ptexture, nullptr)}
-    {}
-
-    auto operator=(texture&& other) noexcept -> texture&
-    {
-        SDL_DestroyTexture(_ptexture);
-        _ptexture = std::exchange(other._ptexture, nullptr);
-        return *this;
-    }
-
-    ~texture() noexcept
-    {
-        SDL_DestroyTexture(_ptexture);
-        _ptexture = nullptr;
-    }
-
-    texture(renderer_ref r, pixel_format_type format, texture_access access, const sdl::size& sz)
-        : texture_ref{SDL_CreateTexture(r.get_pointer(), static_cast<u32>(format), static_cast<int>(access), sz.w, sz.h)}
-    {
-        if (!_ptexture) throw error{};
-    }
-
-    texture(renderer_ref rend, surface_ref surf)
-        : texture_ref{SDL_CreateTextureFromSurface(rend.get_pointer(), surf.get_pointer())}
-    {
-        if (!_ptexture) throw error{};
-    }
-};
-
-inline auto operator==(texture_ref lhs, texture_ref rhs) noexcept -> bool
+inline auto operator==(const texture& lhs, const texture& rhs) noexcept -> bool
 {
     return lhs.get_pointer() == rhs.get_pointer();
 }
 
-inline auto operator!=(texture_ref lhs, texture_ref rhs) noexcept -> bool
+inline auto operator!=(const texture& lhs, const texture& rhs) noexcept -> bool
 {
     return !(lhs == rhs);
 }
 
-inline auto renderer_ref::target() -> texture_ref
+inline void renderer::set_target(texture& t)
 {
-    if (const auto ptr = SDL_GetRenderTarget(_prenderer)) {
-        return texture_ref{ptr};
-    } else {
+    if (SDL_SetRenderTarget(_renderer.get(), t.get_pointer()) < 0) {
         throw error{};
     }
 }
 
-inline void renderer_ref::set_target(texture_ref t)
+inline void renderer::copy(const texture& tex, const rect* source, const rect* destination)
 {
-    if (SDL_SetRenderTarget(_prenderer, t.get_pointer()) < 0) {
+    if (SDL_RenderCopy(get_pointer(), tex.get_pointer(), source, destination) < 0) {
         throw error{};
     }
 }
 
-inline void renderer_ref::copy(texture_ref tex, const rect* source, const rect* destination)
-{
-    const auto ptexture = tex.get_pointer();
-    if (SDL_RenderCopy(get_pointer(), ptexture, source, destination) < 0) {
-        throw error{};
-    }
-}
-
-inline void renderer_ref::copy(texture_ref t, const rect* src, const rect* dst, double angle, const point* center, renderer_flip f)
+inline void renderer::copy(const texture& t, const rect* src, const rect* dst, double angle, const point* center, renderer_flip f)
 {
     if (SDL_RenderCopyEx(get_pointer(), t.get_pointer(), src, dst, angle, center, static_cast<SDL_RendererFlip>(f)) < 0) {
+        throw error{};
+    }
+}
+
+class texture_ref : public texture {
+public:
+    explicit operator bool() const noexcept { return static_cast<bool>(_texture); }
+    explicit texture_ref(SDL_Texture* t) noexcept : texture{t} {}
+    ~texture_ref() { _texture.release(); }
+};
+
+inline auto renderer::target() -> texture_ref
+{
+    if (const auto ptr = SDL_GetRenderTarget(_renderer.get())) {
+        return texture_ref{ptr};
+    } else {
         throw error{};
     }
 }
@@ -679,7 +607,7 @@ inline auto make_window_and_renderer(const size& window_size, window_flags flags
 
 namespace gl {
 
-inline auto bind_texture(texture_ref t) -> std::pair<float, float>
+inline auto bind_texture(texture& t) -> std::pair<float, float>
 {
     auto texw = float{};
     auto texh = float{};
@@ -690,7 +618,7 @@ inline auto bind_texture(texture_ref t) -> std::pair<float, float>
     }
 }
 
-inline void unbind_texture(texture_ref t)
+inline void unbind_texture(texture& t)
 {
     if (SDL_GL_UnbindTexture(t.get_pointer()) < 0) {
         throw error{};

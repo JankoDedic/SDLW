@@ -45,7 +45,6 @@ void run() {
     const auto win_bounds = rect{50, 50, win_size.w, win_size.h};
     auto win = window("title", win_bounds, window_flags::shown);
     get_window(win.id()).set_title("new title");
-    win.set_hit_test([] (auto...) { return hit_test_result::draggable; });
     // Create the renderer
     auto rend = renderer(win, renderer_flags::accelerated);
     auto e = event();

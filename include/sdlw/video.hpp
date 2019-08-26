@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <memory>
 
 #include <SDL2/SDL_video.h>
 
@@ -8,6 +9,8 @@
 #include <sdlw/pixels.hpp>
 #include <sdlw/rect.hpp>
 #include <sdlw/surface.hpp>
+
+#include "sdlw/detail/utility.hpp"
 
 namespace sdl {
 
@@ -128,25 +131,73 @@ struct window_border_sizes {
     int right;
 };
 
-class window_ref {
-protected:
-    SDL_Window* _pwindow = nullptr;
+class window_ref;
 
+class window {
 public:
-    explicit operator bool() const noexcept
+    window(class window_ref) = delete;
+    explicit window(SDL_Window* w) noexcept : _window{w} {}
+    auto get_pointer() const noexcept -> SDL_Window* { return _window.get(); }
+
+    // clang-format off
+    static constexpr auto centered      = int{SDL_WINDOWPOS_CENTERED};
+    static constexpr auto undefined     = int{SDL_WINDOWPOS_UNDEFINED};
+    static constexpr auto pos_centered  = point{centered, centered};
+    static constexpr auto pos_undefined = point{undefined, undefined};
+    // clang-format on
+
+    static constexpr auto centered_on_display(int display_index) noexcept -> int
     {
-        return static_cast<bool>(_pwindow);
+        return SDL_WINDOWPOS_CENTERED_DISPLAY(display_index);
     }
 
-    window_ref() = default;
-
-    window_ref(SDL_Window* pointer) noexcept
-        : _pwindow{pointer}
-    {}
-
-    auto get_pointer() const noexcept -> SDL_Window*
+    static constexpr auto undefined_on_display(int display_index) noexcept -> int
     {
-        return _pwindow;
+        return SDL_WINDOWPOS_UNDEFINED_DISPLAY(display_index);
+    }
+
+    static constexpr auto pos_centered_on_display(int display_index) noexcept -> point
+    {
+        const auto value = centered_on_display(display_index);
+        return point{value, value};
+    }
+
+    static constexpr auto pos_undefined_on_display(int display_index) noexcept -> point
+    {
+        const auto value = undefined_on_display(display_index);
+        return point{value, value};
+    }
+
+    static constexpr auto is_centered(int coordinate) noexcept -> bool
+    {
+        return SDL_WINDOWPOS_ISCENTERED(coordinate);
+    }
+
+    static constexpr auto is_undefined(int coordinate) noexcept -> bool
+    {
+        return SDL_WINDOWPOS_ISUNDEFINED(coordinate);
+    }
+
+    static constexpr auto is_pos_centered(const point& position) noexcept -> bool
+    {
+        return is_centered(position.x) && is_centered(position.y);
+    }
+
+    static constexpr auto is_pos_undefined(const point& position) noexcept -> bool
+    {
+        return is_undefined(position.x) && is_undefined(position.y);
+    }
+
+    window(const char* title, const rect& bounds, window_flags flags)
+        : window{SDL_CreateWindow(title, bounds.x, bounds.y, bounds.w, bounds.h, static_cast<u32>(flags))}
+    {
+        if (!_window) throw error{};
+    }
+
+    explicit window(void* native_window_data)
+        : window{SDL_CreateWindowFrom(native_window_data)}
+    {
+        if (!_window) throw error{};
     }
 
     auto flags() const noexcept -> window_flags
@@ -436,7 +487,7 @@ public:
 
     auto renderer() -> renderer_ref;
 
-    void set_modal(window_ref modal)
+    void set_modal(const window& modal)
     {
         if (SDL_SetWindowModalFor(modal.get_pointer(), get_pointer()) < 0) {
             throw error{};
@@ -444,128 +495,55 @@ public:
     }
 
     template<typename HitTest>
-    void set_hit_test(HitTest& ht)
-    {
-        static_assert(std::is_invocable_r_v<hit_test_result, HitTest, window_ref, const point&>);
-        constexpr auto sdl_callback = [](SDL_Window* win, const SDL_Point* area, void* data) -> SDL_HitTestResult {
-            auto& test = *static_cast<HitTest*>(data);
-            const auto result = test(window_ref{win}, *area);
-            return static_cast<SDL_HitTestResult>(result);
-        };
-        if (SDL_SetWindowHitTest(get_pointer(), sdl_callback, &ht) < 0) {
-            throw error{};
-        }
-    }
+    void set_hit_test(HitTest& ht);
 
-    void set_hit_test(hit_test_result (*ht)(window_ref, const point&))
-    {
-        constexpr auto fp_sdl_callback = [](SDL_Window* win, const SDL_Point* area, void* data) -> SDL_HitTestResult {
-            auto test = reinterpret_cast<hit_test_result (*)(window_ref, const point&)>(data);
-            const auto result = test(window_ref{win}, *static_cast<const point*>(area));
-            return static_cast<SDL_HitTestResult>(result);
-        };
-        if (SDL_SetWindowHitTest(get_pointer(), fp_sdl_callback, reinterpret_cast<void*>(ht)) < 0) {
-            throw error{};
-        }
-    }
+    void set_hit_test(hit_test_result (*ht)(window_ref, const point&));
+
+protected:
+    std::unique_ptr<SDL_Window, detail::make_functor<SDL_DestroyWindow>> _window;
 };
 
-struct window : window_ref {
-    // clang-format off
-    static constexpr auto centered      = int{SDL_WINDOWPOS_CENTERED};
-    static constexpr auto undefined     = int{SDL_WINDOWPOS_UNDEFINED};
-    static constexpr auto pos_centered  = point{centered, centered};
-    static constexpr auto pos_undefined = point{undefined, undefined};
-    // clang-format on
-
-    static constexpr auto centered_on_display(int display_index) noexcept -> int
-    {
-        return SDL_WINDOWPOS_CENTERED_DISPLAY(display_index);
-    }
-
-    static constexpr auto undefined_on_display(int display_index) noexcept -> int
-    {
-        return SDL_WINDOWPOS_UNDEFINED_DISPLAY(display_index);
-    }
-
-    static constexpr auto pos_centered_on_display(int display_index) noexcept -> point
-    {
-        const auto value = centered_on_display(display_index);
-        return point{value, value};
-    }
-
-    static constexpr auto pos_undefined_on_display(int display_index) noexcept -> point
-    {
-        const auto value = undefined_on_display(display_index);
-        return point{value, value};
-    }
-
-    static constexpr auto is_centered(int coordinate) noexcept -> bool
-    {
-        return SDL_WINDOWPOS_ISCENTERED(coordinate);
-    }
-
-    static constexpr auto is_undefined(int coordinate) noexcept -> bool
-    {
-        return SDL_WINDOWPOS_ISUNDEFINED(coordinate);
-    }
-
-    static constexpr auto is_pos_centered(const point& position) noexcept -> bool
-    {
-        return is_centered(position.x) && is_centered(position.y);
-    }
-
-    static constexpr auto is_pos_undefined(const point& position) noexcept -> bool
-    {
-        return is_undefined(position.x) && is_undefined(position.y);
-    }
-
-    using window_ref::window_ref;
-
-    window() = default;
-
-    window(const char* title, const rect& bounds, window_flags flags)
-        : window_ref{SDL_CreateWindow(title, bounds.x, bounds.y, bounds.w, bounds.h, static_cast<u32>(flags))}
-    {
-        if (!_pwindow) throw error{};
-    }
-
-    window(void* native_window_data)
-        : window_ref{SDL_CreateWindowFrom(native_window_data)}
-    {
-        if (!_pwindow) throw error{};
-    }
-
-    window(const window&) = delete;
-
-    auto operator=(const window&) -> window& = delete;
-
-    window(window&& other) noexcept
-        : window_ref{std::exchange(other._pwindow, nullptr)}
-    {}
-
-    auto operator=(window&& other) noexcept -> window&
-    {
-        SDL_DestroyWindow(_pwindow);
-        _pwindow = std::exchange(other._pwindow, nullptr);
-        return *this;
-    }
-
-    ~window() noexcept
-    {
-        SDL_DestroyWindow(_pwindow);
-        _pwindow = nullptr;
-    }
-};
-
-inline auto operator==(window_ref lhs, window_ref rhs) noexcept -> bool
+inline auto operator==(const window& lhs, const window& rhs) noexcept -> bool
 {
     return lhs.get_pointer() == rhs.get_pointer();
 }
 
-inline auto operator!=(window_ref lhs, window_ref rhs) noexcept -> bool
+inline auto operator!=(const window& lhs, const window& rhs) noexcept -> bool
 {
     return !(lhs == rhs);
+}
+
+class window_ref : public window {
+public:
+    explicit operator bool() const noexcept { return static_cast<bool>(_window); }
+    explicit window_ref(SDL_Window* w) noexcept : window{w} {}
+    ~window_ref() { _window.release(); }
+};
+
+template<typename HitTest>
+void window::set_hit_test(HitTest& ht)
+{
+    static_assert(std::is_invocable_r_v<hit_test_result, HitTest, window_ref, const point&>);
+    constexpr auto sdl_callback = [](SDL_Window* win, const SDL_Point* area, void* data) -> SDL_HitTestResult {
+        auto& test = *static_cast<HitTest*>(data);
+        const auto result = test(window_ref{win}, *area);
+        return static_cast<SDL_HitTestResult>(result);
+    };
+    if (SDL_SetWindowHitTest(get_pointer(), sdl_callback, &ht) < 0) {
+        throw error{};
+    }
+}
+
+inline void window::set_hit_test(hit_test_result (*ht)(window_ref, const point&))
+{
+    constexpr auto fp_sdl_callback = [](SDL_Window* win, const SDL_Point* area, void* data) -> SDL_HitTestResult {
+        auto test = reinterpret_cast<hit_test_result (*)(window_ref, const point&)>(data);
+        const auto result = test(window_ref{win}, *static_cast<const point*>(area));
+        return static_cast<SDL_HitTestResult>(result);
+    };
+    if (SDL_SetWindowHitTest(get_pointer(), fp_sdl_callback, reinterpret_cast<void*>(ht)) < 0) {
+        throw error{};
+    }
 }
 
 inline auto get_window(window_id id) -> window_ref
@@ -712,19 +690,19 @@ inline auto num_video_displays() -> int
     }
 }
 
-inline auto display_brightness(window_ref win) noexcept -> float
+inline auto display_brightness(const window& win) noexcept -> float
 {
     return SDL_GetWindowBrightness(win.get_pointer());
 }
 
-inline void set_display_brightness(window_ref win, float brightness)
+inline void set_display_brightness(const window& win, float brightness)
 {
     if (SDL_SetWindowBrightness(win.get_pointer(), brightness) < 0) {
         throw error{};
     }
 }
 
-inline void get_display_gamma_ramp(window_ref win, span<u16, 256> red, span<u16, 256> green, span<u16, 256> blue)
+inline void get_display_gamma_ramp(const window& win, span<u16, 256> red, span<u16, 256> green, span<u16, 256> blue)
 {
     const auto r = red.data();
     const auto g = green.data();
@@ -734,7 +712,7 @@ inline void get_display_gamma_ramp(window_ref win, span<u16, 256> red, span<u16,
     }
 }
 
-inline void set_display_gamma_ramp(window_ref win, span<const u16, 256> red, span<const u16, 256> green, span<const u16, 256> blue)
+inline void set_display_gamma_ramp(const window& win, span<const u16, 256> red, span<const u16, 256> green, span<const u16, 256> blue)
 {
     const auto r = red.data();
     const auto g = green.data();
@@ -792,54 +770,27 @@ struct video_subsystem {
 
 namespace gl {
 
-class context_ref {
-protected:
-    SDL_GLContext _context = nullptr;
+class context {
 public:
-    explicit operator bool() const noexcept
-    {
-        return static_cast<bool>(_context);
-    }
+    context(class context_ref) = delete;
+    explicit context(SDL_GLContext c) noexcept : _context{c} {}
+    auto get_pointer() const noexcept -> SDL_GLContext { return _context.get(); }
 
-    context_ref() = default;
-
-    explicit context_ref(SDL_GLContext pointer) noexcept
-        : _context{pointer}
-    {}
-
-    auto get_pointer() const noexcept -> SDL_GLContext
-    {
-        return _context;
-    }
-};
-
-class context : public context_ref {
-public:
-    explicit context(window_ref w)
-        : context_ref{SDL_GL_CreateContext(w.get_pointer())}
+    explicit context(window& w)
+        : context{SDL_GL_CreateContext(w.get_pointer())}
     {
         if (!_context) throw error{};
     }
 
-    context(const context&) = delete;
+protected:
+    std::unique_ptr<std::remove_pointer_t<SDL_GLContext>, detail::make_functor<SDL_GL_DeleteContext>> _context;
+};
 
-    void operator=(const context&) = delete;
-
-    context(context&& other) noexcept
-        : context_ref{std::exchange(other._context, nullptr)}
-    {}
-
-    auto operator=(context&& other) noexcept -> context&
-    {
-        SDL_GL_DeleteContext(_context);
-        _context = std::exchange(other._context, nullptr);
-        return *this;
-    }
-
-    ~context()
-    {
-        SDL_GL_DeleteContext(_context);
-    }
+class context_ref : public context {
+public:
+    explicit operator bool() const noexcept { return static_cast<bool>(_context); }
+    explicit context_ref(SDL_GLContext c) noexcept : context{c} {}
+    ~context_ref() { _context.release(); }
 };
 
 enum class attr : std::underlying_type_t<SDL_GLattr> {
@@ -918,7 +869,7 @@ inline auto current_window() -> window_ref
     }
 }
 
-inline auto drawable_size(window_ref w) noexcept -> sdl::size
+inline auto drawable_size(const window& w) noexcept -> sdl::size
 {
     auto s = sdl::size{};
     SDL_GL_GetDrawableSize(w.get_pointer(), &s.w, &s.h);
@@ -942,7 +893,7 @@ inline void load_library(const char* path)
     }
 }
 
-inline void make_current(window_ref w, context_ref c)
+inline void make_current(const window& w, context_ref c)
 {
     if (SDL_GL_MakeCurrent(w.get_pointer(), c.get_pointer()) < 0) {
         throw error{};
@@ -969,7 +920,7 @@ inline void set_swap_interval(int interval)
     }
 }
 
-inline void swap_window(window_ref w) noexcept
+inline void swap_window(const window& w) noexcept
 {
     return SDL_GL_SwapWindow(w.get_pointer());
 }

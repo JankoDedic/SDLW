@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <SDL2/SDL_mouse.h>
 
 #include <sdlw/error.hpp>
@@ -30,70 +32,39 @@ enum class system_cursor {
 
 // clang-format on
 
-class cursor_ref {
-protected:
-    SDL_Cursor* _cursor = nullptr;
-
+class cursor {
 public:
-    explicit operator bool() const noexcept
-    {
-        return static_cast<bool>(_cursor);
-    }
-
-    cursor_ref() = default;
-
-    explicit cursor_ref(SDL_Cursor* pointer) noexcept
-        : _cursor{pointer}
-    {}
-
-    auto get_pointer() const noexcept -> SDL_Cursor*
-    {
-        return _cursor;
-    }
-};
-
-class cursor : public cursor_ref {
-public:
-    using cursor_ref::cursor_ref;
-
-    cursor(const cursor&) = delete;
-
-    auto operator=(const cursor&) -> cursor& = delete;
-
-    cursor(cursor&& other) noexcept
-        : cursor_ref{std::exchange(other._cursor, nullptr)}
-    {}
-
-    auto operator=(cursor&& other) noexcept -> cursor&
-    {
-        SDL_FreeCursor(_cursor);
-        _cursor = std::exchange(other._cursor, nullptr);
-        return *this;
-    }
-
-    ~cursor() noexcept
-    {
-        SDL_FreeCursor(_cursor);
-        _cursor = nullptr;
-    }
+    cursor(class cursor_ref) = delete;
+    explicit cursor(SDL_Cursor* c) noexcept : _cursor{c} {}
+    auto get_pointer() const noexcept -> SDL_Cursor* { return _cursor.get(); }
 
     cursor(const u8* data, const u8* mask, const size& sz, const point& topleft_corner)
-        : cursor_ref{SDL_CreateCursor(data, mask, sz.w, sz.h, topleft_corner.x, topleft_corner.y)}
+        : cursor{SDL_CreateCursor(data, mask, sz.w, sz.h, topleft_corner.x, topleft_corner.y)}
     {
         if (!_cursor) throw error{};
     }
 
     cursor(const surface& surf, const point& topleft_corner)
-        : cursor_ref{SDL_CreateColorCursor(surf.get_pointer(), topleft_corner.x, topleft_corner.y)}
+        : cursor{SDL_CreateColorCursor(surf.get_pointer(), topleft_corner.x, topleft_corner.y)}
     {
         if (!_cursor) throw error{};
     }
 
     explicit cursor(system_cursor sysc)
-        : cursor_ref{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(sysc))}
+        : cursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(sysc))}
     {
         if (!_cursor) throw error{};
     }
+
+protected:
+    std::unique_ptr<SDL_Cursor, detail::make_functor<SDL_FreeCursor>> _cursor;
+};
+
+class cursor_ref : public cursor {
+public:
+    explicit operator bool() const noexcept { return static_cast<bool>(_cursor); }
+    explicit cursor_ref(SDL_Cursor* c) noexcept : cursor{c} {}
+    ~cursor_ref() { _cursor.release(); }
 };
 
 struct active_cursor {
@@ -102,7 +73,7 @@ struct active_cursor {
         return cursor_ref{SDL_GetCursor()};
     }
 
-    static void set(cursor_ref c) noexcept
+    static void set(cursor& c) noexcept
     {
         SDL_SetCursor(c.get_pointer());
     }

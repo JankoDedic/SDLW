@@ -154,22 +154,16 @@ constexpr auto is_fourcc(pixel_format_type pixel_format) noexcept -> bool
     return SDL_ISPIXELFORMAT_FOURCC(static_cast<u32>(pixel_format));
 }
 
-class palette_ref {
+class palette {
 public:
-    explicit operator bool() const noexcept
+    palette(class palette_ref) = delete;
+    explicit palette(SDL_Palette* p) noexcept : _palette{p} {}
+    auto get_pointer() const noexcept -> SDL_Palette* { return _palette.get(); }
+
+    explicit palette(int num_colors)
+        : _palette{SDL_AllocPalette(num_colors)}
     {
-        return static_cast<bool>(_palette);
-    }
-
-    palette_ref() = default;
-
-    explicit palette_ref(SDL_Palette* ptr) noexcept
-        : _palette{ptr}
-    {}
-
-    auto get_pointer() const noexcept -> SDL_Palette*
-    {
-        return _palette;
+        if (!_palette) throw error{};
     }
 
     auto colors() const noexcept -> span<color>
@@ -177,26 +171,27 @@ public:
         return {_palette->colors, _palette->ncolors};
     }
 
-private:
-    SDL_Palette* _palette = nullptr;
+protected:
+    std::unique_ptr<SDL_Palette, detail::make_functor<SDL_FreePalette>> _palette;
 };
 
-class pixel_format_ref {
+class palette_ref : public palette {
 public:
-    explicit operator bool() const noexcept
+    explicit operator bool() const noexcept { return static_cast<bool>(_palette); }
+    explicit palette_ref(SDL_Palette* p) noexcept : palette{p} {}
+    ~palette_ref() { _palette.release(); }
+};
+
+class pixel_format {
+public:
+    pixel_format(class pixel_format_ref) = delete;
+    explicit pixel_format(SDL_PixelFormat* pf) noexcept : _pixel_format{pf} {}
+    auto get_pointer() const noexcept -> SDL_PixelFormat* { return _pixel_format.get(); }
+
+    explicit pixel_format(pixel_format_type fmt)
+        : _pixel_format{SDL_AllocFormat(static_cast<u32>(fmt))}
     {
-        return static_cast<bool>(_pixel_format);
-    }
-
-    pixel_format_ref() = default;
-
-    explicit pixel_format_ref(SDL_PixelFormat* ptr) noexcept
-        : _pixel_format{ptr}
-    {}
-
-    auto get_pointer() const noexcept -> SDL_PixelFormat*
-    {
-        return _pixel_format;
+        if (!_pixel_format) throw error{};
     }
 
     auto format() const noexcept -> pixel_format_type
@@ -224,8 +219,15 @@ public:
         return {_pixel_format->Rmask, _pixel_format->Gmask, _pixel_format->Bmask, _pixel_format->Amask};
     }
 
-private:
-    SDL_PixelFormat* _pixel_format = nullptr;
+protected:
+    std::unique_ptr<SDL_PixelFormat, detail::make_functor<SDL_FreeFormat>> _pixel_format;
+};
+
+class pixel_format_ref : public pixel_format {
+public:
+    explicit operator bool() const noexcept { return static_cast<bool>(_pixel_format); }
+    explicit pixel_format_ref(SDL_PixelFormat* pf) noexcept : pixel_format{pf} {}
+    ~pixel_format_ref() { _pixel_format.release(); }
 };
 
 } // namespace sdl
