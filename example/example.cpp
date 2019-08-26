@@ -81,6 +81,8 @@ void run() {
     f(sdl::log_category::render, sdl::log_priority::critical, "DANGER!!");
     sdl::log("you there, chief?\n");
 
+    event_filter::set([](const event& e) { return e.type() != event_type::mouse_motion; });
+
     for (;;) {
         // Handle the events
         while (event_queue::poll(e)) {

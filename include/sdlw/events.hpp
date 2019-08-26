@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include <SDL2/SDL_events.h>
 
 #include <sdlw/audio.hpp>
@@ -385,7 +387,7 @@ inline void pump_events() noexcept
     SDL_PumpEvents();
 }
 
-namespace event_filter::by_type {
+namespace event_type_filter {
 
 inline void set(event_type etype, bool enable) noexcept
 {
@@ -400,33 +402,85 @@ inline auto is_enabled(event_type etype) noexcept -> bool
     return SDL_GetEventState(type) == SDL_ENABLE ? false : true;
 }
 
-} // namespace event_filter::by_type
+} // namespace event_type_filter
 
-namespace event_filter::custom {
+class event_filter {
+public:
+    using function_type = bool(const event&);
 
-template<typename EventFilter>
-void set(EventFilter& f)
-{
-    static_assert(std::is_invocable_r_v<bool, EventFilter, const event&>);
-    constexpr auto sdl_callback = [](void* userdata, SDL_Event* e) -> int {
-        auto& filter = *static_cast<EventFilter*>(userdata);
-        const auto& ev = *reinterpret_cast<event*>(e);
-        return static_cast<int>(filter(ev));
-    };
-    SDL_SetEventFilter(sdl_callback, &f);
-}
+    event_filter(function_type* f) noexcept
+        : _userdata{f}
+    {
+        _filter = [](void* userdata, SDL_Event* e) -> int {
+            const auto func = reinterpret_cast<function_type*>(userdata);
+            const auto& ev = *reinterpret_cast<event*>(e);
+            return static_cast<int>(func(ev));
+        };
+    }
 
-inline void set(bool (*filter)(const event&))
-{
-    constexpr auto fp_sdl_callback = [](void* userdata, SDL_Event* e) -> int {
-        auto f = reinterpret_cast<bool (*)(const event&)>(userdata);
-        const auto& ev = *reinterpret_cast<event*>(e);
-        return static_cast<int>(f(ev));
-    };
-    SDL_SetEventFilter(fp_sdl_callback, reinterpret_cast<void*>(filter));
-}
+    template<typename EventFilter>
+    event_filter(EventFilter& f) noexcept
+        : _userdata{&f}
+    {
+        static_assert(std::is_invocable_r_v<bool, EventFilter, const event&>);
+        _filter = [](void* userdata, SDL_Event* e) -> int {
+            auto& func = *static_cast<EventFilter*>(userdata);
+            const auto& ev = *reinterpret_cast<event*>(e);
+            return static_cast<int>(func(ev));
+        };
+    }
 
-} // namespace event_filter::custom
+    event_filter(SDL_EventFilter f, void* userdata) noexcept
+        : _filter{f}
+        , _userdata{userdata}
+    {}
+
+    auto filter() const noexcept -> SDL_EventFilter
+    {
+        return _filter;
+    }
+
+    auto userdata() const noexcept -> void*
+    {
+        return _userdata;
+    }
+
+    auto operator()(const event& e) const noexcept -> bool
+    {
+        const auto ev = const_cast<SDL_Event*>(reinterpret_cast<const SDL_Event*>(&e));
+        return static_cast<bool>(_filter(_userdata, ev));
+    }
+
+    friend auto operator==(const event_filter& lhs, const event_filter& rhs) noexcept -> bool
+    {
+        return lhs.filter() == rhs.filter() && lhs.userdata() == rhs.userdata();
+    }
+
+    friend auto operator!=(const event_filter& lhs, const event_filter& rhs) noexcept -> bool
+    {
+        return !(lhs == rhs);
+    }
+
+    static void set(event_filter f) noexcept
+    {
+        SDL_SetEventFilter(f._filter, f._userdata);
+    }
+
+    static auto get() noexcept -> std::optional<event_filter>
+    {
+        auto filter = SDL_EventFilter{};
+        auto userdata = static_cast<void*>(nullptr);
+        if (SDL_GetEventFilter(&filter, &userdata)) {
+            return event_filter{filter, userdata};
+        } else {
+            return std::nullopt;
+        }
+    }
+
+private:
+    SDL_EventFilter _filter = nullptr;
+    void* _userdata = nullptr;
+};
 
 namespace event_watch {
 
