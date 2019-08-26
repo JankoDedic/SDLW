@@ -29,13 +29,13 @@ public:
         if (!_surface) throw error{};
     }
 
-    surface(int width, int height, int depth, pixel_format_type format)
+    surface(int width, int height, int depth, pixel_format_kind format)
         : surface{SDL_CreateRGBSurfaceWithFormat(0, width, height, depth, static_cast<u32>(format))}
     {
         if (!_surface) throw error{};
     }
 
-    surface(void* pixels, int width, int height, int depth, int pitch, pixel_format_type format)
+    surface(void* pixels, int width, int height, int depth, int pitch, pixel_format_kind format)
         : surface{SDL_CreateRGBSurfaceWithFormatFrom(pixels, width, height, depth, pitch, static_cast<u32>(format))}
     {
         if (!_surface) throw error{};
@@ -260,10 +260,10 @@ inline void blit(const surface& src, const rect& srcrect, surface& dst, rect& ds
 inline void convert_pixels(
     int width,
     int height,
-    pixel_format_type src_format,
+    pixel_format_kind src_format,
     const void* src,
     int src_pitch,
-    pixel_format_type dst_format,
+    pixel_format_kind dst_format,
     void* dst,
     int dst_pitch)
 {

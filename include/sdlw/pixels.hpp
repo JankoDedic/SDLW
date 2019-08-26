@@ -64,7 +64,7 @@ enum class pixel_layout {
     _1010102 = SDL_PACKEDLAYOUT_1010102
 };
 
-enum class pixel_format_type : u32 {
+enum class pixel_format_kind : u32 {
     unknown     = SDL_PIXELFORMAT_UNKNOWN,
     index1lsb   = SDL_PIXELFORMAT_INDEX1LSB,
     index1msb   = SDL_PIXELFORMAT_INDEX1MSB,
@@ -111,45 +111,45 @@ enum class pixel_format_type : u32 {
 
 // clang-format on
 
-constexpr auto type(pixel_format_type pixel_format) noexcept -> pixel_type
+constexpr auto type(pixel_format_kind pixel_format) noexcept -> pixel_type
 {
     const auto sdl_pixel_format = static_cast<u32>(pixel_format);
     return static_cast<pixel_type>(SDL_PIXELTYPE(sdl_pixel_format));
 }
 
-constexpr auto order(pixel_format_type pixel_format) noexcept -> pixel_order
+constexpr auto order(pixel_format_kind pixel_format) noexcept -> pixel_order
 {
     const auto sdl_pixel_format = static_cast<u32>(pixel_format);
     return static_cast<pixel_order>(SDL_PIXELORDER(sdl_pixel_format));
 }
 
-constexpr auto layout(pixel_format_type pixel_format) noexcept -> pixel_layout
+constexpr auto layout(pixel_format_kind pixel_format) noexcept -> pixel_layout
 {
     const auto sdl_pixel_format = static_cast<u32>(pixel_format);
     return static_cast<pixel_layout>(SDL_PIXELLAYOUT(sdl_pixel_format));
 }
 
-constexpr auto bits_per_pixel(pixel_format_type pixel_format) noexcept -> int
+constexpr auto bits_per_pixel(pixel_format_kind pixel_format) noexcept -> int
 {
     return SDL_BITSPERPIXEL(static_cast<u32>(pixel_format));
 }
 
-constexpr auto bytes_per_pixel(pixel_format_type pixel_format) noexcept -> int
+constexpr auto bytes_per_pixel(pixel_format_kind pixel_format) noexcept -> int
 {
     return SDL_BYTESPERPIXEL(static_cast<u32>(pixel_format));
 }
 
-constexpr auto is_indexed(pixel_format_type pixel_format) noexcept -> bool
+constexpr auto is_indexed(pixel_format_kind pixel_format) noexcept -> bool
 {
     return SDL_ISPIXELFORMAT_INDEXED(static_cast<u32>(pixel_format));
 }
 
-constexpr auto is_alpha(pixel_format_type pixel_format) noexcept -> bool
+constexpr auto is_alpha(pixel_format_kind pixel_format) noexcept -> bool
 {
     return SDL_ISPIXELFORMAT_ALPHA(static_cast<u32>(pixel_format));
 }
 
-constexpr auto is_fourcc(pixel_format_type pixel_format) noexcept -> bool
+constexpr auto is_fourcc(pixel_format_kind pixel_format) noexcept -> bool
 {
     return SDL_ISPIXELFORMAT_FOURCC(static_cast<u32>(pixel_format));
 }
@@ -188,15 +188,15 @@ public:
     explicit pixel_format(SDL_PixelFormat* pf) noexcept : _pixel_format{pf} {}
     auto get_pointer() const noexcept -> SDL_PixelFormat* { return _pixel_format.get(); }
 
-    explicit pixel_format(pixel_format_type fmt)
+    explicit pixel_format(pixel_format_kind fmt)
         : _pixel_format{SDL_AllocFormat(static_cast<u32>(fmt))}
     {
         if (!_pixel_format) throw error{};
     }
 
-    auto format() const noexcept -> pixel_format_type
+    auto format() const noexcept -> pixel_format_kind
     {
-        return static_cast<pixel_format_type>(_pixel_format->format);
+        return static_cast<pixel_format_kind>(_pixel_format->format);
     }
 
     auto palette() const noexcept -> palette_ref
