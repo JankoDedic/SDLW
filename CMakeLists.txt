@@ -61,6 +61,8 @@ target_link_libraries(
 # =============================================================================
 if(SDLW_BUILD_EXAMPLE)
   add_executable(sdlw-main example/example.cpp example/second.cpp)
-  target_compile_options(sdlw-main PRIVATE /Za)
+  if(MSVC)
+    target_compile_options(sdlw-main PRIVATE /Za)
+  endif()
   target_link_libraries(sdlw-main PRIVATE SDLW)
 endif()
