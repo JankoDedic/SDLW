@@ -28,4 +28,5 @@
 #include <sdlw/timer.hpp>
 #include <sdlw/touch.hpp>
 #include <sdlw/types.hpp>
+#include <sdlw/version.hpp>
 #include <sdlw/video.hpp>
