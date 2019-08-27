@@ -31,7 +31,7 @@ class subsystem {
     u32 _flags;
 
 public:
-    subsystem(subsystem_flags flags)
+    explicit subsystem(subsystem_flags flags)
         : _flags(static_cast<u32>(flags))
     {
         if (SDL_InitSubSystem(_flags) < 0) {
@@ -43,6 +43,16 @@ public:
     {
         SDL_QuitSubSystem(_flags);
     }
+
+    static auto was_init(subsystem_flags flags) noexcept -> subsystem_flags
+    {
+        return static_cast<subsystem_flags>(SDL_WasInit(static_cast<u32>(flags)));
+    }
 };
+
+inline void set_main_ready() noexcept
+{
+    SDL_SetMainReady();
+}
 
 } // namespace sdl
