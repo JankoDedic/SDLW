@@ -101,6 +101,17 @@ public:
         SDL_SetAssertionHandler(handler.function(), handler.userdata());
     }
 
+    static void set(function_type* f) noexcept
+    {
+        set(assertion_handler{f});
+    }
+
+    template<typename Callable>
+    static void set(Callable& c) noexcept
+    {
+        set(assertion_handler{c});
+    }
+
     static auto get() noexcept -> assertion_handler
     {
         auto userdata = static_cast<void*>(nullptr);

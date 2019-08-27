@@ -408,7 +408,7 @@ class event_filter {
 public:
     using function_type = bool(const event&);
 
-    event_filter(function_type* f) noexcept
+    explicit event_filter(function_type* f) noexcept
         : _userdata{reinterpret_cast<void*>(f)}
     {
         _filter = [](void* userdata, SDL_Event* e) -> int {
@@ -419,7 +419,7 @@ public:
     }
 
     template<typename EventFilter>
-    event_filter(EventFilter& f) noexcept
+    explicit event_filter(EventFilter& f) noexcept
         : _userdata{&f}
     {
         static_assert(std::is_invocable_r_v<bool, EventFilter, const event&>);
@@ -464,6 +464,17 @@ public:
     static void set(event_filter f) noexcept
     {
         SDL_SetEventFilter(f._filter, f._userdata);
+    }
+
+    static void set(function_type* f) noexcept
+    {
+        set(event_filter{f});
+    }
+
+    template<typename Callable>
+    static void set(Callable& c) noexcept
+    {
+        set(event_filter{c});
     }
 
     static auto get() noexcept -> std::optional<event_filter>

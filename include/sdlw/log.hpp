@@ -157,6 +157,17 @@ public:
         SDL_LogSetOutputFunction(f._function, f._userdata);
     }
 
+    static void set(function_type* f) noexcept
+    {
+        set(log_output_function{f});
+    }
+
+    template<typename Callable>
+    static void set(Callable& c) noexcept
+    {
+        set(log_output_function{c});
+    }
+
     static auto get() noexcept -> log_output_function
     {
         auto callback = SDL_LogOutputFunction{};
