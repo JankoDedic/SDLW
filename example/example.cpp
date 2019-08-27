@@ -71,7 +71,7 @@ void run() {
     event_watch::remove(w);
 
     auto f = sdl::log_output_function::get();
-    SDLW_ASSERT(f.function());
+    SDL_ASSERT(f.function());
     f(sdl::log_category::render, sdl::log_priority::critical, "DANGER!!");
     auto callable = [&](auto...) {
         std::cout << "oh no!\n";
