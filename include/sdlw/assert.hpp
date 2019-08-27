@@ -83,7 +83,7 @@ public:
 
     auto operator()(assert_data_ref ad) const noexcept -> assert_state
     {
-        _function(ad.get_pointer(), _userdata);
+        return static_cast<assert_state>(_function(ad.get_pointer(), _userdata));
     }
 
     friend auto operator==(const assertion_handler& lhs, const assertion_handler& rhs) noexcept -> bool

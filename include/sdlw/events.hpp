@@ -649,7 +649,7 @@ inline auto await(event& e) noexcept -> bool
 
 inline auto await(event& e, clock::duration timeout) noexcept -> bool
 {
-    SDL_WaitEventTimeout(reinterpret_cast<SDL_Event*>(&e), timeout.count());
+    return SDL_WaitEventTimeout(reinterpret_cast<SDL_Event*>(&e), timeout.count());
 }
 
 } // namespace event_queue
