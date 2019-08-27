@@ -45,7 +45,7 @@ public:
     using function_type = assert_state(assert_data_ref);
 
     assertion_handler(function_type* f) noexcept
-        : _userdata{f}
+        : _userdata{reinterpret_cast<void*>(f)}
     {
         _function = [](const SDL_AssertData* data, void* userdata) -> SDL_AssertState {
             const auto func = reinterpret_cast<function_type*>(userdata);

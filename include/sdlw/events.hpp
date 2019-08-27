@@ -409,7 +409,7 @@ public:
     using function_type = bool(const event&);
 
     event_filter(function_type* f) noexcept
-        : _userdata{f}
+        : _userdata{reinterpret_cast<void*>(f)}
     {
         _filter = [](void* userdata, SDL_Event* e) -> int {
             const auto func = reinterpret_cast<function_type*>(userdata);

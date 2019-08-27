@@ -103,7 +103,7 @@ public:
     using function_type = void(log_category, log_priority, const char* message);
 
     log_output_function(function_type* f) noexcept
-        : _userdata{f}
+        : _userdata{reinterpret_cast<void*>(f)}
     {
         _function = [](void* userdata, int category, SDL_LogPriority priority, const char* message) {
             const auto func = reinterpret_cast<function_type*>(userdata);
