@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include <type_traits>
 
 #include <SDL2/SDL_timer.h>
 
@@ -42,6 +43,7 @@ inline auto add_timer(clock::duration interval, timer_callback* callback) -> tim
 
 template<typename Callable>
 auto add_timer(clock::duration interval, Callable& cb) -> timer_id {
+    static_assert(std::is_invocable_r_v<clock::duration, Callable, clock::duration>);
     constexpr auto sdl_timer_callback = [](u32 interval, void* param) -> u32 {
         auto& func = *reinterpret_cast<Callable*>(param);
         return func(clock::duration{interval}).count();
