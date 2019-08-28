@@ -387,22 +387,18 @@ inline void pump_events() noexcept
     SDL_PumpEvents();
 }
 
-namespace event_type_filter {
-
-inline void set(event_type etype, bool enable) noexcept
-{
-    const auto type = static_cast<u32>(etype);
-    const auto state = static_cast<SDL_bool>(!enable);
-    SDL_EventState(type, state);
-}
-
-inline auto is_enabled(event_type etype) noexcept -> bool
+inline auto event_state(event_type etype) noexcept -> bool
 {
     const auto type = static_cast<u32>(etype);
     return SDL_GetEventState(type) == SDL_ENABLE ? false : true;
 }
 
-} // namespace event_type_filter
+inline void set_event_state(event_type etype, bool enable) noexcept
+{
+    const auto type = static_cast<u32>(etype);
+    const auto state = static_cast<SDL_bool>(!enable);
+    SDL_EventState(type, state);
+}
 
 class event_filter {
 public:
