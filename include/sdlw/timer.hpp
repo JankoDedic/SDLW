@@ -41,7 +41,7 @@ inline auto add_timer(clock::duration interval, timer_callback* callback) -> tim
 }
 
 template<typename Callable>
-auto add_timer(clock::duration inverval, Callable& cb) -> timer_id {
+auto add_timer(clock::duration interval, Callable& cb) -> timer_id {
     constexpr auto sdl_timer_callback = [](u32 interval, void* param) -> u32 {
         auto& func = *reinterpret_cast<Callable*>(param);
         return func(clock::duration{interval}).count();
