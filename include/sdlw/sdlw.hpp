@@ -10,6 +10,7 @@
 #include <sdlw/filesystem.hpp>
 #include <sdlw/game_controller.hpp>
 #include <sdlw/gesture.hpp>
+#include <sdlw/hints.hpp>
 #include <sdlw/joystick.hpp>
 #include <sdlw/keyboard.hpp>
 #include <sdlw/keycode.hpp>
