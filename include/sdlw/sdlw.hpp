@@ -13,6 +13,7 @@
 #include <sdlw/joystick.hpp>
 #include <sdlw/keyboard.hpp>
 #include <sdlw/keycode.hpp>
+#include <sdlw/loadso.hpp>
 #include <sdlw/log.hpp>
 #include <sdlw/message_box.hpp>
 #include <sdlw/mouse.hpp>
