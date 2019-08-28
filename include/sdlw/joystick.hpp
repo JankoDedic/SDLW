@@ -16,6 +16,11 @@ using joystick_id = SDL_JoystickID;
 
 class joystick_guid {
 public:
+    explicit operator SDL_JoystickGUID() const noexcept
+    {
+        return _guid;
+    }
+
     joystick_guid() = default;
 
     explicit joystick_guid(SDL_JoystickGUID guid) noexcept
