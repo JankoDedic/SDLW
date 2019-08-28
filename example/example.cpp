@@ -83,11 +83,12 @@ void run() {
 
     event_filter::set([](const event& e) -> bool { return e.type() != event_type::mouse_motion; });
 
-    const auto t1 = sdl::high_resolution_clock::now();
-    sdl::delay(2s);
-    const auto t2 = sdl::high_resolution_clock::now();
-    const auto time_result = t2 - t1;
-    std::cout << "result in seconds: " << (time_result.count() / std::nano::den) << '\n';
+    const auto id = sdl::add_timer(1s, [](clock::duration interval) {
+        std::cout << "hello\n";
+        return interval;
+    });
+    sdl::delay(5s);
+    sdl::remove_timer(id);
 
     for (;;) {
         // Handle the events
