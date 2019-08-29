@@ -748,6 +748,15 @@ inline auto await(event& e, clock::duration timeout) noexcept -> bool
     return SDL_WaitEventTimeout(reinterpret_cast<SDL_Event*>(&e), timeout.count());
 }
 
+template<typename Visitor>
+inline void visit_each(Visitor vis)
+{
+    auto e = event{};
+    while (poll(e)) {
+        e.visit(vis);
+    }
+}
+
 } // namespace event_queue
 
 } // namespace sdl

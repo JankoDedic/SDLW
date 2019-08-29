@@ -76,21 +76,20 @@ void run() {
     auto running = true;
     while (running) {
         // Handle the events
-        while (event_queue::poll(e)) {
-            e.visit(overload{
-                [&](const quit_event& e) { running = false; },
-                [](const mouse_motion_event& e) {
-                    const auto state = e.state();
-                    const auto pressed = state & button_mask(mouse_button::left);
-                    if (static_cast<bool>(pressed)) {
-                        const auto x = e.x();
-                        const auto y = e.y();
-                        points.push_back(point{x, y});
-                    }
-                },
-                [](auto&&) { /* do nothing */ }
-            });
-        }
+        event_queue::visit_each(overload{
+            [&](const quit_event& e) { running = false; },
+            [](const mouse_motion_event& e) {
+                const auto state = e.state();
+                const auto pressed = state & button_mask(mouse_button::left);
+                if (static_cast<bool>(pressed)) {
+                    const auto x = e.x();
+                    const auto y = e.y();
+                    points.push_back(point{x, y});
+                }
+            },
+            [](auto&&) { /* do nothing */ }
+        });
+
         // Do the rendering
         rend.set_draw_color(color{0, 0, 0});
         rend.clear();
