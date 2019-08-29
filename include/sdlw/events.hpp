@@ -356,28 +356,117 @@ public:
 
     auto type() const noexcept -> event_type { return static_cast<event_type>(_event.type); }
 
-    auto audio_device()      const noexcept { return reinterpret_cast<const audio_device_event&      > (_event.adevice);  }
-    auto controller_axis()   const noexcept { return reinterpret_cast<const controller_axis_event&   > (_event.caxis);    }
-    auto controller_button() const noexcept { return reinterpret_cast<const controller_button_event& > (_event.cbutton);  }
-    auto controller_device() const noexcept { return reinterpret_cast<const controller_device_event& > (_event.cdevice);  }
-    auto dollar_gesture()    const noexcept { return reinterpret_cast<const dollar_gesture_event&    > (_event.dgesture); }
-    auto drop()              const noexcept { return reinterpret_cast<const drop_event&              > (_event.drop);     }
-    auto touch_finger()      const noexcept { return reinterpret_cast<const touch_finger_event&      > (_event.tfinger);  }
-    auto keyboard()          const noexcept { return reinterpret_cast<const keyboard_event&          > (_event.key);      }
-    auto joy_axis()          const noexcept { return reinterpret_cast<const joy_axis_event&          > (_event.jaxis);    }
-    auto joy_ball()          const noexcept { return reinterpret_cast<const joy_ball_event&          > (_event.jball);    }
-    auto joy_hat()           const noexcept { return reinterpret_cast<const joy_hat_event&           > (_event.jhat);     }
-    auto joy_button()        const noexcept { return reinterpret_cast<const joy_button_event&        > (_event.jbutton);  }
-    auto joy_device()        const noexcept { return reinterpret_cast<const joy_device_event&        > (_event.jdevice);  }
-    auto mouse_motion()      const noexcept { return reinterpret_cast<const mouse_motion_event&      > (_event.motion);   }
-    auto mouse_button()      const noexcept { return reinterpret_cast<const mouse_button_event&      > (_event.button);   }
-    auto mouse_wheel()       const noexcept { return reinterpret_cast<const mouse_wheel_event&       > (_event.wheel);    }
-    auto multi_gesture()     const noexcept { return reinterpret_cast<const multi_gesture_event&     > (_event.mgesture); }
-    auto quit()              const noexcept { return reinterpret_cast<const quit_event&              > (_event.quit);     }
-    auto syswm()             const noexcept { return reinterpret_cast<const syswm_event&             > (_event.syswm);    }
-    auto text_editing()      const noexcept { return reinterpret_cast<const text_editing_event&      > (_event.edit);     }
-    auto text_input()        const noexcept { return reinterpret_cast<const text_input_event&        > (_event.text);     }
-    auto window()            const noexcept { return reinterpret_cast<const window_event&            > (_event.window);   }
+    const auto& audio_device()      const noexcept { return reinterpret_cast<const audio_device_event&      > (_event.adevice);  }
+    const auto& controller_axis()   const noexcept { return reinterpret_cast<const controller_axis_event&   > (_event.caxis);    }
+    const auto& controller_button() const noexcept { return reinterpret_cast<const controller_button_event& > (_event.cbutton);  }
+    const auto& controller_device() const noexcept { return reinterpret_cast<const controller_device_event& > (_event.cdevice);  }
+    const auto& dollar_gesture()    const noexcept { return reinterpret_cast<const dollar_gesture_event&    > (_event.dgesture); }
+    const auto& drop()              const noexcept { return reinterpret_cast<const drop_event&              > (_event.drop);     }
+    const auto& touch_finger()      const noexcept { return reinterpret_cast<const touch_finger_event&      > (_event.tfinger);  }
+    const auto& keyboard()          const noexcept { return reinterpret_cast<const keyboard_event&          > (_event.key);      }
+    const auto& joy_axis()          const noexcept { return reinterpret_cast<const joy_axis_event&          > (_event.jaxis);    }
+    const auto& joy_ball()          const noexcept { return reinterpret_cast<const joy_ball_event&          > (_event.jball);    }
+    const auto& joy_hat()           const noexcept { return reinterpret_cast<const joy_hat_event&           > (_event.jhat);     }
+    const auto& joy_button()        const noexcept { return reinterpret_cast<const joy_button_event&        > (_event.jbutton);  }
+    const auto& joy_device()        const noexcept { return reinterpret_cast<const joy_device_event&        > (_event.jdevice);  }
+    const auto& mouse_motion()      const noexcept { return reinterpret_cast<const mouse_motion_event&      > (_event.motion);   }
+    const auto& mouse_button()      const noexcept { return reinterpret_cast<const mouse_button_event&      > (_event.button);   }
+    const auto& mouse_wheel()       const noexcept { return reinterpret_cast<const mouse_wheel_event&       > (_event.wheel);    }
+    const auto& multi_gesture()     const noexcept { return reinterpret_cast<const multi_gesture_event&     > (_event.mgesture); }
+    const auto& quit()              const noexcept { return reinterpret_cast<const quit_event&              > (_event.quit);     }
+    const auto& syswm()             const noexcept { return reinterpret_cast<const syswm_event&             > (_event.syswm);    }
+    const auto& text_editing()      const noexcept { return reinterpret_cast<const text_editing_event&      > (_event.edit);     }
+    const auto& text_input()        const noexcept { return reinterpret_cast<const text_input_event&        > (_event.text);     }
+    const auto& window()            const noexcept { return reinterpret_cast<const window_event&            > (_event.window);   }
+
+    template<typename Visitor>
+    auto visit(Visitor&& vis) const
+    {
+        switch (type()) {
+        case event_type::audio_device_added:
+        case event_type::audio_device_removed:
+            return vis(audio_device());
+
+        case event_type::controller_axis_motion:
+            return vis(controller_axis());
+
+        case event_type::controller_button_down:
+        case event_type::controller_button_up:
+            return vis(controller_button());
+
+        case event_type::controller_device_added:
+        case event_type::controller_device_removed:
+        case event_type::controller_device_remapped:
+            return vis(controller_device());
+
+        case event_type::dollar_gesture:
+        case event_type::dollar_record:
+            return vis(dollar_gesture());
+
+        case event_type::drop_file:
+        case event_type::drop_text:
+        case event_type::drop_begin:
+        case event_type::drop_complete:
+            return vis(drop());
+
+        case event_type::finger_down:
+        case event_type::finger_up:
+        case event_type::finger_motion:
+            return vis(touch_finger());
+
+        case event_type::key_down:
+        case event_type::key_up:
+            return vis(keyboard());
+
+        case event_type::joy_axis_motion:
+            return vis(joy_axis());
+
+        case event_type::joy_ball_motion:
+            return vis(joy_ball());
+
+        case event_type::joy_hat_motion:
+            return vis(joy_hat());
+
+        case event_type::joy_button_down:
+        case event_type::joy_button_up:
+            return vis(joy_button());
+
+        case event_type::joy_device_added:
+        case event_type::joy_device_removed:
+            return vis(joy_device());
+
+        case event_type::mouse_motion:
+            return vis(mouse_motion());
+
+        case event_type::mouse_button_down:
+        case event_type::mouse_button_up:
+            return vis(mouse_button());
+
+        case event_type::mouse_wheel:
+            return vis(mouse_wheel());
+
+        case event_type::multi_gesture:
+            return vis(multi_gesture());
+
+        case event_type::quit:
+            return vis(quit());
+
+        case event_type::syswm:
+            return vis(syswm());
+
+        case event_type::text_editing:
+            return vis(text_editing());
+
+        case event_type::text_input:
+            return vis(text_input());
+
+        case event_type::window:
+            return vis(window());
+
+        default:
+            return vis(*this);
+        }
+    }
 };
 
 // clang-format on

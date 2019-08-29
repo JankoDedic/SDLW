@@ -11,6 +11,9 @@ using namespace sdl;
 
 static auto points = std::vector<point>();
 
+template<class... Ts> struct overload : Ts... { using Ts::operator()...; };
+template<class... Ts> overload(Ts...) -> overload<Ts...>;
+
 void handle_event(const event &e) {
     if (e.type() == event_type::mouse_motion) {
         const auto state = e.mouse_motion().state();
@@ -70,31 +73,23 @@ void run() {
     event_watch::add(w);
     event_watch::remove(w);
 
-    auto f = sdl::log_output_function::get();
-    SDL_ASSERT(f.function());
-    f(sdl::log_category::render, sdl::log_priority::critical, "DANGER!!");
-    auto callable = [&](auto...) {
-        std::cout << "oh no!\n";
-    };
-    sdl::log_output_function::set(callable);
-    f = sdl::log_output_function::get();
-    f(sdl::log_category::render, sdl::log_priority::critical, "DANGER!!");
-    sdl::log("you there, chief?\n");
-
-    event_filter::set([](const event& e) -> bool { return e.type() != event_type::mouse_motion; });
-
-    const auto id = sdl::add_timer(1s, [](clock::duration interval) {
-        std::cout << "hello\n";
-        return interval;
-    });
-    sdl::delay(5s);
-    sdl::remove_timer(id);
-
-    for (;;) {
+    auto running = true;
+    while (running) {
         // Handle the events
         while (event_queue::poll(e)) {
-            if (e.type() == event_type::quit) return;
-            else handle_event(e);
+            e.visit(overload{
+                [&](const quit_event& e) { running = false; },
+                [](const mouse_motion_event& e) {
+                    const auto state = e.state();
+                    const auto pressed = state & button_mask(mouse_button::left);
+                    if (static_cast<bool>(pressed)) {
+                        const auto x = e.x();
+                        const auto y = e.y();
+                        points.push_back(point{x, y});
+                    }
+                },
+                [](auto&&) { /* do nothing */ }
+            });
         }
         // Do the rendering
         rend.set_draw_color(color{0, 0, 0});
