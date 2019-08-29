@@ -44,7 +44,7 @@ class assertion_handler {
 public:
     using function_type = assert_state(assert_data_ref);
 
-    assertion_handler(function_type* f) noexcept
+    explicit assertion_handler(function_type* f) noexcept
         : _userdata{reinterpret_cast<void*>(f)}
     {
         _function = [](const SDL_AssertData* data, void* userdata) -> SDL_AssertState {
@@ -55,7 +55,7 @@ public:
     }
 
     template<typename Callable>
-    assertion_handler(Callable& c) noexcept
+    explicit assertion_handler(Callable& c) noexcept
         : _userdata{&c}
     {
         static_assert(std::is_invocable_r_v<assert_state, Callable, assert_data_ref>);
