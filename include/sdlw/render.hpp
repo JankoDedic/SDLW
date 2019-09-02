@@ -14,6 +14,7 @@
 
 namespace sdl {
 
+class renderer_info;
 class texture;
 class texture_ref;
 
@@ -37,50 +38,6 @@ enum class renderer_flip : u32 {
 SDLW_DETAIL_DEFINE_FLAG_OPERATIONS(renderer_flip);
 
 // clang-format on
-
-class renderer_info {
-    SDL_RendererInfo _renderer_info;
-
-public:
-    explicit operator SDL_RendererInfo() const noexcept
-    {
-        return _renderer_info;
-    }
-
-    renderer_info() = default;
-
-    explicit renderer_info(const SDL_RendererInfo& info) noexcept
-        : _renderer_info{info}
-    {}
-
-    auto name() const noexcept -> const char*
-    {
-        return _renderer_info.name;
-    }
-
-    auto flags() const noexcept -> renderer_flags
-    {
-        return static_cast<renderer_flags>(_renderer_info.flags);
-    }
-
-    auto num_texture_formats() const noexcept -> int
-    {
-        return _renderer_info.num_texture_formats;
-    }
-
-    auto texture_format(int index) const noexcept -> pixel_format_type
-    {
-        const auto tex_format = _renderer_info.texture_formats[index];
-        return static_cast<pixel_format_type>(tex_format);
-    }
-
-    auto max_texture_size() const noexcept -> size
-    {
-        const auto width = _renderer_info.max_texture_width;
-        const auto height = _renderer_info.max_texture_height;
-        return {width, height};
-    }
-};
 
 class renderer {
 public:
@@ -229,15 +186,7 @@ public:
         }
     }
 
-    auto info() const -> renderer_info
-    {
-        auto info = SDL_RendererInfo{};
-        if (SDL_GetRendererInfo(get_pointer(), &info) < 0) {
-            return renderer_info{info};
-        } else {
-            throw error{};
-        }
-    }
+    auto info() const -> renderer_info;
 
     void read_pixels(void* pixels, const rect& rect, pixel_format_type format, int pitch) const
     {
@@ -359,6 +308,60 @@ inline auto window::renderer() -> renderer_ref
 {
     if (const auto ptr = SDL_GetRenderer(_window.get())) {
         return renderer_ref{ptr};
+    } else {
+        throw error{};
+    }
+}
+
+class renderer_info {
+    SDL_RendererInfo _renderer_info;
+
+public:
+    explicit operator SDL_RendererInfo() const noexcept
+    {
+        return _renderer_info;
+    }
+
+    renderer_info() = default;
+
+    explicit renderer_info(const SDL_RendererInfo& info) noexcept
+        : _renderer_info{info}
+    {}
+
+    auto name() const noexcept -> const char*
+    {
+        return _renderer_info.name;
+    }
+
+    auto flags() const noexcept -> renderer_flags
+    {
+        return static_cast<renderer_flags>(_renderer_info.flags);
+    }
+
+    auto num_texture_formats() const noexcept -> int
+    {
+        return _renderer_info.num_texture_formats;
+    }
+
+    auto texture_format(int index) const noexcept -> pixel_format_type
+    {
+        const auto tex_format = _renderer_info.texture_formats[index];
+        return static_cast<pixel_format_type>(tex_format);
+    }
+
+    auto max_texture_size() const noexcept -> size
+    {
+        const auto width = _renderer_info.max_texture_width;
+        const auto height = _renderer_info.max_texture_height;
+        return {width, height};
+    }
+};
+
+inline auto renderer::info() const -> renderer_info
+{
+    auto info = SDL_RendererInfo{};
+    if (SDL_GetRendererInfo(get_pointer(), &info) < 0) {
+        return renderer_info{info};
     } else {
         throw error{};
     }
