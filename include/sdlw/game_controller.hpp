@@ -64,7 +64,7 @@ inline auto to_string(game_controller_button button) noexcept -> const char*
     return SDL_GameControllerGetStringForButton(static_cast<SDL_GameControllerButton>(button));
 }
 
-enum class game_controller_bind_kind : std::underlying_type_t<SDL_GameControllerBindType> {
+enum class game_controller_bind_type : std::underlying_type_t<SDL_GameControllerBindType> {
     none   = SDL_CONTROLLER_BINDTYPE_NONE,
     button = SDL_CONTROLLER_BINDTYPE_BUTTON,
     axis   = SDL_CONTROLLER_BINDTYPE_AXIS,
@@ -77,9 +77,9 @@ public:
         : _bind{bind}
     {}
 
-    auto kind() const noexcept -> game_controller_bind_kind
+    auto type() const noexcept -> game_controller_bind_type
     {
-        return static_cast<game_controller_bind_kind>(_bind.bindType);
+        return static_cast<game_controller_bind_type>(_bind.bindType);
     }
 
     auto button() const noexcept -> int
