@@ -61,7 +61,7 @@ class font {
     std::unique_ptr<TTF_Font, detail::make_functor<TTF_CloseFont>> _font;
 
 public:
-    font(TTF_Font* pointer) noexcept
+    explicit font(TTF_Font* pointer) noexcept
         : _font{pointer}
     {}
 
@@ -175,7 +175,7 @@ public:
 inline auto open_font(const char* filename, int ptsize) -> font
 {
     if (const auto pfont = TTF_OpenFont(filename, ptsize)) {
-        return {pfont};
+        return font{pfont};
     } else {
         throw error{};
     }
@@ -184,7 +184,7 @@ inline auto open_font(const char* filename, int ptsize) -> font
 inline auto open_font(const char* filename, int ptsize, long index) -> font
 {
     if (const auto pfont = TTF_OpenFontIndex(filename, ptsize, index)) {
-        return {pfont};
+        return font{pfont};
     } else {
         throw error{};
     }
