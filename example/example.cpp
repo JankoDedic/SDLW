@@ -43,11 +43,11 @@ void my_watch(const event& e) {
 
 void run() {
     // Initialize the subsystems
-    const auto sdl_guard = sdl::subsystem(sdl::subsystem_flags::video);
+    const auto sdl_guard = sdl::subsystem(sdl::subsystem::video);
     // Create the window
     const auto win_size = size_of(display_usable_bounds(0)) / 2;
     const auto win_bounds = rect{50, 50, win_size.w, win_size.h};
-    auto win = window("title", win_bounds, window_flags::shown);
+    auto win = window("title", win_bounds, window::shown);
     get_window(win.id()).set_title("new title");
     // Create the renderer
     auto rend = renderer(win, renderer::accelerated);

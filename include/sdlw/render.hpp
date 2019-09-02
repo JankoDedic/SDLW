@@ -593,7 +593,7 @@ struct render_driver {
     }
 };
 
-inline auto make_window_and_renderer(const size& window_size, window_flags flags) -> std::pair<window, renderer>
+inline auto make_window_and_renderer(const size& window_size, enum window::flags flags) -> std::pair<window, renderer>
 {
     /* const auto [w, h] = window_size; */
     const auto w = window_size.w;

@@ -75,32 +75,6 @@ class renderer_ref; // for window::renderer
 
 // clang-format off
 
-enum class window_flags : u32 {
-    fullscreen         = SDL_WINDOW_FULLSCREEN,
-    opengl             = SDL_WINDOW_OPENGL,
-    shown              = SDL_WINDOW_SHOWN,
-    hidden             = SDL_WINDOW_HIDDEN,
-    borderless         = SDL_WINDOW_BORDERLESS,
-    resizable          = SDL_WINDOW_RESIZABLE,
-    minimized          = SDL_WINDOW_MINIMIZED,
-    maximized          = SDL_WINDOW_MAXIMIZED,
-    input_grabbed      = SDL_WINDOW_INPUT_GRABBED,
-    input_focus        = SDL_WINDOW_INPUT_FOCUS,
-    mouse_focus        = SDL_WINDOW_MOUSE_FOCUS,
-    fullscreen_desktop = SDL_WINDOW_FULLSCREEN_DESKTOP,
-    foreign            = SDL_WINDOW_FOREIGN,
-    allow_high_dpi     = SDL_WINDOW_ALLOW_HIGHDPI,
-    mouse_capture      = SDL_WINDOW_MOUSE_CAPTURE,
-    always_on_top      = SDL_WINDOW_ALWAYS_ON_TOP,
-    skip_taskbar       = SDL_WINDOW_SKIP_TASKBAR,
-    utility            = SDL_WINDOW_UTILITY,
-    tooltip            = SDL_WINDOW_TOOLTIP,
-    popup_menu         = SDL_WINDOW_POPUP_MENU,
-    vulkan             = SDL_WINDOW_VULKAN
-};
-
-SDLW_DETAIL_DEFINE_FLAG_OPERATIONS(window_flags)
-
 using window_id = u32;
 
 enum class window_fullscreen_mode : u32 {
@@ -128,6 +102,30 @@ class window_ref;
 
 class window {
 public:
+    enum flags : u32 {
+        fullscreen         = SDL_WINDOW_FULLSCREEN,
+        opengl             = SDL_WINDOW_OPENGL,
+        shown              = SDL_WINDOW_SHOWN,
+        hidden             = SDL_WINDOW_HIDDEN,
+        borderless         = SDL_WINDOW_BORDERLESS,
+        resizable          = SDL_WINDOW_RESIZABLE,
+        minimized          = SDL_WINDOW_MINIMIZED,
+        maximized          = SDL_WINDOW_MAXIMIZED,
+        input_grabbed      = SDL_WINDOW_INPUT_GRABBED,
+        input_focus        = SDL_WINDOW_INPUT_FOCUS,
+        mouse_focus        = SDL_WINDOW_MOUSE_FOCUS,
+        fullscreen_desktop = SDL_WINDOW_FULLSCREEN_DESKTOP,
+        foreign            = SDL_WINDOW_FOREIGN,
+        allow_high_dpi     = SDL_WINDOW_ALLOW_HIGHDPI,
+        mouse_capture      = SDL_WINDOW_MOUSE_CAPTURE,
+        always_on_top      = SDL_WINDOW_ALWAYS_ON_TOP,
+        skip_taskbar       = SDL_WINDOW_SKIP_TASKBAR,
+        utility            = SDL_WINDOW_UTILITY,
+        tooltip            = SDL_WINDOW_TOOLTIP,
+        popup_menu         = SDL_WINDOW_POPUP_MENU,
+        vulkan             = SDL_WINDOW_VULKAN
+    };
+
     window(class window_ref) = delete;
     explicit window(SDL_Window* w) noexcept : _window{w} {}
     auto get_pointer() const noexcept -> SDL_Window* { return _window.get(); }
@@ -181,7 +179,7 @@ public:
         return is_undefined(position.x) && is_undefined(position.y);
     }
 
-    window(const char* title, const rect& bounds, window_flags flags)
+    window(const char* title, const rect& bounds, window::flags flags)
         : window{SDL_CreateWindow(title, bounds.x, bounds.y, bounds.w, bounds.h, static_cast<u32>(flags))}
     {
         if (!_window) throw error{};
@@ -193,9 +191,9 @@ public:
         if (!_window) throw error{};
     }
 
-    auto flags() const noexcept -> window_flags
+    auto flags() const noexcept -> enum window::flags
     {
-        return static_cast<window_flags>(SDL_GetWindowFlags(get_pointer()));
+        return static_cast<enum window::flags>(SDL_GetWindowFlags(get_pointer()));
     }
 
     auto id() const noexcept -> window_id
@@ -450,6 +448,8 @@ public:
 protected:
     std::unique_ptr<SDL_Window, detail::make_functor<SDL_DestroyWindow>> _window;
 };
+
+SDLW_DETAIL_DEFINE_FLAG_OPERATIONS(enum window::flags)
 
 inline auto operator==(const window& lhs, const window& rhs) noexcept -> bool
 {

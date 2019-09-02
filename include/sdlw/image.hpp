@@ -9,21 +9,17 @@
 
 namespace sdl::img {
 
-// clang-format off
-
-enum class subsystem_flags : int {
-    jpg  = IMG_INIT_JPG,
-    png  = IMG_INIT_PNG,
-    tif  = IMG_INIT_TIF,
-    webp = IMG_INIT_WEBP
-};
-
-// clang-format on
-
-SDLW_DETAIL_DEFINE_FLAG_OPERATIONS(subsystem_flags);
-
 struct subsystem {
-    subsystem(subsystem_flags flags)
+    // clang-format off
+    enum flags : int {
+        jpg  = IMG_INIT_JPG,
+        png  = IMG_INIT_PNG,
+        tif  = IMG_INIT_TIF,
+        webp = IMG_INIT_WEBP
+    };
+    // clang-format on
+
+    subsystem(subsystem::flags flags)
     {
         if (IMG_Init(static_cast<int>(flags)) < 0) {
             throw error{};
@@ -35,6 +31,8 @@ struct subsystem {
         IMG_Quit();
     }
 };
+
+SDLW_DETAIL_DEFINE_FLAG_OPERATIONS(subsystem::flags);
 
 inline auto load_as_surface(const char* filename) -> surface
 {

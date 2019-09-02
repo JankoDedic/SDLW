@@ -6,19 +6,18 @@
 
 namespace sdl {
 
-// clang-format off
-
-enum class message_box_flag : u32 {
-    error       = SDL_MESSAGEBOX_ERROR,
-    warning     = SDL_MESSAGEBOX_WARNING,
-    information = SDL_MESSAGEBOX_INFORMATION
+class message_box {
+public:
+    // clang-format off
+    enum flags : u32 {
+        error       = SDL_MESSAGEBOX_ERROR,
+        warning     = SDL_MESSAGEBOX_WARNING,
+        information = SDL_MESSAGEBOX_INFORMATION
+    };
+    // clang-format on
 };
 
-// clang-format on
-
-class message_box {};
-
-inline void show_simple_message_box(message_box_flag f, const char* title, const char* message)
+inline void show_simple_message_box(message_box::flags f, const char* title, const char* message)
 {
     const auto flag = static_cast<u32>(f);
     if (SDL_ShowSimpleMessageBox(flag, title, message, nullptr) < 0) {
@@ -26,7 +25,7 @@ inline void show_simple_message_box(message_box_flag f, const char* title, const
     }
 }
 
-inline void show_simple_message_box(message_box_flag f, const char* title, const char* message, const window& parent)
+inline void show_simple_message_box(message_box::flags f, const char* title, const char* message, const window& parent)
 {
     const auto flag = static_cast<u32>(f);
     const auto pwindow = parent.get_pointer();
