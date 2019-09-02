@@ -29,12 +29,12 @@ public:
         : _display_mode{display_mode}
     {}
 
-    constexpr auto format() const noexcept -> pixel_format_kind
+    constexpr auto format() const noexcept -> pixel_format_type
     {
-        return static_cast<pixel_format_kind>(_display_mode.format);
+        return static_cast<pixel_format_type>(_display_mode.format);
     }
 
-    constexpr void set_format(pixel_format_kind format) noexcept
+    constexpr void set_format(pixel_format_type format) noexcept
     {
         _display_mode.format = static_cast<u32>(format);
     }
@@ -357,13 +357,13 @@ public:
         }
     }
 
-    auto pixel_format_kind() const -> sdl::pixel_format_kind
+    auto pixel_format_type() const -> sdl::pixel_format_type
     {
         const auto format = SDL_GetWindowPixelFormat(get_pointer());
         if (format == SDL_PIXELFORMAT_UNKNOWN) {
             throw error{};
         } else {
-            return static_cast<sdl::pixel_format_kind>(format);
+            return static_cast<sdl::pixel_format_type>(format);
         }
     }
 

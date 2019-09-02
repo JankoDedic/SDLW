@@ -68,10 +68,10 @@ public:
         return _renderer_info.num_texture_formats;
     }
 
-    auto texture_format(int index) const noexcept -> pixel_format_kind
+    auto texture_format(int index) const noexcept -> pixel_format_type
     {
         const auto tex_format = _renderer_info.texture_formats[index];
-        return static_cast<pixel_format_kind>(tex_format);
+        return static_cast<pixel_format_type>(tex_format);
     }
 
     auto max_texture_size() const noexcept -> size
@@ -239,7 +239,7 @@ public:
         }
     }
 
-    void read_pixels(void* pixels, const rect& rect, pixel_format_kind format, int pitch) const
+    void read_pixels(void* pixels, const rect& rect, pixel_format_type format, int pitch) const
     {
         const auto prend = get_pointer();
         const auto fmt = static_cast<u32>(format);
@@ -380,7 +380,7 @@ public:
     explicit texture(SDL_Texture* t) noexcept : _texture{t} {}
     auto get_pointer() const noexcept -> SDL_Texture* { return _texture.get(); }
 
-    texture(const renderer& r, pixel_format_kind format, texture_access access, const sdl::size& sz)
+    texture(const renderer& r, pixel_format_type format, texture_access access, const sdl::size& sz)
         : texture{SDL_CreateTexture(r.get_pointer(), static_cast<u32>(format), static_cast<int>(access), sz.w, sz.h)}
     {
         if (!_texture) throw error{};
@@ -436,13 +436,13 @@ public:
         }
     }
 
-    auto format() const -> pixel_format_kind
+    auto format() const -> pixel_format_type
     {
         const auto ptexture = get_pointer();
         auto format = u32{};
         constexpr auto null = nullptr;
         if (SDL_QueryTexture(ptexture, &format, null, null, null) == 0) {
-            return static_cast<pixel_format_kind>(format);
+            return static_cast<pixel_format_type>(format);
         } else {
             throw error{};
         }
