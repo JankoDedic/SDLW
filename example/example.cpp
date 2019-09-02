@@ -50,7 +50,7 @@ void run() {
     auto win = window("title", win_bounds, window_flags::shown);
     get_window(win.id()).set_title("new title");
     // Create the renderer
-    auto rend = renderer(win, renderer_flags::accelerated);
+    auto rend = renderer(win, renderer::accelerated);
     auto e = event();
     // Watch events
     /* filter::custom::set([] (const event& e) { */

@@ -20,15 +20,6 @@ class texture_ref;
 
 // clang-format off
 
-enum class renderer_flags {
-    software       = SDL_RENDERER_SOFTWARE,
-    accelerated    = SDL_RENDERER_ACCELERATED,
-    present_vsync  = SDL_RENDERER_PRESENTVSYNC,
-    target_texture = SDL_RENDERER_TARGETTEXTURE
-};
-
-SDLW_DETAIL_DEFINE_FLAG_OPERATIONS(renderer_flags);
-
 enum class renderer_flip : u32 {
     none       = SDL_FLIP_NONE,
     horizontal = SDL_FLIP_HORIZONTAL,
@@ -41,11 +32,18 @@ SDLW_DETAIL_DEFINE_FLAG_OPERATIONS(renderer_flip);
 
 class renderer {
 public:
+    enum flags {
+        software       = SDL_RENDERER_SOFTWARE,
+        accelerated    = SDL_RENDERER_ACCELERATED,
+        present_vsync  = SDL_RENDERER_PRESENTVSYNC,
+        target_texture = SDL_RENDERER_TARGETTEXTURE
+    };
+
     renderer(class renderer_ref) = delete;
     explicit renderer(SDL_Renderer* r) noexcept : _renderer{r} {}
     auto get_pointer() const noexcept -> SDL_Renderer* { return _renderer.get(); }
 
-    renderer(window& win, renderer_flags flags, int rendering_driver_index = -1)
+    renderer(window& win, renderer::flags flags, int rendering_driver_index = -1)
         : renderer{SDL_CreateRenderer(win.get_pointer(), rendering_driver_index, static_cast<u32>(flags))}
     {
         if (!_renderer) throw error{};
@@ -287,6 +285,8 @@ protected:
     std::unique_ptr<SDL_Renderer, detail::make_functor<SDL_DestroyRenderer>> _renderer;
 };
 
+SDLW_DETAIL_DEFINE_FLAG_OPERATIONS(renderer::flags);
+
 inline auto operator==(const renderer& lhs, const renderer& rhs) noexcept -> bool
 {
     return lhs.get_pointer() == rhs.get_pointer();
@@ -333,9 +333,9 @@ public:
         return _renderer_info.name;
     }
 
-    auto flags() const noexcept -> renderer_flags
+    auto flags() const noexcept -> renderer::flags
     {
-        return static_cast<renderer_flags>(_renderer_info.flags);
+        return static_cast<renderer::flags>(_renderer_info.flags);
     }
 
     auto num_texture_formats() const noexcept -> int
