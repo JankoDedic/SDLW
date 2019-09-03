@@ -171,7 +171,7 @@ inline auto warp_mouse_global(const point& coordinate) noexcept -> bool
     return SDL_WarpMouseGlobal(coordinate.x, coordinate.y) == 0;
 }
 
-struct relative_mode {
+struct relative_mouse_mode {
     static auto is_enabled() noexcept -> bool
     {
         return SDL_GetRelativeMouseMode();
@@ -191,7 +191,7 @@ struct relative_mode {
         }
     }
 
-    static auto get_state() noexcept -> std::pair<mouse_button_state, point>
+    static auto state() noexcept -> std::pair<mouse_button_state, point>
     {
         auto p = point{};
         const auto sdl_button_state = SDL_GetRelativeMouseState(&p.x, &p.y);
