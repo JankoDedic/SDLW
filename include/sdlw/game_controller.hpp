@@ -24,7 +24,7 @@ enum class game_controller_axis {
     max           = SDL_CONTROLLER_AXIS_MAX
 };
 
-inline auto game_controller_axis_from_string(const char* pch_string) noexcept -> game_controller_axis
+inline auto to_game_controller_axis(const char* pch_string) noexcept -> game_controller_axis
 {
     return static_cast<game_controller_axis>(SDL_GameControllerGetAxisFromString(pch_string));
 }
@@ -54,7 +54,7 @@ enum class game_controller_button {
     max            = SDL_CONTROLLER_BUTTON_MAX
 };
 
-inline auto game_controller_button_from_string(const char* pch_string) noexcept -> game_controller_button
+inline auto to_game_controller_button(const char* pch_string) noexcept -> game_controller_button
 {
     return static_cast<game_controller_button>(SDL_GameControllerGetButtonFromString(pch_string));
 }
