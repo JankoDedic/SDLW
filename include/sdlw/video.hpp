@@ -499,13 +499,9 @@ inline auto get_window(window_id id) noexcept -> window_ref
     return window_ref{SDL_GetWindowFromID(static_cast<u32>(id))};
 }
 
-inline auto get_grabbed_window() -> window_ref
+inline auto get_grabbed_window() noexcept -> window_ref
 {
-    if (const auto ptr = SDL_GetGrabbedWindow()) {
-        return window_ref{ptr};
-    } else {
-        throw error{};
-    }
+    return window_ref{SDL_GetGrabbedWindow()};
 }
 
 inline auto closest_display_mode(int display_index, const display_mode& m) -> display_mode
