@@ -494,13 +494,9 @@ inline void window::set_hit_test(hit_test_result (*ht)(window_ref, const point&)
     }
 }
 
-inline auto get_window(window_id id) -> window_ref
+inline auto get_window(window_id id) noexcept -> window_ref
 {
-    if (const auto ptr = SDL_GetWindowFromID(static_cast<u32>(id))) {
-        return window_ref{ptr};
-    } else {
-        throw error{};
-    }
+    return window_ref{SDL_GetWindowFromID(static_cast<u32>(id))};
 }
 
 inline auto get_grabbed_window() -> window_ref
