@@ -70,6 +70,18 @@ public:
         return _font.get();
     }
 
+    font(const char* filename, int ptsize)
+        : _font{TTF_OpenFont(filename, ptsize)}
+    {
+        if (!_font) throw error{};
+    }
+
+    font(const char* filename, int ptsize, long index)
+        : _font{TTF_OpenFontIndex(filename, ptsize, index)}
+    {
+        if (!_font) throw error{};
+    }
+
     auto style() const noexcept -> sdl::ttf::style
     {
         return static_cast<sdl::ttf::style>(TTF_GetFontStyle(get_pointer()));
@@ -171,24 +183,6 @@ public:
         }
     }
 };
-
-inline auto open_font(const char* filename, int ptsize) -> font
-{
-    if (const auto pfont = TTF_OpenFont(filename, ptsize)) {
-        return font{pfont};
-    } else {
-        throw error{};
-    }
-}
-
-inline auto open_font(const char* filename, int ptsize, long index) -> font
-{
-    if (const auto pfont = TTF_OpenFontIndex(filename, ptsize, index)) {
-        return font{pfont};
-    } else {
-        throw error{};
-    }
-}
 
 inline auto text_render_size(const font& f, const char* text) -> size
 {
