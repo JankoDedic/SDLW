@@ -19,7 +19,7 @@ struct subsystem {
     };
     // clang-format on
 
-    subsystem(subsystem::flags flags)
+    explicit subsystem(subsystem::flags flags)
     {
         if (IMG_Init(static_cast<int>(flags)) < 0) {
             throw error{};
