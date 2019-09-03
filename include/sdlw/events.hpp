@@ -578,8 +578,6 @@ private:
     void* _userdata = nullptr;
 };
 
-namespace event_watch {
-
 namespace detail {
 
 template<typename EventWatch>
@@ -604,30 +602,28 @@ inline auto fp_sdl_callback(void* userdata, SDL_Event* e) -> int
 } // namespace detail
 
 template<typename EventWatch>
-void add(EventWatch& w)
+void add_event_watch(EventWatch& w)
 {
     static_assert(std::is_invocable_r_v<void, EventWatch, const event&>);
     SDL_AddEventWatch(detail::watch_generator<EventWatch>::sdl_callback, &w);
 }
 
-inline void add(void (*watch)(const event&))
+inline void add_event_watch(void (*watch)(const event&))
 {
     SDL_AddEventWatch(detail::fp_sdl_callback, reinterpret_cast<void*>(watch));
 }
 
 template<typename EventWatch>
-void remove(EventWatch& w)
+void remove_event_watch(EventWatch& w)
 {
     static_assert(std::is_invocable_r_v<void, EventWatch, const event&>);
     SDL_DelEventWatch(detail::watch_generator<EventWatch>::sdl_callback, &w);
 }
 
-inline void remove(void (*watch)(const event&))
+inline void remove_event_watch(void (*watch)(const event&))
 {
     SDL_DelEventWatch(detail::fp_sdl_callback, reinterpret_cast<void*>(watch));
 }
-
-} // namespace event_watch
 
 namespace event_queue {
 
