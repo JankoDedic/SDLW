@@ -4,11 +4,9 @@
 
 namespace sdl {
 
-struct platform {
-    static auto name() noexcept -> const char*
-    {
-        return SDL_GetPlatform();
-    }
-};
+inline auto platform() noexcept -> const char*
+{
+    return SDL_GetPlatform();
+}
 
 } // namespace sdl
